@@ -18,7 +18,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  region : us-east-1
+  region : ap-south-1
   stage : ${opt:stage, 'dev'}
   environment:
     NODE_ENV: ${self:custom.secrets.NODE_ENV}
@@ -35,4 +35,3 @@ functions:
       - http:
           method: get
           path: products
-  

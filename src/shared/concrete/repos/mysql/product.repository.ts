@@ -1,10 +1,7 @@
 import { Product } from './../../../models/product';
 import { IProductRepository } from '../../../abstract/repos/product.repository.interface';
 import { injectable } from 'inversify';
-import { createConnection } from 'typeorm';
-import 'mysql';
-import { dbConfig } from '../../../config/database';
-import { handleError } from '../../../util/errorHandler';
+import { initMysql } from './connection.manager';
 
 @injectable()
 export class MySQLProductRepository implements IProductRepository {
@@ -12,25 +9,18 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     let result: Product[] = [];
     try {
-      connection = await createConnection({
-        // tslint:disable-next-line: quotemark
-        type: "mysql",
-        host: dbConfig.host,
-        port: Number(dbConfig.port),
-        username: dbConfig.username,
-        password: dbConfig.password,
-        database: dbConfig.database,
-        entities: [],
-        synchronize: true,
-        logging: false,
-      });
+      console.log(userId);
+      connection = await initMysql();
       const types = await connection.query(`CALL GetProductsByUser(${userId})`);
       result = types[0].map( (product: any) => {
-        return {id: product.Id , name: product.Name} as Product ;
+        return {id: product.Id ,
+            name: product.Name,
+            description: product.Description,
+            createdDate: product.CareatedDate} as Product ;
       });
       return result;
     } catch (err) {
-      handleError(err);
+      throw err;
     } finally {
       if ( connection != null) {
         await connection.close();

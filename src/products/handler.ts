@@ -27,7 +27,7 @@ export const getProductsByUser: APIGatewayProxyHandler = async (
     result = await productService.getProductsByUser(Number(token));
     return ok(result);
   } catch (err) {
-    logger.log(err.name, err.details);
+    logger.log(err.name, err);
     return handleError(err);
   }
 };
