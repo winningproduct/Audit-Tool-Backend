@@ -3,7 +3,6 @@ import { dbConfig } from '../../../config/database';
 import 'mysql';
 
 export async function initMysql() {
-    console.log(dbConfig);
     const con = await createConnection({
         // tslint:disable-next-line: quotemark
         type: "mysql",

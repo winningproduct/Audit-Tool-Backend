@@ -9,7 +9,6 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     let result: Product[] = [];
     try {
-      console.log(userId);
       connection = await initMysql();
       const types = await connection.query(`CALL GetProductsByUser(${userId})`);
       result = types[0].map( (product: any) => {
