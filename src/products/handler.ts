@@ -19,8 +19,7 @@ const phaseRepository = wpoContainer.get<IPhaseRepository>(
   TYPES.PhaseRepository,
 );
 
-
-const productService = new ProductService(productsRepository,phaseRepository);
+const productService = new ProductService(productsRepository, phaseRepository);
 const logger = wpoContainer.get<ILogger>(TYPES.Logger);
 const productValidator = new ProductValidator();
 
@@ -44,13 +43,27 @@ export const getPhases: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
 ) => {
-  //const identity = resolveIdentity(event);
   const { path } = event ;
   const productId = Number(path.split('/')[2]);
   let result: Phase[] = [];
   try {
     await productValidator.getPhases(productId);
     result = await productService.getPhases(productId);
+    return ok(result);
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};
+export const getProductByProductPhaseId: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent,
+  _context,
+) => {
+  let result: Product;
+  try {
+    const productPhaseId = Number(event.pathParameters ? event.pathParameters.id : null);
+    await productValidator.getProductByProductPhaseId(productPhaseId);
+    result = await productService.getProductByProductPhaseId(productPhaseId);
     return ok(result);
   } catch (err) {
     logger.log(err.name, err);

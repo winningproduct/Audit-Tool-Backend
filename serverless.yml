@@ -41,6 +41,12 @@ functions:
     events:
       - http:
           method: get
-          path: products/{id}
+          path: products/{id}/phases
+          cors: true      
+  getProductByProductPhaseId:
+    handler: src/products/handler.getProductByProductPhaseId
+    events:
+      - http:
+          method: get
+          path: products/productPhases/{id}
           cors: true
-          
