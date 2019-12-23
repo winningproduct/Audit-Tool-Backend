@@ -36,3 +36,11 @@ functions:
           method: get
           path: products
           cors: true
+  getPhases:
+    handler: src/products/handler.getPhases
+    events:
+      - http:
+          method: get
+          path: products/{id}
+          cors: true
+          

@@ -1,12 +1,18 @@
-import { Validate, Required } from 'joi-typescript-validator';
+import { Validate } from 'joi-typescript-validator';
+import { Id } from './models/productByUser.model';
 
-export class Id {
-    @Required()
-    id!: number;
-}
 
-export async function getProductsByUser(token: number) {
-    const value: Id = new Id();
-    value.id = token;
-    await Validate(value);
+
+export default class ProductValidator {
+    async getProductsByUser(token: number) {
+        const value: Id = new Id();
+        value.id = token;
+        await Validate(value);
+    }
+
+    async getPhases(token: number) {
+        const value: Id = new Id();
+        value.id = token;
+        await Validate(value);
+    }
 }

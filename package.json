@@ -5,6 +5,7 @@
    "main": "handler.js",
    "scripts": {
       "test": "jest",
+      "offline": "serverless offline",
       "deploy": "serverless deploy",
       "lint": "tslint --project .",
       "lint:fix": "tslint --project . --fix"
