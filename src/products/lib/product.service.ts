@@ -7,7 +7,9 @@ export class ProductService {
     async getProductsByUser(userId: number) {
         return await this._productRepository.getProductsByUser(userId);
     }
-
+    async getProductByProductPhaseId(productPhaseId: number) {
+        return await this._productRepository.getProductByProductPhaseId(productPhaseId);
+    }
     // test sample
     async searchProducts(userId: number, query: string) {
         const products = await this._productRepository.getProductsByUser(userId);

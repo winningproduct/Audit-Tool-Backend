@@ -32,3 +32,20 @@ export const getProductsByUser: APIGatewayProxyHandler = async (
     return handleError(err);
   }
 };
+
+export const getProductByProductPhaseId: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent,
+  _context,
+) => {
+  const identity = resolveIdentity(event);
+  let result: Product;
+  try {
+    const productPhaseId = Number(event.pathParameters ? event.pathParameters.id : null);
+    await validator(productPhaseId);
+    result = await productService.getProductByProductPhaseId(productPhaseId);
+    return ok(result);
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};
