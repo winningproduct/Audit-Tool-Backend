@@ -13,7 +13,8 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
       connection = await initMysql();
       const types = await connection.query(`CALL GetPhases(${productId})`);
       result = types[0].map( (phase: any) => {
-        return {id: phase.Id ,
+        return {productPhaseId: phase.Id,
+                phaseId: phase.PhaseId,
                 name: phase.Name,
                 description: phase.Description,
                 score: phase.Score} as Phase ;
