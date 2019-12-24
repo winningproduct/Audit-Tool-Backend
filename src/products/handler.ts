@@ -5,7 +5,7 @@ import 'source-map-support/register';
 import { wpoContainer, TYPES } from '../../inversify.config';
 import { IProductRepository } from '../shared/abstract/repos/product.repository.interface';
 import { IPhaseRepository } from '../shared/abstract/repos/phase.repository.interface';
-import { ProductService } from './lib/product.service';
+import { ProductService } from './business-logic/product.service';
 import ProductValidator from './validators';
 import { handleError } from '../shared/util/errorHandler';
 import { ok } from '../shared/util/responseHandler';
@@ -97,6 +97,23 @@ export const getQuestionsByKnowledgeAreaId: APIGatewayProxyHandler = async (
   let result: Product;
   try {
     throw new Error('NOT IMPLEMENTED');
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};
+
+// GET PRODUCT BY PRODUCT ID
+export const getProductById: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent,
+  _context,
+) => {
+  let result: Product;
+  const productId = Number(event.pathParameters ? event.pathParameters.id : null);
+  try {
+    await productValidator.getProductById(productId);
+    result = await productService.getProductById(productId);
+    return ok(result);
   } catch (err) {
     logger.log(err.name, err);
     return handleError(err);

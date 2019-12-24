@@ -19,4 +19,7 @@ export class ProductService {
     async getPhases(productId: number) {
         return await this._phaseRepository.getPhases(productId);
     }
+     async getProductById(productId: number) {
+         return await this._productRepository.getProductById(productId);
+     }
 }
