@@ -4,13 +4,15 @@ Backend of WPO Audit Tool
 
 # API Documentation
 
-
+### Organizations
 /organizations/  
   
+### Products
 /products/  
 /products/:id  
 /products/:id/phases  
   
+### Knowledge Areas
 get latest knowledge areas
 `/phases/:productPhaseId/knowledgeAreas`  
 get latest questions of a knowledge area
@@ -21,6 +23,8 @@ get knowledge areas by revision
 get questions of a knowledge area by revision
 `/phases/:productPhaseId/revisions/:revisionId/knowledgeAreas/:knowledgeAreaId/questions`  
   
+### Evidence
 /questions/:questionId/evidence  
   
+### Audits
 /audits  
