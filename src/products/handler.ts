@@ -23,6 +23,7 @@ const productService = new ProductService(productsRepository, phaseRepository);
 const logger = wpoContainer.get<ILogger>(TYPES.Logger);
 const productValidator = new ProductValidator();
 
+// GET PRODUCTS
 export const getProductsByUser: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
@@ -39,6 +40,7 @@ export const getProductsByUser: APIGatewayProxyHandler = async (
   }
 };
 
+// GET PHASES OF A PRODUCT
 export const getPhases: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
@@ -55,6 +57,8 @@ export const getPhases: APIGatewayProxyHandler = async (
     return handleError(err);
   }
 };
+
+// GET PRODUCT BY PRODUCT_PHASE_ID
 export const getProductByProductPhaseId: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
@@ -65,6 +69,34 @@ export const getProductByProductPhaseId: APIGatewayProxyHandler = async (
     await productValidator.getProductByProductPhaseId(productPhaseId);
     result = await productService.getProductByProductPhaseId(productPhaseId);
     return ok(result);
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};
+
+// GET KNOWLEDGE AREAS BY PRODUCT_PHASE_ID
+export const getKnowledgeAreasByProductPhaseId: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent,
+  _context,
+) => {
+  let result: Product;
+  try {
+    throw new Error('NOT IMPLEMENTED');
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};
+
+// GET QUESTIONS BY KNOWLEDGE AREA ID
+export const getQuestionsByKnowledgeAreaId: APIGatewayProxyHandler = async (
+  event: APIGatewayProxyEvent,
+  _context,
+) => {
+  let result: Product;
+  try {
+    throw new Error('NOT IMPLEMENTED');
   } catch (err) {
     logger.log(err.name, err);
     return handleError(err);

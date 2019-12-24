@@ -50,3 +50,18 @@ functions:
           method: get
           path: products/productPhases/{id}
           cors: true
+  getProductByProductPhaseId:
+    handler: src/products/handler.getProductByProductPhaseId
+    events:
+      - http:
+          method: get
+          path: products/productPhases/{id}
+          cors: true
+  getProductByProductPhaseId:
+    handler: src/products/handler.getProductByProductPhaseId
+    events:
+      - http:
+          method: get
+          path: products/productPhases/{id}
+          cors: true
+  

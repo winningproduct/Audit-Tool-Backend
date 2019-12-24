@@ -2,7 +2,6 @@ import { IProductRepository } from '../../shared/abstract/repos/product.reposito
 import { IPhaseRepository } from '../../shared/abstract/repos/phase.repository.interface';
 
 export class ProductService {
-
     constructor(private _productRepository: IProductRepository,
                 private _phaseRepository: IPhaseRepository) {
     }
@@ -17,7 +16,6 @@ export class ProductService {
         const products = await this._productRepository.getProductsByUser(userId);
         return products.filter( (p) => p.name.toLowerCase().indexOf(query.toLowerCase()) > -1);
     }
-
     async getPhases(productId: number) {
         return await this._phaseRepository.getPhases(productId);
     }
