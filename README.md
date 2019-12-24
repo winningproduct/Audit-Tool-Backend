@@ -16,6 +16,9 @@ Steps to run this project:
 /phases/:productPhaseId/revisions/:revisionId/knowledgeAreas
 /phases/:productPhaseId/revisions/:revisionId/knowledgeAreas/:knowledgeAreaId/questions
 
+/phases/:productPhaseId/knowledgeAreas
+/phases/:productPhaseId/knowledgeAreas/:knowledgeAreaId/questions
+
 /questions/:questionId/evidence
 
 /audits
