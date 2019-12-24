@@ -5,7 +5,7 @@ service:
 #org: your-org-name
 
 custom:
-secrets: ${file(secrets.json)}
+  secrets: ${file(secrets.json)}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
