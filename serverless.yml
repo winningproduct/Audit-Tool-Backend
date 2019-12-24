@@ -20,12 +20,12 @@ provider:
   region : ap-south-1
   stage : ${opt:stage, 'dev'}
   environment:
-    NODE_ENV: ${self:custom.secrets.NODE_ENV , process.env.DB_TYPE}
-    DB_NAME: ${self:custom.secrets.DB_NAME , process.env.DB_HOST}
-    DB_USER: ${self:custom.secrets.DB_USER , process.env.DB_PORT}
-    DB_PASSWORD: ${self:custom.secrets.DB_PASSWORD , process.env.DB_USER}
-    DB_HOST: ${self:custom.secrets.DB_HOST , process.env.DB_PASSWORD}
-    DB_PORT: ${self:custom.secrets.DB_PORT , process.env.DB_NAME}
+    NODE_ENV: ${self:custom.secrets.NODE_ENV , %DB_TYPE%}
+    DB_NAME: ${self:custom.secrets.DB_NAME , %DB_HOST%}
+    DB_USER: ${self:custom.secrets.DB_USER , %DB_PORT%}
+    DB_PASSWORD: ${self:custom.secrets.DB_PASSWORD , DB_USER}
+    DB_HOST: ${self:custom.secrets.DB_HOST , %DB_PASSWORD%}
+    DB_PORT: ${self:custom.secrets.DB_PORT , DB_NAME}
 
 functions:
   getProductsByUser:
