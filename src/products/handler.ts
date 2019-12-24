@@ -45,8 +45,7 @@ export const getPhases: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
 ) => {
-  const { path } = event ;
-  const productId = Number(path.split('/')[2]);
+  const productId = Number(event.pathParameters ? event.pathParameters.id : null);
   let result: Phase[] = [];
   try {
     await productValidator.getPhases(productId);
