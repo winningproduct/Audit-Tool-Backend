@@ -8,21 +8,23 @@ Steps to run this project:
 
 # Routing Documentation
 
-```
+
 /organizations/  
   
 /products/  
 /products/:id  
 /products/:id/phases  
   
-/phases/:productPhaseId/revisions/:revisionId/knowledgeAreas  
-/phases/:productPhaseId/revisions/:revisionId/knowledgeAreas/:knowledgeAreaId/questions  
+get latest knowledge areas
+`/phases/:productPhaseId/knowledgeAreas`  
+get latest questions of a knowledge area
+`/phases/:productPhaseId/knowledgeAreas/:knowledgeAreaId/questions`  
   
-/phases/:productPhaseId/knowledgeAreas  
-/phases/:productPhaseId/knowledgeAreas/:knowledgeAreaId/questions  
+get knowledge areas by revision
+`/phases/:productPhaseId/revisions/:revisionId/knowledgeAreas`  
+get questions of a knowledge area by revision
+`/phases/:productPhaseId/revisions/:revisionId/knowledgeAreas/:knowledgeAreaId/questions`  
   
 /questions/:questionId/evidence  
   
 /audits  
-
-```
