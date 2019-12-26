@@ -2,31 +2,55 @@ import { Product } from './../../../models/product';
 import { IProductRepository } from '../../../abstract/repos/product.repository.interface';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
+import { mapDbItems, productMapper } from './dbMapper';
 
 @injectable()
 export class MySQLProductRepository implements IProductRepository {
-  async getProductsByUser(userId: number): Promise<Product[]> {
+  async getProductByProductPhaseId(productPhaseId: number): Promise<Product> {
     let connection: any;
-    let result: Product[] = [];
     try {
       connection = await initMysql();
-      const types = await connection.query(`CALL GetProductsByUser(${userId})`);
-      result = types[0].map( (product: any) => {
-        return {id: product.Id ,
-            name: product.Name,
-            description: product.Description,
-            createdDate: product.CareatedDate} as Product ;
-      });
-      return result;
+      const result = await connection.query(`CALL GetProductByProductPhaseId(${productPhaseId})`);
+      return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
     } finally {
-      if ( connection != null) {
+      if (connection != null) {
         await connection.close();
       }
     }
-    return result;
   }
+
+  async getProductsByUser(userId: number): Promise<Product[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const results = await connection.query(`CALL GetProductsByUser(${userId})`);
+      return mapDbItems(results, productMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getProductById(productId: number): Promise<Product> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection.query(`CALL GetProductById(${productId})`);
+      return mapDbItems(result, productMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Product {
     throw new Error('Method not implemented.');
   }
