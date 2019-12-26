@@ -19,4 +19,10 @@ export default class ProductValidator {
         value.id = token;
         await Validate(value);
     }
+
+    async getProductById(token: number) {
+        const value: Id = new Id();
+        value.id = token;
+        await Validate(value);
+    }
 }

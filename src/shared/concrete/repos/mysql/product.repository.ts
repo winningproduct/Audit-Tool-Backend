@@ -20,6 +20,7 @@ export class MySQLProductRepository implements IProductRepository {
       }
     }
   }
+
   async getProductsByUser(userId: number): Promise<Product[]> {
     let connection: any;
     try {
@@ -34,6 +35,22 @@ export class MySQLProductRepository implements IProductRepository {
       }
     }
   }
+
+  async getProductById(productId: number): Promise<Product> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection.query(`CALL GetProductById(${productId})`);
+      return mapDbItems(result, productMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Product {
     throw new Error('Method not implemented.');
   }

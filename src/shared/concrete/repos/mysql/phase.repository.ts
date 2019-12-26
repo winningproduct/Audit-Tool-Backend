@@ -2,24 +2,18 @@ import { Phase } from './../../../models/phase';
 import { IPhaseRepository } from '../../../abstract/repos/phase.repository.interface';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
+import { mapDbItems, phasesMapper } from './dbMapper';
 
 @injectable()
 export class MYSQLPhaseRepository implements IPhaseRepository {
 
-  async getPhases(productId:number): Promise<Phase[]>{
+  async getPhases(productId: number): Promise<Phase[]> {
     let connection: any;
     let result: Phase[] = [];
     try {
       connection = await initMysql();
-      const types = await connection.query(`CALL GetPhases(${productId})`);
-      result = types[0].map( (phase: any) => {
-        return {productPhaseId: phase.Id,
-                phaseId: phase.PhaseId,
-                name: phase.Name,
-                description: phase.Description,
-                score: phase.Score} as Phase ;
-      });
-      return result;
+      result = await connection.query(`CALL GetPhases(${productId})`);
+      return mapDbItems(result, phasesMapper);
     } catch (err) {
       throw err;
     } finally {
