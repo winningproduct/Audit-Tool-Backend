@@ -18,7 +18,7 @@ export function handleRoutes(event: APIGatewayProxyEvent) {
       {
         signature: '/products/{id}/phases',
         getAction: () => {
-          return controller.getProductByProductPhaseId;
+          return controller.getPhases;
         },
       },
       {
