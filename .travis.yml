@@ -13,6 +13,7 @@ script:
   - npm install  serverless-webpack
   - npm install -g serverless
   - sonar-scanner
+
 deploy:
   provider: lambda
   runtime: nodejs12.x
@@ -21,7 +22,8 @@ deploy:
   region: "ap-south-1"
   role: arn:aws:iam::474717861439:role/audit-tool-backend-travis
   module_name: src/products/handler
-  handler_name: "product"
+  handler_name: product
+  timeout: 6
   on:
     repo: WPOCanvas/Audit-Tool-Backend
     branches:
