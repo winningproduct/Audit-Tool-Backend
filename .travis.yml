@@ -16,7 +16,8 @@ script:
 
 deploy:
   provider: script
-  script: npm run deploy
+  script: 
+    - npm run deploy
   skip_cleanup: true
   on:
     repo: WPOCanvas/Audit-Tool-Backend
