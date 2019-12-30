@@ -65,8 +65,4 @@ describe('Route Handler', () => {
     expect(route).toEqual('/a/{id}/b');
   });
 
-  test('handles simple routes', () => {
-    expect(1).toEqual(2);
-  });
-
 });
