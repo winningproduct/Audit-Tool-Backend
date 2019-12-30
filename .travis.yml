@@ -9,7 +9,7 @@ script:
   - npm install -g serverless
 deploy:
   provider: lambda
-  function_name: "product"
+  function_name: "AuditToolBackend-dev-product"
   skip_cleanup: true
   region: "ap-south-1"
   role: arn:aws:iam::474717861439:role/audit-tool-backend-travis
