@@ -1,10 +1,21 @@
 language: node_js
 node_js:
-- stable
+  - stable
 cache:
   directories:
-  - node_modules
+    - node_modules
 script:
-- npm install  serverless-webpack
-- npm install -g serverless
-- sls deploy
+  - npm install  serverless-webpack
+  - npm install -g serverless
+deploy:
+  provider: lambda
+  function_name: "product"
+  skip_cleanup: true
+  region: "ap-south-1"
+  role: arn:aws:iam::474717861439:role/audit-tool-backend-travis
+  handler_name: "handler"
+  on:
+    repo: WPOCanvas/Audit-Tool-Backend
+    branches:
+      only:
+        - master
