@@ -1,6 +1,5 @@
 language: node_js
 node_js:
-  - '12.14.0'
   - 'node'
 cache:
   directories:
@@ -21,7 +20,8 @@ deploy:
   skip_cleanup: true
   region: "ap-south-1"
   role: arn:aws:iam::474717861439:role/audit-tool-backend-travis
-  handler_name: "handler"
+  module_name: src/products/handler
+  handler_name: "product"
   on:
     repo: WPOCanvas/Audit-Tool-Backend
     branches:
