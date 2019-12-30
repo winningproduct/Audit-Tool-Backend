@@ -5,35 +5,30 @@ describe('Route Handler', () => {
   const routeRegistrations = [
     {
       signature: '/a',
-      // tslint:disable-next-line: arrow-return-shorthand
       getAction: () => {
         return '/a';
       },
     },
     {
       signature: '/a/{id}',
-      // tslint:disable-next-line: arrow-return-shorthand
       getAction: () => {
         return '/a/{id}';
       },
     },
     {
       signature: '/a/{id}/b',
-      // tslint:disable-next-line: arrow-return-shorthand
       getAction: () => {
         return '/a/{id}/b';
       },
     },
     {
       signature: '/a/{id}/b/{id2}/c',
-      // tslint:disable-next-line: arrow-return-shorthand
       getAction: () => {
         return '/a/{id}/b/{id2}/c';
       },
     },
     {
       signature: '/a/{id}/b/{id2}/c/d/f',
-      // tslint:disable-next-line: arrow-return-shorthand
       getAction: () => {
         return '/a/{id}/b/{id2}/c/d/f';
       },
@@ -68,6 +63,10 @@ describe('Route Handler', () => {
     const result = handleRoutes({ path: '/a/helloquery/b?q=1&q2=123' } as APIGatewayProxyEvent, routeRegistrations);
     const route = result.match.signature;
     expect(route).toEqual('/a/{id}/b');
+  });
+
+  test('handles simple routes', () => {
+    expect(1).toEqual(2);
   });
 
 });

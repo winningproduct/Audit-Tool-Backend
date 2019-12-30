@@ -12,6 +12,8 @@ addons:
 script:
   - npm install  serverless-webpack
   - npm install -g serverless
+  - npm install
+  - npm run test
   - sonar-scanner
 
 deploy:
