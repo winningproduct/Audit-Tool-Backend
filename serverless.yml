@@ -48,4 +48,8 @@ functions:
           method: get
           path: products/productPhases/{id}
           cors: true
+      - http:
+          method: get
+          path: test1
+          cors: true
   

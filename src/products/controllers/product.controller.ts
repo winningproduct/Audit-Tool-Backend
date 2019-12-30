@@ -23,6 +23,17 @@ const productService = new ProductService(productsRepository, phaseRepository);
 const logger = wpoContainer.get<ILogger>(TYPES.Logger);
 const productValidator = new ProductValidator();
 
+export const test1 = async (
+  _event: any,
+): Promise<APIGatewayProxyResult> => {
+  try {
+    return ok('hi');
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};
+
 export const getProductsByUser = async (
     event: any,
   ): Promise<APIGatewayProxyResult> => {
@@ -73,7 +84,6 @@ export const getProductByProductPhaseId = async (
 export const getKnowledgeAreasByProductPhaseId = async (
     _event: any,
   ): Promise<APIGatewayProxyResult> => {
-    let result: Product;
     try {
       throw new Error('NOT IMPLEMENTED');
     } catch (err) {
@@ -84,9 +94,8 @@ export const getKnowledgeAreasByProductPhaseId = async (
 
   // GET QUESTIONS BY KNOWLEDGE AREA ID
 export const getQuestionsByKnowledgeAreaId = async (
-    event: any,
+    _event: any,
   ): Promise<APIGatewayProxyResult> => {
-    let result: Product;
     try {
       throw new Error('NOT IMPLEMENTED');
     } catch (err) {

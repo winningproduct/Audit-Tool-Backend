@@ -1,35 +1,41 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import * as controller from './controllers/product.controller';
 
-export function handleRoutes(event: APIGatewayProxyEvent) {
-    const registrations = [
-      {
-        signature: '/products',
-        getAction: () => {
-          return controller.getProductsByUser;
-        },
-      },
-      {
-        signature: '/products/{id}',
-        getAction: () => {
-          return controller.getProductById;
-        },
-      },
-      {
-        signature: '/products/{id}/phases',
-        getAction: () => {
-          return controller.getPhases;
-        },
-      },
-      {
-        signature: '/products/productPhases/{id}',
-        getAction: () => {
-          return controller.getKnowledgeAreasByProductPhaseId;
-        },
-      },
-    ];
-    const path = event.path;
+export const routeRegistrations = [
+  {
+    signature: '/products',
+    getAction: () => {
+      return controller.getProductsByUser;
+    },
+  },
+  {
+    signature: '/products/{id}',
+    getAction: () => {
+      return controller.getProductById;
+    },
+  },
+  {
+    signature: '/products/{id}/phases',
+    getAction: () => {
+      return controller.getPhases;
+    },
+  },
+  {
+    signature: '/products/productPhases/{id}',
+    getAction: () => {
+      return controller.getKnowledgeAreasByProductPhaseId;
+    },
+  },
+  {
+    signature: '/test1',
+    getAction: () => {
+      return controller.test1;
+    },
+  },
+];
 
+export function handleRoutes(event: APIGatewayProxyEvent, registrations: any) {
+    const path = event.path.split('?')[0];
     const pathSplit = path.split('/');
 
     const isParameter = (p: any) => {
