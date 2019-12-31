@@ -48,10 +48,6 @@ functions:
           method: get
           path: products/productPhases/{productId}
           cors: true
-      - http:
-          method: get
-          path: test1
-          cors: true
   knowledgeArea:
     handler: src/knowledge-areas/handler.knowledgeArea
     events:
