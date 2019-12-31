@@ -1,5 +1,5 @@
-import { handleRoutes } from './routes';
 import { APIGatewayProxyEvent } from 'aws-lambda';
+import { handleRoutes } from '../shared/util/routeHandler';
 
 describe('Route Handler', () => {
   const routeRegistrations = [
@@ -35,34 +35,48 @@ describe('Route Handler', () => {
     },
   ];
 
-  test('handles simple routes', () => {
-    const result = handleRoutes({ path: '/a' } as APIGatewayProxyEvent, routeRegistrations);
+  test('get product route', () => {
+    const result = handleRoutes(
+      { path: '/a' } as APIGatewayProxyEvent,
+      routeRegistrations,
+    );
     const route = result.match.signature;
     expect(route).toEqual('/a');
   });
 
-  test('handles simple routes', () => {
-    const result = handleRoutes({ path: '/a/34345' } as APIGatewayProxyEvent, routeRegistrations);
+  test('get product by id route', () => {
+    const result = handleRoutes(
+      { path: '/a/34345' } as APIGatewayProxyEvent,
+      routeRegistrations,
+    );
     const route = result.match.signature;
     expect(route).toEqual('/a/{id}');
   });
 
-  test('handles simple routes', () => {
-    const result = handleRoutes({ path: '/a/34345/b' } as APIGatewayProxyEvent, routeRegistrations);
+  test('get phases route', () => {
+    const result = handleRoutes(
+      { path: '/a/34345/b' } as APIGatewayProxyEvent,
+      routeRegistrations,
+    );
     const route = result.match.signature;
     expect(route).toEqual('/a/{id}/b');
   });
 
   test('handles simple routes', () => {
-    const result = handleRoutes({ path: '/a/34345/b/3123/c' } as APIGatewayProxyEvent, routeRegistrations);
+    const result = handleRoutes(
+      { path: '/a/34345/b/3123/c' } as APIGatewayProxyEvent,
+      routeRegistrations,
+    );
     const route = result.match.signature;
     expect(route).toEqual('/a/{id}/b/{id2}/c');
   });
 
-  test('handles simple routes', () => {
-    const result = handleRoutes({ path: '/a/helloquery/b?q=1&q2=123' } as APIGatewayProxyEvent, routeRegistrations);
+  test('test query in route', () => {
+    const result = handleRoutes(
+      { path: '/a/helloquery/b?q=1&q2=123' } as APIGatewayProxyEvent,
+      routeRegistrations,
+    );
     const route = result.match.signature;
     expect(route).toEqual('/a/{id}/b');
   });
-
 });

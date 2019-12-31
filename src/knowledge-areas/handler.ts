@@ -6,8 +6,8 @@ import {
 import { routeRegistrations } from './routes';
 import { handleRoutes } from '../shared/util/routeHandler';
 
-// PRODUCTS
-export const product: APIGatewayProxyHandler = async (
+// KNOWLEDGE AREAS
+export const knowledgeArea: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
 ) => {
