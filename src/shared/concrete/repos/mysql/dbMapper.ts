@@ -13,7 +13,7 @@ export function productMapper(product: any): Product {
     id: product.Id,
     name: product.Name,
     description: product.Description,
-    createdDate: product.CareatedDate,
+    createdDate: product.CreatedDate,
   } as Product;
 }
 export function knowledgeAreaMapper(product: any): KnowledgeArea {
@@ -46,5 +46,5 @@ export function phasesMapper(phase: any): Phase {
     name: phase.Name,
     description: phase.Description,
     score: phase.Score,
-  } as Phase ;
+  } as Phase;
 }

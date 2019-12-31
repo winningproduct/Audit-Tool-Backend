@@ -6,7 +6,6 @@ import { mapDbItems, phasesMapper } from './dbMapper';
 
 @injectable()
 export class MYSQLPhaseRepository implements IPhaseRepository {
-
   async getPhases(productId: number): Promise<Phase[]> {
     let connection: any;
     let result: Phase[] = [];
@@ -17,11 +16,10 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
     } catch (err) {
       throw err;
     } finally {
-      if ( connection != null) {
+      if (connection != null) {
         await connection.close();
       }
     }
-    return result;
   }
 
   get(_itemId: number): Phase {

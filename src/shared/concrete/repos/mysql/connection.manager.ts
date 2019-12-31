@@ -4,8 +4,7 @@ import 'mysql';
 
 export async function initMysql() {
     const con = await createConnection({
-        // tslint:disable-next-line: quotemark
-        type: "mysql",
+        type: 'mysql',
         host: dbConfig.host,
         port: Number(dbConfig.port),
         username: dbConfig.username,
