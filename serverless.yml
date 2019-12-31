@@ -18,8 +18,8 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  region : ap-south-1
-  stage : ${opt:stage, 'dev'}
+  region: ap-south-1
+  stage: ${opt:stage, 'dev'}
   environment:
     NODE_ENV: ${env:NODE_ENV}
     DB_NAME: ${env:DB_NAME}
@@ -53,6 +53,5 @@ functions:
     events:
       - http:
           method: get
-          path: products/{productId}/phases/{phaseId}/knowledgeAreas
+          path: productPhase/{phaseId}/knowledgeAreas
           cors: true
-          
