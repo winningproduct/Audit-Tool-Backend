@@ -9,22 +9,22 @@ import { KnowledgeAreaService } from '../business-logic/knowledge-area.service';
 import { APIGatewayProxyResult } from 'aws-lambda';
 
 const knowledgeAreaRepository = wpoContainer.get<IKnowledgeAreaRepository>(
-    TYPES.KnowledgeAreaRepository,
-  );
+  TYPES.KnowledgeAreaRepository,
+);
 
 const knowledgeAreaService = new KnowledgeAreaService(knowledgeAreaRepository);
 const logger = wpoContainer.get<ILogger>(TYPES.Logger);
 
-export const getKnowledgeAreaByPhase = async(
+export const getKnowledgeAreaByPhase = async (
   event: any,
-): Promise<APIGatewayProxyResult>=>{
-  const phaseId = Number(event.pathParameters ? event.pathParameters.phaseId : null);
-    let result: KnowledgeArea[] = [];
-    try {
-      result = await knowledgeAreaService.getKnowledgeAreaByPhase(phaseId);
-      return ok(result);
-    } catch (err) {
-      logger.log(err.name, err);
-      return handleError(err);
-    }
-}
+): Promise<APIGatewayProxyResult> => {
+  const phaseId = Number(event.pathParameters ? event.pathParameters.id : null);
+  let result: KnowledgeArea[] = [];
+  try {
+    result = await knowledgeAreaService.getKnowledgeAreaByPhase(phaseId);
+    return ok(result);
+  } catch (err) {
+    logger.log(err.name, err);
+    return handleError(err);
+  }
+};

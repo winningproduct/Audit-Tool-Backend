@@ -38,20 +38,20 @@ functions:
           cors: true
       - http:
           method: get
-          path: products/{productId}
+          path: products/{id}
           cors: true
       - http:
           method: get
-          path: products/{productId}/phases
+          path: products/{id}/phases
           cors: true
       - http:
           method: get
-          path: products/productPhases/{productId}
+          path: products/productPhases/{id}
           cors: true
   knowledgeArea:
     handler: src/knowledge-areas/handler.knowledgeArea
     events:
       - http:
           method: get
-          path: productPhase/{phaseId}/knowledgeAreas
+          path: productPhase/{id}/knowledgeAreas
           cors: true
