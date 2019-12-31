@@ -29,32 +29,27 @@ provider:
     DB_PORT: ${env:DB_PORT}
 
 functions:
-  getProductsByUser:
-    handler: src/products/handler.getProductsByUser
+  product:
+    handler: src/products/handler.product
     events:
       - http:
           method: get
           path: products
           cors: true
-  getPhases:
-    handler: src/products/handler.getPhases
-    events:
+      - http:
+          method: get
+          path: products/{id}
+          cors: true
       - http:
           method: get
           path: products/{id}/phases
-          cors: true      
-  getProductByProductPhaseId:
-    handler: src/products/handler.getProductByProductPhaseId
-    events:
+          cors: true
       - http:
           method: get
           path: products/productPhases/{id}
           cors: true
-  getProductById:
-    handler: src/products/handler.getProductById
-    events:
       - http:
           method: get
-          path: products/{id}
+          path: test1
           cors: true
   

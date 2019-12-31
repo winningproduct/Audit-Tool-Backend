@@ -1,6 +1,7 @@
+import { APIGatewayProxyResult } from 'aws-lambda';
 import { BadRequestException } from '../models/exceptions/exceptions';
 
-export function handleError(err: any) {
+export function handleError(err: any): APIGatewayProxyResult {
     if (err instanceof BadRequestException) {
       return {
         statusCode: 400,
