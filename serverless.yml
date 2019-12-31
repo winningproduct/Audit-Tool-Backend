@@ -52,4 +52,11 @@ functions:
           method: get
           path: test1
           cors: true
-  
+  knowledgeArea:
+    handler: src/knowledge-areas/handler.knowledgeArea
+    events:
+      - http:
+          method: get
+          path: products/{productId}/phases/{phaseId}/knowledgeAreas
+          cors: true
+          

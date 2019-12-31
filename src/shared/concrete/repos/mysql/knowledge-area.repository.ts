@@ -1,7 +1,9 @@
 import { IKnowledgeAreaRepository } from '../../../abstract/repos/knowledge-area.repository';
 import { initMysql } from './connection.manager';
 import { mapDbItems, knowledgeAreaMapper } from './dbMapper';
+import { injectable } from 'inversify';
 
+@injectable()
 export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
   async getKnowledgeAreasByProductPhaseId(
     _productPhaseId: number,
