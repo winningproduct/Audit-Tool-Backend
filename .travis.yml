@@ -7,7 +7,7 @@ cache:
 
 addons:
   sonarcloud:
-    organization: "wpocanvas"
+    organization: 'wpocanvas'
 
 script:
   - npm install  serverless-webpack
@@ -18,7 +18,7 @@ script:
 
 deploy:
   provider: script
-  script: 
+  script:
     - npm run deploy
   skip_cleanup: true
   on:

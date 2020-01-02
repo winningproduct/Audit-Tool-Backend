@@ -6,6 +6,7 @@
 describe('Product Service', () => {
   test('should search products', () => {
     // const productsRepoStub = stubInterface<IProductRepository>();
+    // tslint:disable-next-line: max-line-length
     // productsRepoStub.getProductsByUser.returns([{id: 123, name: 'Product123'} as Product, {id: 456, name: 'Product456'} as Product]);
 
     // const productsService = new ProductService(productsRepoStub);

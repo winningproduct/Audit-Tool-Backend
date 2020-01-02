@@ -18,20 +18,26 @@ const TYPES = {
   ProductRepository: Symbol.for('ProductRepository'),
   UserRepository: Symbol.for('UserRepository'),
   PhaseRepository: Symbol.for('PhaseRepository'),
-  KnowledgeAreaRepository: Symbol.for('KnowledgeAreaRepository')
-
+  KnowledgeAreaRepository: Symbol.for('KnowledgeAreaRepository'),
 };
 
 export { TYPES };
-
 // type bindings
 const wpoContainer = new Container();
 
 wpoContainer.bind<ILogger>(TYPES.Logger).to(ConsoleLogger);
 
-wpoContainer.bind<IOrganizationRepository>(TYPES.OrganizationRepository).to(MySQLOrganizationRepository);
-wpoContainer.bind<IProductRepository>(TYPES.ProductRepository).to(MySQLProductRepository);
-wpoContainer.bind<IPhaseRepository>(TYPES.PhaseRepository).to(MYSQLPhaseRepository);
-wpoContainer.bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository).to(MySQLKnowledgeAreaRepository);
+wpoContainer
+  .bind<IOrganizationRepository>(TYPES.OrganizationRepository)
+  .to(MySQLOrganizationRepository);
+wpoContainer
+  .bind<IProductRepository>(TYPES.ProductRepository)
+  .to(MySQLProductRepository);
+wpoContainer
+  .bind<IPhaseRepository>(TYPES.PhaseRepository)
+  .to(MYSQLPhaseRepository);
+wpoContainer
+  .bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository)
+  .to(MySQLKnowledgeAreaRepository);
 
 export { wpoContainer };

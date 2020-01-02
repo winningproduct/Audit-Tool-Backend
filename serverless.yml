@@ -26,7 +26,7 @@ provider:
 
 functions:
   product:
-    handler: src/products/startup.enrtyPoint
+    handler: src/startup.enrtyPoint
     events:
       - http:
           method: get
@@ -44,9 +44,6 @@ functions:
           method: get
           path: products/productPhases/{id}
           cors: true
-  knowledgeArea:
-    handler: src/knowledge-areas/startup.enrtyPoint
-    events:
       - http:
           method: get
           path: productPhase/{id}/knowledgeAreas
