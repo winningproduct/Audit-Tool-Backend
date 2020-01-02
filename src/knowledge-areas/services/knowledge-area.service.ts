@@ -1,6 +1,6 @@
 import { IKnowledgeAreaRepository } from '@repos/knowledge-area.repository';
-
-export class KnowledgeAreaService {
+import {IKnowledgeAreaService} from '../interfaces/knowledge-area.service.interface'
+export class KnowledgeAreaService implements IKnowledgeAreaService{
   constructor(private _knowledgeAreaRepository: IKnowledgeAreaRepository) {}
 
   async getKnowledgeAreaByPhase(phaseId: number) {
