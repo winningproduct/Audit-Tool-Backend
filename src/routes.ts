@@ -1,27 +1,19 @@
+import { KnowledgeAreaService } from './knowledge-areas/services/knowledge-area.service';
+import { IKnowledgeAreaService } from './knowledge-areas/interfaces/knowledge-area.service.interface';
+import { IProductService } from './products/interfaces/product.service.interface';
 import API from 'lambda-api';
 import 'source-map-support/register';
-import { wpoContainer, TYPES } from '@root/inversify.config';
-import { IProductRepository } from '@repos/product.repository.interface';
-import { IPhaseRepository } from '@repos/phase.repository.interface';
+import { wpoContainer } from '@root/inversify.config';
 import { ProductService } from './products/services/product.service';
 import { resolveIdentity } from '@util/identityHandler';
-import { KnowledgeAreaService } from './knowledge-areas/services/knowledge-area.service';
-import { IKnowledgeAreaRepository } from '@repos/knowledge-area.repository';
 
-const productsRepository = wpoContainer.get<IProductRepository>(
-  TYPES.ProductRepository,
+const knowledgeAreaService: IKnowledgeAreaService = wpoContainer.resolve<
+  IKnowledgeAreaService
+>(KnowledgeAreaService);
+
+const productService: IProductService = wpoContainer.resolve<IProductService>(
+  ProductService,
 );
-const phaseRepository = wpoContainer.get<IPhaseRepository>(
-  TYPES.PhaseRepository,
-);
-
-const knowledgeAreaRepository = wpoContainer.get<IKnowledgeAreaRepository>(
-  TYPES.KnowledgeAreaRepository,
-);
-
-const knowledgeAreaService = new KnowledgeAreaService(knowledgeAreaRepository);
-
-const productService = new ProductService(productsRepository, phaseRepository);
 
 export const path = API({ version: 'v1.0', logger: true });
 
