@@ -21,6 +21,8 @@
     "paths": {
       "@repos/*": ["shared/abstract/repos/*"],
       "@util/*": ["shared/util/*"],
+      "@models/*": ["shared/models/*"],
+      "@products/*": ["products/*"],
       "@root/*": ["../*"]
     }
   },
