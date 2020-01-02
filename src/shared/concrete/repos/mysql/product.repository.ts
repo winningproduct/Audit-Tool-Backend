@@ -10,7 +10,9 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(`CALL GetProductByProductPhaseId(${productPhaseId})`);
+      const result = await connection.query(
+        `CALL GetProductByProductPhaseId(${productPhaseId})`,
+      );
       return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
@@ -25,7 +27,9 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const results = await connection.query(`CALL GetProductsByUser(${userId})`);
+      const results = await connection.query(
+        `CALL GetProductsByUser(${userId})`,
+      );
       return mapDbItems(results, productMapper);
     } catch (err) {
       throw err;
@@ -40,7 +44,9 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(`CALL GetProductById(${productId})`);
+      const result = await connection.query(
+        `CALL GetProductById(${productId})`,
+      );
       return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;

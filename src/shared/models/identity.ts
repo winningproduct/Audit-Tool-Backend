@@ -1,5 +1,4 @@
-
 export class Identity {
-    userId!: number;
-    organizationId!: number;
-  }
+  userId!: number;
+  organizationId!: number;
+}
