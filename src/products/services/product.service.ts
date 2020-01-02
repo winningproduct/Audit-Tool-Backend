@@ -1,5 +1,5 @@
-import { IProductRepository } from '../../shared/abstract/repos/product.repository.interface';
-import { IPhaseRepository } from '../../shared/abstract/repos/phase.repository.interface';
+import { IProductRepository } from '@repos/product.repository.interface';
+import { IPhaseRepository } from '@repos/phase.repository.interface';
 
 export class ProductService {
   constructor(

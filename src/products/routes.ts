@@ -1,10 +1,10 @@
 import API from 'lambda-api';
 import 'source-map-support/register';
-import { wpoContainer, TYPES } from '../../inversify.config';
-import { IProductRepository } from '../shared/abstract/repos/product.repository.interface';
-import { IPhaseRepository } from '../shared/abstract/repos/phase.repository.interface';
+import { wpoContainer, TYPES } from '@root/inversify.config';
+import { IProductRepository } from '@repos/product.repository.interface';
+import { IPhaseRepository } from '@repos/phase.repository.interface';
 import { ProductService } from './services/product.service';
-import { resolveIdentity } from '../shared/util/identityHandler';
+import { resolveIdentity } from '@util/identityHandler';
 
 const productsRepository = wpoContainer.get<IProductRepository>(
   TYPES.ProductRepository,

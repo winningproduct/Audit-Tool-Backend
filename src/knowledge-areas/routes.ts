@@ -1,8 +1,8 @@
 import { KnowledgeAreaService } from './services/knowledge-area.service';
-import { IKnowledgeAreaRepository } from './../shared/abstract/repos/knowledge-area.repository';
+import { IKnowledgeAreaRepository } from '@repos/knowledge-area.repository';
 import API from 'lambda-api';
 import 'source-map-support/register';
-import { wpoContainer, TYPES } from '../../inversify.config';
+import { wpoContainer, TYPES } from '@root/inversify.config';
 
 const knowledgeAreaRepository = wpoContainer.get<IKnowledgeAreaRepository>(
   TYPES.KnowledgeAreaRepository,

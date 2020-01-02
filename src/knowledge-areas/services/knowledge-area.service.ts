@@ -1,4 +1,4 @@
-import { IKnowledgeAreaRepository } from '../../shared/abstract/repos/knowledge-area.repository';
+import { IKnowledgeAreaRepository } from '@repos/knowledge-area.repository';
 
 export class KnowledgeAreaService {
   constructor(private _knowledgeAreaRepository: IKnowledgeAreaRepository) {}

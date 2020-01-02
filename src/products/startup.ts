@@ -1,9 +1,9 @@
 import { ILogger } from '../shared/abstract/util/logger';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda';
 import { path } from './routes';
-import { wpoContainer, TYPES } from '../../inversify.config';
-import { handleError } from '../shared/util/errorHandler';
-import { ok } from '../shared/util/responseHandler';
+import { wpoContainer, TYPES } from '@root/inversify.config';
+import { handleError } from '@util/errorHandler';
+import { ok } from '@util/responseHandler';
 const logger = wpoContainer.get<ILogger>(TYPES.Logger);
 
 // PRODUCTS
