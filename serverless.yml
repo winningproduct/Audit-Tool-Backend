@@ -1,15 +1,11 @@
 service:
   name: AuditToolBackend
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
 
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
 
-# Add the serverless-webpack plugin
 plugins:
   - serverless-dotenv-plugin
   - serverless-webpack
@@ -30,7 +26,7 @@ provider:
 
 functions:
   product:
-    handler: src/products/handler.product
+    handler: src/products/startup.enrtyPoint
     events:
       - http:
           method: get
@@ -49,7 +45,7 @@ functions:
           path: products/productPhases/{id}
           cors: true
   knowledgeArea:
-    handler: src/knowledge-areas/handler.knowledgeArea
+    handler: src/knowledge-areas/startup.enrtyPoint
     events:
       - http:
           method: get
