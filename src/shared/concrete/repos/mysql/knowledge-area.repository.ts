@@ -1,15 +1,20 @@
 import { IKnowledgeAreaRepository } from '../../../abstract/repos/knowledge-area.repository';
 import { initMysql } from './connection.manager';
 import { mapDbItems, knowledgeAreaMapper } from './dbMapper';
+import { KnowledgeArea } from '../../../models/knowledge-area';
+import { injectable } from 'inversify';
 
+@injectable()
 export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
   async getKnowledgeAreasByProductPhaseId(
     _productPhaseId: number,
-  ): Promise<Array<import('../../../models/knowledge-area').KnowledgeArea>> {
+  ): Promise<KnowledgeArea[]> {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(`CALL GetKnowledgeAreasByProductPhaseId(${_productPhaseId})`);
+      const result = await connection.query(
+        `CALL GetKnowledgeAreasByProductPhaseId(${_productPhaseId})`,
+      );
       return mapDbItems(result, knowledgeAreaMapper);
     } catch (err) {
       throw err;
@@ -25,7 +30,10 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
   add(_item: import('../../../models/knowledge-area').KnowledgeArea) {
     throw new Error('Method not implemented.');
   }
-  update(_itemId: number, _item: import('../../../models/knowledge-area').KnowledgeArea) {
+  update(
+    _itemId: number,
+    _item: import('../../../models/knowledge-area').KnowledgeArea,
+  ) {
     throw new Error('Method not implemented.');
   }
   delete(_itemId: number) {

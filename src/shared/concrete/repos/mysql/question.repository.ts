@@ -3,12 +3,15 @@ import { mapDbItems, questionMapper } from './dbMapper';
 import { IQuestionRepository } from '../../../abstract/repos/question.repository';
 
 export class MySQLQuestionRepository implements IQuestionRepository {
-  async getQuestionsByKnowledgeAreaId(_knowledgeAreaId: number)
-                            : Promise<Array<import('../../../models/question').Question>> {
+  async getQuestionsByKnowledgeAreaId(
+    _knowledgeAreaId: number,
+  ): Promise<Array<import('../../../models/question').Question>> {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(`CALL GetQuestionsByKnowledgeAreaId(${_knowledgeAreaId})`);
+      const result = await connection.query(
+        `CALL GetQuestionsByKnowledgeAreaId(${_knowledgeAreaId})`,
+      );
       return mapDbItems(result, questionMapper);
     } catch (err) {
       throw err;
