@@ -1,4 +1,4 @@
-import { TYPES } from '@root/inversify.config';
+import { TYPES } from 'shared/constants/Types';
 import { IProductRepository } from '@repos/product.repository.interface';
 import { IPhaseRepository } from '@repos/phase.repository.interface';
 import { IProductService } from 'products/interfaces/product.service.interface';
