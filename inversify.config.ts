@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { KnowledgeAreaService } from './src/knowledge-areas/services/knowledge-area.service';
 import { TYPES } from 'shared/constants/Types';
 import { IProductService } from 'products/interfaces/product.service.interface';
@@ -16,62 +15,37 @@ import { MySQLKnowledgeAreaRepository } from './src/shared/concrete/repos/mysql/
 import { ProductService } from '@products/services/product.service';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
 
-export class Inversify {
-  static config = new Container();
-
-  static getContainer() {
-    Inversify.config.bind<ILogger>(TYPES.Logger).to(ConsoleLogger);
-    Inversify.config
-      .bind<IOrganizationRepository>(TYPES.OrganizationRepository)
-      .to(MySQLOrganizationRepository);
-    Inversify.config
-      .bind<IProductRepository>(TYPES.ProductRepository)
-      .to(MySQLProductRepository);
-    Inversify.config
-      .bind<IPhaseRepository>(TYPES.PhaseRepository)
-      .to(MYSQLPhaseRepository);
-    Inversify.config
-      .bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository)
-      .to(MySQLKnowledgeAreaRepository);
-    return Inversify.config;
+export class Inversify extends Container {
+  constructor() {
+    super();
+    this.initializeDependencies();
   }
 
-  static initializeContainer() {
-    Inversify.config.bind<ILogger>(TYPES.Logger).to(ConsoleLogger);
-    Inversify.config
-      .bind<IOrganizationRepository>(TYPES.OrganizationRepository)
-      .to(MySQLOrganizationRepository);
-    Inversify.config
-      .bind<IProductRepository>(TYPES.ProductRepository)
-      .to(MySQLProductRepository);
-    Inversify.config
-      .bind<IPhaseRepository>(TYPES.PhaseRepository)
-      .to(MYSQLPhaseRepository);
-    Inversify.config
-      .bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository)
-      .to(MySQLKnowledgeAreaRepository);
-  }
+  initializeDependencies() {
+    this.bind<ILogger>(TYPES.Logger).to(ConsoleLogger);
 
-  static getProductService() {
-    Inversify.config
-      .bind<IProductRepository>(TYPES.ProductRepository)
-      .to(MySQLProductRepository);
-    Inversify.config
-      .bind<IPhaseRepository>(TYPES.PhaseRepository)
-      .to(MYSQLPhaseRepository);
-    return Inversify.config.resolve<IProductService>(ProductService);
-  }
+    this.bind<IOrganizationRepository>(TYPES.OrganizationRepository).to(
+      MySQLOrganizationRepository,
+    );
 
-  static getKnowledgeAreaService() {
-    Inversify.config
-      .bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository)
-      .to(MySQLKnowledgeAreaRepository);
-    return Inversify.config.resolve<IKnowledgeAreaService>(
-      KnowledgeAreaService,
+    this.bind<IProductRepository>(TYPES.ProductRepository).to(
+      MySQLProductRepository,
+    );
+    this.bind<IPhaseRepository>(TYPES.PhaseRepository).to(MYSQLPhaseRepository);
+    this.bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository).to(
+      MySQLKnowledgeAreaRepository,
     );
   }
 
-  static destroyContainer() {
-    Inversify.config.unbindAll();
+  getProductService() {
+    return this.resolve<IProductService>(ProductService);
+  }
+
+  getKnowledgeAreaService() {
+    return this.resolve<IKnowledgeAreaService>(KnowledgeAreaService);
+  }
+
+  destroyContainer() {
+    this.unbindAll();
   }
 }
