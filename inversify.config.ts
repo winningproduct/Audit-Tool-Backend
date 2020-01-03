@@ -45,6 +45,10 @@ export class Inversify extends Container {
     return this.resolve<IKnowledgeAreaService>(KnowledgeAreaService);
   }
 
+  getLogger() {
+    return this.get<ILogger>(TYPES.Logger);
+  }
+
   destroyContainer() {
     this.unbindAll();
   }

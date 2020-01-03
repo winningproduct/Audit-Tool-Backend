@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda';
-// import { path } from './routes';
 import { Routes } from './routes';
 import { handleError } from '@util/errorHandler';
 import { ok } from '@util/responseHandler';
@@ -10,16 +9,17 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
   event: APIGatewayProxyEvent,
   _context,
 ) => {
+  const inversifyContainer = new Inversify();
+  const productService = inversifyContainer.getProductService();
+  const knowledgeAreaService = inversifyContainer.getKnowledgeAreaService();
+  const logger = inversifyContainer.getLogger();
+  const path = new Routes(knowledgeAreaService, productService).getPath();
   try {
-    const inversifyContainer = new Inversify();
-    const productService = inversifyContainer.getProductService();
-    const knowledgeAreaService = inversifyContainer.getKnowledgeAreaService();
-    const path = new Routes(knowledgeAreaService, productService).getPath();
     const result = await path.run(event, _context);
-    inversifyContainer.destroyContainer();
     return ok(result);
   } catch (err) {
-    console.log(err);
-    return handleError(err);
+    return handleError(err, logger);
+  } finally {
+    inversifyContainer.destroyContainer();
   }
 };

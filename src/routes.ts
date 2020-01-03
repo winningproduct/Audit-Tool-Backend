@@ -8,7 +8,7 @@ import { TYPES } from 'shared/constants/Types';
 
 @injectable()
 export class Routes {
-  path = API({ version: 'v1.0', logger: true });
+  private path = API({ version: 'v1.0', logger: true });
   private productService: IProductService;
   private knowledgeAreaService: IKnowledgeAreaService;
   constructor(
