@@ -1,6 +1,7 @@
 import { KnowledgeAreaService } from './src/knowledge-areas/services/knowledge-area.service';
 import { TYPES } from 'shared/constants/Types';
 import { IProductService } from 'products/interfaces/product.service.interface';
+import { IQuestionService } from '@questions/interfaces/question.service.interface';
 import { ConsoleLogger } from './src/shared/concrete/util/console.logger';
 import { ILogger } from './src/shared/abstract/util/logger';
 import { Container } from 'inversify';
@@ -8,11 +9,14 @@ import { IOrganizationRepository } from './src/shared/abstract/repos/organizatio
 import { IProductRepository } from './src/shared/abstract/repos/product.repository.interface';
 import { IPhaseRepository } from './src/shared/abstract/repos/phase.repository.interface';
 import { IKnowledgeAreaRepository } from './src/shared/abstract/repos/knowledge-area.repository';
+import { IQuestionRepository } from './src/shared/abstract/repos/question.repository';
 import { MySQLProductRepository } from './src/shared/concrete/repos/mysql/product.repository';
 import { MySQLOrganizationRepository } from './src/shared/concrete/repos/mysql/organization.repository';
 import { MYSQLPhaseRepository } from './src/shared/concrete/repos/mysql/phase.repository';
 import { MySQLKnowledgeAreaRepository } from './src/shared/concrete/repos/mysql/knowledge-area.repository';
+import { MySQLQuestionRepository } from './src/shared/concrete/repos/mysql/question.repository';
 import { ProductService } from '@products/services/product.service';
+import { QuestionService } from '@questions/services/question.service';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { EvidenceService } from 'evidence/services/evidence.service';
@@ -43,6 +47,10 @@ export class Inversify extends Container {
     this.bind<IEvidenceRepository>(TYPES.EvidenceRepository).to(
       MySQLEvidenceRepository,
     );
+
+    this.bind<IQuestionRepository>(TYPES.QuestionRepository).to(
+      MySQLQuestionRepository,
+    );
   }
 
   getProductService() {
@@ -55,6 +63,9 @@ export class Inversify extends Container {
 
   getEvidenceService() {
     return this.resolve<IEvidenceService>(EvidenceService);
+  }
+  getQuestionService() {
+    return this.resolve<IQuestionService>(QuestionService);
   }
 
   getLogger() {

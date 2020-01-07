@@ -6,6 +6,7 @@ import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area
 import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
+import { IQuestionService } from '@questions/interfaces/question.service.interface';
 
 @injectable()
 export class Routes {
@@ -13,15 +14,21 @@ export class Routes {
   private productService: IProductService;
   private knowledgeAreaService: IKnowledgeAreaService;
   private evidenceService: IEvidenceService;
+  private questionService: IQuestionService;
   constructor(
     @inject(TYPES.KnowledgeAreaService)
     _knowledgeAreaService: IKnowledgeAreaService,
     @inject(TYPES.ProductService) _productService: IProductService,
     @inject(TYPES.EvidenceService) _evidenceService: IEvidenceService,
+    @inject(TYPES.QuestionService)
+    _questionService: IQuestionService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
     this.evidenceService = _evidenceService;
+    this.productService = _productService;
+    this.knowledgeAreaService = _knowledgeAreaService;
+    this.questionService = _questionService;
     this.initiateApi();
   }
   initiateApi() {
@@ -68,6 +75,14 @@ export class Routes {
       return await this.evidenceService.getEvidenceByProjectIdAndQuestionId(
         productId,
         questionId,
+      );
+    });
+    this.path.get('knowledgeAreas/:id/questions', async (req, _res) => {
+      const knowledgeAreaId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.questionService.getQuestionsByKnowledgeArea(
+        knowledgeAreaId,
       );
     });
   }

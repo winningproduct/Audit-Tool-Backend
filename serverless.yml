@@ -50,5 +50,9 @@ functions:
           cors: true
       - http:
           method: get
+          path: knowledgeAreas/{id}/questions
+          cors: true
+      - http:
+          method: get
           path: product/{id}/questions/{qid}/evidence
           cors: true

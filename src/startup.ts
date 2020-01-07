@@ -11,6 +11,7 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
 ) => {
   const inversifyContainer = new Inversify();
   const productService = inversifyContainer.getProductService();
+  const questionService = inversifyContainer.getQuestionService();
   const knowledgeAreaService = inversifyContainer.getKnowledgeAreaService();
   const evidenceService = inversifyContainer.getEvidenceService();
   const logger = inversifyContainer.getLogger();
@@ -18,6 +19,7 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
     knowledgeAreaService,
     productService,
     evidenceService,
+    questionService,
   ).getPath();
   try {
     const result = await path.run(event, _context);
