@@ -5,7 +5,9 @@ export const TYPES = {
   ProductRepository: Symbol.for('ProductRepository'),
   UserRepository: Symbol.for('UserRepository'),
   PhaseRepository: Symbol.for('PhaseRepository'),
+  QuestionRepository: Symbol.for('QuestionRepository'),
   KnowledgeAreaRepository: Symbol.for('KnowledgeAreaRepository'),
   ProductService: Symbol.for('ProductService'),
   KnowledgeAreaService: Symbol.for('KnowledgeAreaService'),
+  QuestionService: Symbol.for('QuestionService'),
 };
