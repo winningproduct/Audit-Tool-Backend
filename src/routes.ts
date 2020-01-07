@@ -5,19 +5,26 @@ import { resolveIdentity } from '@util/identityHandler';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
 import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
+import { IQuestionService } from '@questions/interfaces/question.service.interface';
 
 @injectable()
 export class Routes {
   private path = API({ version: 'v1.0', logger: true });
   private productService: IProductService;
   private knowledgeAreaService: IKnowledgeAreaService;
+  private questionService: IQuestionService;
+
   constructor(
     @inject(TYPES.KnowledgeAreaService)
     _knowledgeAreaService: IKnowledgeAreaService,
-    @inject(TYPES.ProductService) _productService: IProductService,
+    @inject(TYPES.ProductService)
+    _productService: IProductService,
+    @inject(TYPES.QuestionService)
+    _questionService: IQuestionService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
+    this.questionService = _questionService;
     this.initiateApi();
   }
   initiateApi() {
@@ -53,6 +60,18 @@ export class Routes {
       );
       return await this.knowledgeAreaService.getKnowledgeAreaByPhase(productId);
     });
+
+    this.path.get(
+      'knowledgeAreas/:knowledgeAreaId/questions',
+      async (req, _res) => {
+        const knowledgeAreaId = Number(
+          req.pathParameters ? req.pathParameters.knowledgeAreaId : null,
+        );
+        return await this.questionService.getQuestionsByKnowledgeArea(
+          knowledgeAreaId,
+        );
+      },
+    );
   }
 
   getPath() {

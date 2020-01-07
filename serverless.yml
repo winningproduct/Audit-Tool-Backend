@@ -48,3 +48,7 @@ functions:
           method: get
           path: productPhase/{id}/knowledgeAreas
           cors: true
+      - http:
+          method: get
+          path: knowledgeAreas/{knowledgeAreaId}/questions
+          cors: true
