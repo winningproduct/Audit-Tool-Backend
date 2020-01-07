@@ -14,6 +14,10 @@ import { MYSQLPhaseRepository } from './src/shared/concrete/repos/mysql/phase.re
 import { MySQLKnowledgeAreaRepository } from './src/shared/concrete/repos/mysql/knowledge-area.repository';
 import { ProductService } from '@products/services/product.service';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
+import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
+import { EvidenceService } from 'evidence/services/evidence.service';
+import { IEvidenceRepository } from '@repos/evidence.repository';
+import { MySQLEvidenceRepository } from 'shared/concrete/repos/mysql/evidence.repository';
 
 export class Inversify extends Container {
   constructor() {
@@ -35,6 +39,10 @@ export class Inversify extends Container {
     this.bind<IKnowledgeAreaRepository>(TYPES.KnowledgeAreaRepository).to(
       MySQLKnowledgeAreaRepository,
     );
+
+    this.bind<IEvidenceRepository>(TYPES.EvidenceRepository).to(
+      MySQLEvidenceRepository,
+    );
   }
 
   getProductService() {
@@ -43,6 +51,10 @@ export class Inversify extends Container {
 
   getKnowledgeAreaService() {
     return this.resolve<IKnowledgeAreaService>(KnowledgeAreaService);
+  }
+
+  getEvidenceService() {
+    return this.resolve<IEvidenceService>(EvidenceService);
   }
 
   getLogger() {
