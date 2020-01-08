@@ -9,5 +9,5 @@ export interface IEvidenceService {
   addEvidenceByQuestionId(
     _questionId: number,
     _evidence: Evidence,
-  ): Promise<Evidence[]>;
+  ): Promise<boolean>;
 }
