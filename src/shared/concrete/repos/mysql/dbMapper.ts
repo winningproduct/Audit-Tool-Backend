@@ -2,6 +2,7 @@ import { Product } from '../../../models/product';
 import { KnowledgeArea } from '../../../models/knowledge-area';
 import { Question } from '../../../models/question';
 import { Phase } from '../../../models/phase';
+import { Evidence } from '@models/evidence';
 
 export function mapDbItems<T>(result: any, mapper: any): T {
   return result[0].map((product: any) => {
@@ -47,4 +48,14 @@ export function phasesMapper(phase: any): Phase {
     description: phase.Description,
     score: phase.Score,
   } as Phase;
+}
+
+export function evidenceMapper(evidence: any): Evidence {
+  return {
+    id: evidence.Id,
+    content: evidence.Content,
+    status: evidence.Status,
+    version: evidence.Version,
+    createdDate: evidence.CreatedDate,
+  } as Evidence;
 }
