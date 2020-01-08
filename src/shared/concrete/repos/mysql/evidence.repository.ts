@@ -29,19 +29,19 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
   async addEvidenceByQuestionId(
     _questionId: number,
     _evidence: Evidence,
-  ): Promise<Evidence[]> {
+  ): Promise<boolean> {
     let connection: any;
     const productId = _evidence.productId;
     const userId = _evidence.userId;
-    const content = _evidence.content;
+    const contentT = _evidence.content;
     const status = _evidence.status;
     const version = _evidence.version;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL AddEvidenceByQuestionId(${productId} , ${_questionId} , ${userId} , ${content} , ${status} , ${version})`,
+      await connection.query(
+        `CALL AddEvidenceByQuestionId(${productId} , ${_questionId} , ${userId} , "${contentT}" , "${status}" , ${version})`,
       );
-      return mapDbItems(result, evidenceMapper);
+      return true;
     } catch (err) {
       throw err;
     } finally {

@@ -10,5 +10,5 @@ export interface IEvidenceRepository extends IRepository<Evidence> {
   addEvidenceByQuestionId(
     _questionId: number,
     _evidence: Evidence,
-  ): Promise<Evidence[]>;
+  ): Promise<boolean>;
 }
