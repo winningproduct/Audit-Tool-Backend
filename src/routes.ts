@@ -7,6 +7,7 @@ import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { IQuestionService } from '@questions/interfaces/question.service.interface';
+import { Evidence } from '@models/evidence';
 
 @injectable()
 export class Routes {
@@ -83,6 +84,17 @@ export class Routes {
       );
       return await this.questionService.getQuestionsByKnowledgeArea(
         knowledgeAreaId,
+      );
+    });
+
+    this.path.post('question/:id/evidence', async (req, _res) => {
+      const questionId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      const evidence: Evidence = req.body;
+      return await this.evidenceService.addEvidenceByQuestionId(
+        questionId,
+        evidence,
       );
     });
   }

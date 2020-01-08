@@ -6,4 +6,9 @@ export interface IEvidenceRepository extends IRepository<Evidence> {
     productId: number,
     questionId: number,
   ): Promise<Evidence[]>;
+
+  addEvidenceByQuestionId(
+    _questionId: number,
+    _evidence: Evidence,
+  ): Promise<Evidence[]>;
 }

@@ -56,3 +56,7 @@ functions:
           method: get
           path: product/{id}/questions/{qid}/evidence
           cors: true
+      - http:
+          method: post
+          path: question/{id}/evidence
+          cors: true

@@ -2,6 +2,7 @@ import { IEvidenceRepository } from '@repos/evidence.repository';
 import { IEvidenceService } from '../interfaces/evidence.interface';
 import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
+import { Evidence } from '@models/evidence';
 @injectable()
 export class EvidenceService implements IEvidenceService {
   protected evidenceRepository: IEvidenceRepository;
@@ -19,6 +20,13 @@ export class EvidenceService implements IEvidenceService {
     return await this.evidenceRepository.getEvidenceByProjectIdAndQuestionId(
       productId,
       questionId,
+    );
+  }
+
+  async addEvidenceByQuestionId(questionId: number, evidence: Evidence) {
+    return await this.evidenceRepository.addEvidenceByQuestionId(
+      questionId,
+      evidence,
     );
   }
 }
