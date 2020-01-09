@@ -29,4 +29,8 @@ export class EvidenceService implements IEvidenceService {
       evidence,
     );
   }
+
+  async updateStatus(evidenceId: number, status: string) {
+    return await this.evidenceRepository.updateStatus(evidenceId, status);
+  }
 }

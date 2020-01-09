@@ -60,3 +60,7 @@ functions:
           method: post
           path: question/{id}/evidence
           cors: true
+      - http:
+          method: put
+          path: question/{id}/evidence/{eid}
+          cors: true

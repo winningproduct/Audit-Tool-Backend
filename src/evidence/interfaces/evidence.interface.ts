@@ -9,5 +9,7 @@ export interface IEvidenceService {
   addEvidenceByQuestionId(
     _questionId: number,
     _evidence: Evidence,
-  ): Promise<Evidence[]>;
+  ): Promise<boolean>;
+
+  updateStatus(_evidenceId: number, _status: string): Promise<boolean>;
 }

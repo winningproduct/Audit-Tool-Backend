@@ -11,4 +11,6 @@ export interface IEvidenceRepository extends IRepository<Evidence> {
     _questionId: number,
     _evidence: Evidence,
   ): Promise<boolean>;
+
+  updateStatus(_evidenceId: number, _status: string): Promise<boolean>;
 }
