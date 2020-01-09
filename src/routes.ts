@@ -97,6 +97,14 @@ export class Routes {
         evidence,
       );
     });
+
+    this.path.put('question/:id/evidence/:eid', async (req, _res) => {
+      const qevidenceId = Number(
+        req.pathParameters ? req.pathParameters.eid : null,
+      );
+      const status: string = req.body;
+      return await this.evidenceService.updateStatus(qevidenceId, status);
+    });
   }
 
   getPath() {

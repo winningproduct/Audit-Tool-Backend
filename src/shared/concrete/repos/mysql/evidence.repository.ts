@@ -51,6 +51,23 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
+  async updateStatus(_evidenceId: number, _status: string): Promise<boolean> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      await connection.query(
+        `CALL UpdateStatus( ${_evidenceId}, "${_status}")`,
+      );
+      return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Evidence {
     throw new Error('Method not implemented.');
   }
