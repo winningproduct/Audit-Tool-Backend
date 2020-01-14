@@ -1,7 +1,8 @@
 import { initMysql } from './connection.manager';
 import { mapDbItems, questionMapper } from './dbMapper';
 import { IQuestionRepository } from '../../../abstract/repos/question.repository';
-
+import { injectable } from 'inversify';
+@injectable()
 export class MySQLQuestionRepository implements IQuestionRepository {
   async getQuestionsByKnowledgeAreaId(
     _knowledgeAreaId: number,

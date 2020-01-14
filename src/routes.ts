@@ -5,19 +5,31 @@ import { resolveIdentity } from '@util/identityHandler';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
 import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
+import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
+import { IQuestionService } from '@questions/interfaces/question.service.interface';
+import { Evidence } from '@models/evidence';
 
 @injectable()
 export class Routes {
   private path = API({ version: 'v1.0', logger: true });
   private productService: IProductService;
   private knowledgeAreaService: IKnowledgeAreaService;
+  private evidenceService: IEvidenceService;
+  private questionService: IQuestionService;
   constructor(
     @inject(TYPES.KnowledgeAreaService)
     _knowledgeAreaService: IKnowledgeAreaService,
     @inject(TYPES.ProductService) _productService: IProductService,
+    @inject(TYPES.EvidenceService) _evidenceService: IEvidenceService,
+    @inject(TYPES.QuestionService)
+    _questionService: IQuestionService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
+    this.evidenceService = _evidenceService;
+    this.productService = _productService;
+    this.knowledgeAreaService = _knowledgeAreaService;
+    this.questionService = _questionService;
     this.initiateApi();
   }
   initiateApi() {
@@ -52,6 +64,46 @@ export class Routes {
         req.pathParameters ? req.pathParameters.id : null,
       );
       return await this.knowledgeAreaService.getKnowledgeAreaByPhase(productId);
+    });
+
+    this.path.get('product/:id/questions/:qid/evidence', async (req, _res) => {
+      const productId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      const questionId = Number(
+        req.pathParameters ? req.pathParameters.qid : null,
+      );
+      return await this.evidenceService.getEvidenceByProjectIdAndQuestionId(
+        productId,
+        questionId,
+      );
+    });
+    this.path.get('knowledgeAreas/:id/questions', async (req, _res) => {
+      const knowledgeAreaId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.questionService.getQuestionsByKnowledgeArea(
+        knowledgeAreaId,
+      );
+    });
+
+    this.path.post('question/:id/evidence', async (req, _res) => {
+      const questionId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      const evidence: Evidence = req.body;
+      return await this.evidenceService.addEvidenceByQuestionId(
+        questionId,
+        evidence,
+      );
+    });
+
+    this.path.put('question/:id/evidence/:eid', async (req, _res) => {
+      const qevidenceId = Number(
+        req.pathParameters ? req.pathParameters.eid : null,
+      );
+      const status: string = req.body;
+      return await this.evidenceService.updateStatus(qevidenceId, status);
     });
   }
 

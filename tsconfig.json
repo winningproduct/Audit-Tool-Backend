@@ -23,6 +23,7 @@
       "@util/*": ["shared/util/*"],
       "@models/*": ["shared/models/*"],
       "@products/*": ["products/*"],
+      "@questions/*": ["questions/*"],
       "@root/*": ["../*"]
     }
   },
