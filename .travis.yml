@@ -14,7 +14,6 @@ script:
   - npm install -g serverless
   - npm install
   - npm run test
-  - sonar-scanner
 
 deploy:
   provider: script
