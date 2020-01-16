@@ -12,4 +12,5 @@ export const TYPES = {
   KnowledgeAreaService: Symbol.for('KnowledgeAreaService'),
   EvidenceService: Symbol.for('EvidenceService'),
   QuestionService: Symbol.for('QuestionService'),
+  OrganizationService: Symbol.for('OrganizationService'),
 };

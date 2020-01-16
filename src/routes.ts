@@ -8,6 +8,7 @@ import { TYPES } from 'shared/constants/Types';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { IQuestionService } from '@questions/interfaces/question.service.interface';
 import { Evidence } from '@models/evidence';
+import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
 
 @injectable()
 export class Routes {
@@ -16,6 +17,8 @@ export class Routes {
   private knowledgeAreaService: IKnowledgeAreaService;
   private evidenceService: IEvidenceService;
   private questionService: IQuestionService;
+  private organizationService: IOrganizationService;
+
   constructor(
     @inject(TYPES.KnowledgeAreaService)
     _knowledgeAreaService: IKnowledgeAreaService,
@@ -23,6 +26,8 @@ export class Routes {
     @inject(TYPES.EvidenceService) _evidenceService: IEvidenceService,
     @inject(TYPES.QuestionService)
     _questionService: IQuestionService,
+    @inject(TYPES.OrganizationService)
+    _organizationService: IOrganizationService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -30,6 +35,7 @@ export class Routes {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
     this.questionService = _questionService;
+    this.organizationService = _organizationService;
     this.initiateApi();
   }
   initiateApi() {
@@ -104,6 +110,11 @@ export class Routes {
       );
       const status: string = req.body;
       return await this.evidenceService.updateStatus(qevidenceId, status);
+    });
+
+    this.path.get('user/email/:email', async (req, _res) => {
+      const email = req.pathParameters ? req.pathParameters.email : '';
+      return await this.organizationService.getOrganizationByUserEmail(email);
     });
   }
 

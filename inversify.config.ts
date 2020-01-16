@@ -20,6 +20,8 @@ import { QuestionService } from '@questions/services/question.service';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { EvidenceService } from 'evidence/services/evidence.service';
+import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
+import { OrganizationService } from 'organizations/services/organization.service';
 import { IEvidenceRepository } from '@repos/evidence.repository';
 import { MySQLEvidenceRepository } from 'shared/concrete/repos/mysql/evidence.repository';
 
@@ -67,7 +69,9 @@ export class Inversify extends Container {
   getQuestionService() {
     return this.resolve<IQuestionService>(QuestionService);
   }
-
+  getOrganizationService() {
+    return this.resolve<IOrganizationService>(OrganizationService);
+  }
   getLogger() {
     return this.get<ILogger>(TYPES.Logger);
   }
