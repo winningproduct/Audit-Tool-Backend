@@ -68,3 +68,5 @@ functions:
           method: get
           path: user/email/{email}
           cors: true
+  auth-token-trigger:
+    handler: src/functions/auth-token-trigger.authToken
