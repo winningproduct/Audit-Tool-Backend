@@ -1,14 +1,14 @@
 import * as https from 'https';
 import { CognitoUserPoolTriggerEvent } from 'aws-lambda';
 
-const URL =
-  'https://53ph0bulw2.execute-api.ap-south-1.amazonaws.com/dev/products/1';
-
 export const authToken = async (
   event: CognitoUserPoolTriggerEvent,
   _context: any,
   callback: any,
 ) => {
+  const URL =
+    'https://53ph0bulw2.execute-api.ap-south-1.amazonaws.com/dev/user/email/' +
+    event.request.userAttributes.email;
   await new Promise((resolve, reject) => {
     https
       .get(URL, res => {
@@ -21,8 +21,8 @@ export const authToken = async (
             response: {
               claimsOverrideDetails: {
                 claimsToAddOrOverride: {
-                  organization: result[0].organizationId,
-                  userId: result[0].userId,
+                  organization: result.length > 0 ? result[0].id : '1',
+                  userId: result.length > 0 ? result[0].userId : '1',
                 },
               },
             },

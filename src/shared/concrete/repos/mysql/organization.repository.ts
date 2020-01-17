@@ -2,7 +2,7 @@ import { IOrganizationRepository } from '../../../abstract/repos/organization.re
 import { Orgnization } from '../../../models/organization';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, evidenceMapper } from './dbMapper';
+import { mapDbItems, organizationUserMapper } from './dbMapper';
 
 @injectable()
 export class MySQLOrganizationRepository implements IOrganizationRepository {
@@ -13,7 +13,7 @@ export class MySQLOrganizationRepository implements IOrganizationRepository {
       const result = await connection.query(
         `CALL getOrganizationByUserEmail('${_email}')`,
       );
-      return mapDbItems(result, evidenceMapper);
+      return mapDbItems(result, organizationUserMapper);
     } catch (err) {
       throw err;
     } finally {

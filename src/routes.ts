@@ -9,6 +9,7 @@ import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { IQuestionService } from '@questions/interfaces/question.service.interface';
 import { Evidence } from '@models/evidence';
 import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
+import { IUserService } from 'users/interfaces/user.service.interface';
 
 @injectable()
 export class Routes {
@@ -18,6 +19,7 @@ export class Routes {
   private evidenceService: IEvidenceService;
   private questionService: IQuestionService;
   private organizationService: IOrganizationService;
+  private userService: IUserService;
 
   constructor(
     @inject(TYPES.KnowledgeAreaService)
@@ -28,6 +30,7 @@ export class Routes {
     _questionService: IQuestionService,
     @inject(TYPES.OrganizationService)
     _organizationService: IOrganizationService,
+    @inject(TYPES.UserService) _userService: IUserService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -36,6 +39,7 @@ export class Routes {
     this.knowledgeAreaService = _knowledgeAreaService;
     this.questionService = _questionService;
     this.organizationService = _organizationService;
+    this.userService = _userService;
     this.initiateApi();
   }
   initiateApi() {
@@ -116,6 +120,12 @@ export class Routes {
       const email = req.pathParameters ? req.pathParameters.id : '';
       return await this.organizationService.getOrganizationByUserEmail(email);
     });
+
+    this.path.post('user', async (req, _res) => {
+      const user = req.pathParameters ? req.body.user : {};
+      return await this.userService.addUser(user);
+    });
+
   }
 
   getPath() {
