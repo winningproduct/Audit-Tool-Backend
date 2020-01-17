@@ -112,8 +112,8 @@ export class Routes {
       return await this.evidenceService.updateStatus(qevidenceId, status);
     });
 
-    this.path.get('user/email/:email', async (req, _res) => {
-      const email = req.pathParameters ? req.pathParameters.email : '';
+    this.path.get('user/email/:id', async (req, _res) => {
+      const email = req.pathParameters ? req.pathParameters.id : '';
       return await this.organizationService.getOrganizationByUserEmail(email);
     });
   }
