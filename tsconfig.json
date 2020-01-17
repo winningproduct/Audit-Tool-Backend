@@ -29,8 +29,4 @@
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["node_modules"],
-  "extends": ["tslint-plugin-prettier", "tslint-config-prettier"],
-  "rules": {
-    "prettier": true
-  }
 }

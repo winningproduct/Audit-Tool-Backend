@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended"],
+  "extends": ["tslint:recommended","tslint-plugin-prettier", "tslint-config-prettier"],
   "rules": {
     "interface-name": false,
     "no-string-literal": false,
@@ -11,7 +11,8 @@
     "import-name": false,
     "object-literal-sort-keys": false,
     "quotemark": [true, "single"],
-    "arrow-parens": false
+    "arrow-parens": false,
+    "prettier": true
   },
   "linterOptions": {
     "exclude": ["*.js"]

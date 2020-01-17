@@ -8,14 +8,12 @@ export class UserService implements IUserService {
   protected userRepository: IUserRepository;
   constructor(
     @inject(TYPES.UserRepository)
-   _userRepository: IUserRepository,
+    _userRepository: IUserRepository,
   ) {
     this.userRepository = _userRepository;
   }
 
   async addUser(user: User) {
-    return await this.userRepository.add(
-      user,
-    );
+    return await this.userRepository.add(user);
   }
 }

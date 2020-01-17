@@ -58,9 +58,7 @@ export class Inversify extends Container {
       MySQLQuestionRepository,
     );
 
-    this.bind<IUserRepository>(TYPES.UserRepository).to(
-      MySQLUserRepository,
-    );
+    this.bind<IUserRepository>(TYPES.UserRepository).to(MySQLUserRepository);
   }
 
   getProductService() {

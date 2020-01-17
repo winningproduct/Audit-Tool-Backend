@@ -125,7 +125,6 @@ export class Routes {
       const user = req.pathParameters ? req.body.user : {};
       return await this.userService.addUser(user);
     });
-
   }
 
   getPath() {
