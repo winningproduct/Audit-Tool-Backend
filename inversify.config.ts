@@ -57,9 +57,8 @@ export class Inversify extends Container {
     this.bind<IQuestionRepository>(TYPES.QuestionRepository).to(
       MySQLQuestionRepository,
     );
-    this.bind<IUserRepository>(TYPES.UserRepository).to(
-      MySQLUserRepository,
-    );
+
+    this.bind<IUserRepository>(TYPES.UserRepository).to(MySQLUserRepository);
   }
 
   getProductService() {
@@ -73,15 +72,19 @@ export class Inversify extends Container {
   getEvidenceService() {
     return this.resolve<IEvidenceService>(EvidenceService);
   }
+
   getQuestionService() {
     return this.resolve<IQuestionService>(QuestionService);
   }
+
   getOrganizationService() {
     return this.resolve<IOrganizationService>(OrganizationService);
   }
+
   getUserService() {
     return this.resolve<IUserService>(UserService);
   }
+
   getLogger() {
     return this.get<ILogger>(TYPES.Logger);
   }

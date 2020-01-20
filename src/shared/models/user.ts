@@ -5,6 +5,6 @@ export class User extends BaseEntity {
   firstName!: string;
   lastName!: string;
   email!: string;
-  phoneNumber!: string;
   createdDate!: Date;
+  phoneNumber!: string;
 }

@@ -3,6 +3,7 @@ import { KnowledgeArea } from '../../../models/knowledge-area';
 import { Question } from '../../../models/question';
 import { Phase } from '../../../models/phase';
 import { Evidence } from '@models/evidence';
+import { Orgnization } from '@models/organization';
 import { User } from '@models/user';
 
 export function mapDbItems<T>(result: any, mapper: any): T {

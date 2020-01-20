@@ -1,12 +1,11 @@
-import { IUserRepository } from '../../../abstract/repos/user.repository.interface';
-import { User } from '../../../models/user';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { mapDbItems, userMapper } from './dbMapper';
+import { IUserRepository } from '@repos/user.repository.interface';
+import { User } from '@models/user';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
-
   async add(user: User): Promise<boolean> {
     let connection: any;
 

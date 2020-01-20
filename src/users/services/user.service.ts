@@ -1,7 +1,7 @@
-import { IUserRepository } from '@repos/user.repository.interface';
 import { IUserService } from '../interfaces/user.service.interface';
 import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
+import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
 
 @injectable()
