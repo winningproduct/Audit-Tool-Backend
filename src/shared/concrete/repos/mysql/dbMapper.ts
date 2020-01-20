@@ -71,4 +71,3 @@ export function userMapper(user: any): User {
     createdDate: user.CreatedDate,
   } as User;
 }
-
