@@ -1,54 +1,45 @@
---- 
+version: 2
 jobs: 
   build: 
     docker: 
-      - 
-        image: "circleci/node:12.13"
+      - image: "circleci/node:12.13"
     steps: 
       - checkout
-      - 
-        restore_cache: 
+      - restore_cache: 
           keys: 
             - "v1-dependencies-{{ checksum \"package.json\" }}"
             - v1-dependencies-
-      - 
-        run: 
+      - run: 
           command: |
               sudo npm i serverless-webpack
               sudo npm i -g serverless
               npm install
           name: "Install Serverless CLI and dependencies"
-      - sonarcloud/scan
       - 
         save_cache: 
           key: "v1-dependencies-{{ checksum \"package.json\" }}"
           paths: 
             - node_modules
-      - 
-        run: "npm run test"
+      - run: "npm run test"
+      - sonarcloud/scan
   deploy: 
     docker: 
-      - 
-        image: "circleci/node:12.13"
+      - image: "circleci/node:12.13"
     steps: 
-      - 
-        run: 
+      - run: 
           command: 
-            - 
-              run: "npm run deploy"
+            - run: "npm run deploy"
           name: "Deploy Code to AWS"
+
 orbs: 
   sonarcloud: sonarsource/sonarcloud@1.0.1
 
-version: 2.1
 workflows: 
   build-and-deploy: 
     jobs: 
-      - 
-        build: ~
-        context: SonarCloud
-      - 
-        deploy: 
+      - build:
+          context: SonarCloud
+      - deploy: 
           filters: 
             branches: 
               only: master
