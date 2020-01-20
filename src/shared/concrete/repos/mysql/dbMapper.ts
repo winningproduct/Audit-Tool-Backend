@@ -4,6 +4,7 @@ import { Question } from '../../../models/question';
 import { Phase } from '../../../models/phase';
 import { Evidence } from '@models/evidence';
 import { Orgnization } from '@models/organization';
+import { User } from '@models/user';
 
 export function mapDbItems<T>(result: any, mapper: any): T {
   return result[0].map((product: any) => {
@@ -61,9 +62,13 @@ export function evidenceMapper(evidence: any): Evidence {
   } as Evidence;
 }
 
-export function organizationUserMapper(organizationUser: any) {
+export function userMapper(user: any): User {
   return {
-    id: organizationUser.Id,
-    userId: organizationUser.userId,
-  } as Orgnization;
+    id: user.Id,
+    organizationId: user.OrganizationId,
+    firstName: user.FirstName,
+    lastName: user.LastName,
+    phoneNumber: user.PhoneNumber,
+    createdDate: user.CreatedDate,
+  } as User;
 }

@@ -31,6 +31,7 @@ export class Routes {
     @inject(TYPES.OrganizationService)
     _organizationService: IOrganizationService,
     @inject(TYPES.UserService) _userService: IUserService,
+
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -118,7 +119,7 @@ export class Routes {
 
     this.path.get('user/email/:id', async (req, _res) => {
       const email = req.pathParameters ? req.pathParameters.id : '';
-      return await this.organizationService.getOrganizationByUserEmail(email);
+      return await this.userService.getOrganizationByUserEmail(email);
     });
 
     this.path.post('user', async (req, _res) => {

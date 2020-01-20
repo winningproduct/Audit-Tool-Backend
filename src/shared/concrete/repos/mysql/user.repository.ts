@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, organizationUserMapper } from './dbMapper';
+import { mapDbItems, userMapper } from './dbMapper';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
 
@@ -21,6 +21,23 @@ export class MySQLUserRepository implements IUserRepository {
         `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , ${firstName} , ${lastName},${email},${phoneNumber})`,
       );
       return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getOrganizationByUserEmail(_email: string): Promise<User[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection.query(
+        `CALL getOrganizationByUserEmail('${_email}')`,
+      );
+      return mapDbItems(result, userMapper);
     } catch (err) {
       throw err;
     } finally {
