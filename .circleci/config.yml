@@ -20,8 +20,8 @@ jobs:
       - checkout
       - run:
           name: Deploy Code to AWS
-          command:
-            - run: npm run deploy
+          command: |
+            npm run deploy
 
   sonar:
     docker:
@@ -32,7 +32,7 @@ jobs:
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
-  
+
 version: 2.1
 workflows:
   main:
