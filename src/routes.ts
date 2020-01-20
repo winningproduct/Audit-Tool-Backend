@@ -31,7 +31,6 @@ export class Routes {
     @inject(TYPES.OrganizationService)
     _organizationService: IOrganizationService,
     @inject(TYPES.UserService) _userService: IUserService,
-
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
