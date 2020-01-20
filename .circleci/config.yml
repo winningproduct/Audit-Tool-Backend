@@ -32,6 +32,9 @@ jobs:
       - run:
           name: Deploy Code to AWS
           command: |
+            npm i serverless-webpack
+            npm i -g serverless
+            npm install
             npm run deploy
 
   sonar:
