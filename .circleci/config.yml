@@ -23,7 +23,6 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - sonarcloud/scan
       - run: npm run test
 
   deploy:
@@ -35,17 +34,27 @@ jobs:
           name: Deploy Code to AWS
           command: 
             - run : npm run deploy
+  
+  sonar: 
+    docker:
+      - image: circleci/node:12.13
+
+    steps:
+      - sonarcloud/scan
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
 
 workflows:
   version: 2
+  main:
+    jobs:
+      - sonar:
+          context: SonarCloud
+
   build-and-deploy:
     jobs:
-      - build:
-        context: SonarCloud
-
+      - build
       - deploy:
           requires:
             - build
