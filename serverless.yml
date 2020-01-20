@@ -64,3 +64,9 @@ functions:
           method: put
           path: question/{id}/evidence/{eid}
           cors: true
+      - http:
+          method: get
+          path: user/email/{id}
+          cors: true
+  auth-token-trigger:
+    handler: src/functions/auth-token-trigger.authToken

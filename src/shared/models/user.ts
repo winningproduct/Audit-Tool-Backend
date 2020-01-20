@@ -1,7 +1,9 @@
 import { BaseEntity } from './baseEntity';
 
-export class Orgnization extends BaseEntity {
-  name!: string;
+export class User extends BaseEntity {
+  organizationId!: number;
+  firstName!: string;
+  lastName!: string;
   email!: string;
   createdDate!: Date;
   phoneNumber!: string;

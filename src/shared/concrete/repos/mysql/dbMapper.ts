@@ -3,6 +3,7 @@ import { KnowledgeArea } from '../../../models/knowledge-area';
 import { Question } from '../../../models/question';
 import { Phase } from '../../../models/phase';
 import { Evidence } from '@models/evidence';
+import { User } from '@models/user';
 
 export function mapDbItems<T>(result: any, mapper: any): T {
   return result[0].map((product: any) => {
@@ -58,4 +59,15 @@ export function evidenceMapper(evidence: any): Evidence {
     version: evidence.Version,
     createdDate: evidence.CreatedDate,
   } as Evidence;
+}
+
+export function userMapper(user: any): User {
+  return {
+    id: user.Id,
+    organizationId: user.OrganizationId,
+    firstName: user.FirstName,
+    lastName: user.LastName,
+    phoneNumber: user.PhoneNumber,
+    createdDate: user.CreatedDate,
+  } as User;
 }
