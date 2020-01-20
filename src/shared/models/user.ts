@@ -6,5 +6,5 @@ export class User extends BaseEntity {
   lastName!: string;
   email!: string;
   phoneNumber!: string;
-  createdDate!: string;
+  createdDate!: Date;
 }
