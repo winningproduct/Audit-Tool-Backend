@@ -16,13 +16,16 @@ export const authToken = async (
         res.on('data', chunk => (buffer += chunk));
         res.on('end', () => {
           const result = JSON.parse(buffer);
+          if ( result.length < 0 ) {
+            callback("Error: no user");
+          }
           event = {
             ...event,
             response: {
               claimsOverrideDetails: {
                 claimsToAddOrOverride: {
-                  organization: result.length > 0 ? result[0].id : '1',
-                  userId: result.length > 0 ? result[0].userId : '1',
+                  organization:  result[0].organizationId,
+                  userId: result[0].id,
                 },
               },
             },
