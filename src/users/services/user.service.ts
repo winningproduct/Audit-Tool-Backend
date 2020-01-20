@@ -3,6 +3,7 @@ import { injectable, inject } from 'inversify';
 import { TYPES } from 'shared/constants/Types';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
+
 @injectable()
 export class UserService implements IUserService {
   protected userRepository: IUserRepository;
@@ -15,5 +16,9 @@ export class UserService implements IUserService {
 
   async addUser(user: User) {
     return await this.userRepository.add(user);
+  }
+
+  async getOrganizationByUserEmail(email: string) {
+    return await this.userRepository.getOrganizationByUserEmail(email);
   }
 }
