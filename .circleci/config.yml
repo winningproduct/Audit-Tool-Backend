@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -42,12 +42,14 @@ jobs:
     steps:
       - checkout
       - sonarcloud/scan
+      - run: npm install
+      - sonarcloud/scan
 
 orbs:
   sonarcloud: sonarsource/sonarcloud@1.0.1
 
+version: 2.1
 workflows:
-  version: 2
   main:
     jobs:
       - sonar:
