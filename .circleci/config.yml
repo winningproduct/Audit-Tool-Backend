@@ -13,8 +13,6 @@ jobs:
       - run:
           name: Install Serverless CLI and dependencies
           command: |
-            npm i serverless-webpack
-            npm i -g serverless
             npm install
 
       - save_cache:
@@ -32,6 +30,9 @@ jobs:
       - run:
           name: Deploy Code to AWS
           command: |
+            npm i serverless-webpack
+            npm i -g serverless
+            npm install
             npm run deploy
 
   sonar:
