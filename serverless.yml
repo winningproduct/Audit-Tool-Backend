@@ -32,38 +32,74 @@ functions:
           method: get
           path: products
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: products/{id}
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: products/{id}/phases
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: products/productPhases/{id}
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: productPhase/{id}/knowledgeAreas
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: knowledgeAreas/{id}/questions
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: product/{id}/questions/{qid}/evidence
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: post
           path: question/{id}/evidence
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: put
           path: question/{id}/evidence/{eid}
           cors: true
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
       - http:
           method: get
           path: user/email/{id}
