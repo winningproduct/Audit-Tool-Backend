@@ -19,7 +19,6 @@ export const authToken = async (
           if (result.length < 0) {
             callback('Error: no user');
           }
-
           event = {
             ...event,
             response: {
