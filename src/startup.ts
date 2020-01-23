@@ -6,7 +6,7 @@ import { ok } from '@util/responseHandler';
 import { Inversify } from '@root/inversify.config';
 
 export const enrtyPoint: APIGatewayProxyHandler = async (
-  event: APIGatewayProxyEvent,
+  event: any,
   _context,
 ) => {
   const inversifyContainer = new Inversify();
@@ -26,7 +26,8 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
     userService,
   ).getPath();
   try {
-    const result = await path.run(event, _context);
+    const eventPolifil = { ...event, path: event.requestPath };
+    const result = await path.run(eventPolifil, _context);
     return ok(result);
   } catch (err) {
     return handleError(err, logger);
