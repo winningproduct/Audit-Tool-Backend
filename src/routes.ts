@@ -112,7 +112,7 @@ export class Routes {
       const qevidenceId = Number(
         req.pathParameters ? req.pathParameters.eid : null,
       );
-      const status: string = req.body;
+      const status: string = req.body.status;
       return await this.evidenceService.updateStatus(qevidenceId, status);
     });
 
