@@ -2,11 +2,10 @@ import 'reflect-metadata';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda';
 import { Routes } from './routes';
 import { handleError } from '@util/errorHandler';
-import { ok } from '@util/responseHandler';
 import { Inversify } from '@root/inversify.config';
 
 export const enrtyPoint: APIGatewayProxyHandler = async (
-  event: APIGatewayProxyEvent,
+  event: any,
   _context,
 ) => {
   const inversifyContainer = new Inversify();
@@ -17,7 +16,7 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
   const organizationService = inversifyContainer.getOrganizationService();
   const userService = inversifyContainer.getUserService();
   const logger = inversifyContainer.getLogger();
-  const path = new Routes(
+  const pathController = new Routes(
     knowledgeAreaService,
     productService,
     evidenceService,
@@ -26,8 +25,17 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
     userService,
   ).getPath();
   try {
-    const result = await path.run(event, _context);
-    return ok(result);
+    let eventPolifil: APIGatewayProxyEvent;
+    if (event.requestPath) {
+      const httpMethod = event.method;
+      const pathParameters = event.path;
+      const path = event.requestPath;
+      eventPolifil = { ...event, path, pathParameters, httpMethod };
+    } else {
+      eventPolifil = event;
+    }
+    const result = await pathController.run(eventPolifil, _context);
+    return result;
   } catch (err) {
     return handleError(err, logger);
   } finally {
