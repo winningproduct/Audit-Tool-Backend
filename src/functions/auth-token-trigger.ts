@@ -17,7 +17,8 @@ export const authToken = async (
         res.on('end', () => {
           const result = JSON.parse(buffer);
           if (result.length < 0) {
-            callback('Error: no user');
+            const error = new Error('User Not Found');
+            callback(error, event);
           }
           event = {
             ...event,
