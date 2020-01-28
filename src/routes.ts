@@ -3,12 +3,10 @@ import API from 'lambda-api';
 import 'source-map-support/register';
 import { resolveIdentity } from '@util/identityHandler';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
-import { injectable, inject } from 'inversify';
-import { TYPES } from 'shared/constants/Types';
+import { injectable } from 'inversify';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { IQuestionService } from '@questions/interfaces/question.service.interface';
 import { Evidence } from '@models/evidence';
-import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
 import { IUserService } from 'users/interfaces/user.service.interface';
 
 @injectable()
@@ -18,19 +16,14 @@ export class Routes {
   private knowledgeAreaService: IKnowledgeAreaService;
   private evidenceService: IEvidenceService;
   private questionService: IQuestionService;
-  private organizationService: IOrganizationService;
   private userService: IUserService;
 
   constructor(
-    @inject(TYPES.KnowledgeAreaService)
     _knowledgeAreaService: IKnowledgeAreaService,
-    @inject(TYPES.ProductService) _productService: IProductService,
-    @inject(TYPES.EvidenceService) _evidenceService: IEvidenceService,
-    @inject(TYPES.QuestionService)
+    _productService: IProductService,
+    _evidenceService: IEvidenceService,
     _questionService: IQuestionService,
-    @inject(TYPES.OrganizationService)
-    _organizationService: IOrganizationService,
-    @inject(TYPES.UserService) _userService: IUserService,
+    _userService: IUserService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -38,7 +31,6 @@ export class Routes {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
     this.questionService = _questionService;
-    this.organizationService = _organizationService;
     this.userService = _userService;
     this.initiateApi();
   }

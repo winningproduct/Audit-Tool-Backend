@@ -9,6 +9,7 @@ export const authToken = async (
   const URL =
     'https://53ph0bulw2.execute-api.ap-south-1.amazonaws.com/dev/user/email/' +
     event.request.userAttributes.email;
+  let error = null;
   await new Promise((resolve, reject) => {
     https
       .get(URL, res => {
@@ -17,28 +18,29 @@ export const authToken = async (
         res.on('end', () => {
           const result = JSON.parse(buffer);
           if (result.length <= 0) {
-            const error = new Error('User Not Found');
-            callback(error, event);
-          }
-          event = {
-            ...event,
-            response: {
-              claimsOverrideDetails: {
-                claimsToAddOrOverride: {
-                  organization: result[0].organizationId,
-                  userId: result[0].id,
+            error = new Error('User Not Found');
+          } else {
+            event = {
+              ...event,
+              response: {
+                claimsOverrideDetails: {
+                  claimsToAddOrOverride: {
+                    organization: result[0].organizationId,
+                    userId: result[0].id,
+                  },
                 },
               },
-            },
-          };
-          callback(null, event);
+            };
+          }
           resolve(JSON.parse(buffer));
         });
       })
       .on('error', e => {
-        callback(e);
         reject(e);
       });
   });
-  callback(null, event);
+  if (error) {
+    callback(error);
+  }
+  callback(error, event);
 };
