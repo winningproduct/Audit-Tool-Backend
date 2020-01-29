@@ -27,6 +27,8 @@ export const authToken = async (
                   claimsToAddOrOverride: {
                     organization: result[0].organizationId,
                     userId: result[0].id,
+                    firstName: result[0].firstName,
+                    lastName: result[0].lastName,
                   },
                 },
               },
