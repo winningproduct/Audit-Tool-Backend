@@ -1,7 +1,6 @@
 import { IProductService } from './products/interfaces/product.service.interface';
 import API from 'lambda-api';
 import 'source-map-support/register';
-import { resolveIdentity } from '@util/identityHandler';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
 import { injectable } from 'inversify';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
@@ -35,9 +34,9 @@ export class Routes {
     this.initiateApi();
   }
   initiateApi() {
-    this.path.get('products/', async (req, _res) => {
-      const identity = resolveIdentity(req);
-      return await this.productService.getProductsByUser(identity.userId);
+    this.path.get('products/user/:id', async (req, _res) => {
+      const userId = Number(req.pathParameters ? req.pathParameters.id : null);
+      return await this.productService.getProductsByUser(userId);
     });
 
     this.path.get('products/:id', async (req, _res) => {
