@@ -2,7 +2,7 @@ import { IOrganizationRepository } from '../../../abstract/repos/organization.re
 import { Orgnization } from '../../../models/organization';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, userMapper} from './dbMapper';
+import { mapDbItems, userMapper } from './dbMapper';
 import { User } from '@models/user';
 
 @injectable()
