@@ -15,6 +15,7 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
   const knowledgeAreaService = inversifyContainer.getKnowledgeAreaService();
   const evidenceService = inversifyContainer.getEvidenceService();
   const userService = inversifyContainer.getUserService();
+  const organizationService = inversifyContainer.getOrganizationService();
   const logger = inversifyContainer.getLogger();
   const pathController = new Routes(
     knowledgeAreaService,
@@ -22,6 +23,7 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
     evidenceService,
     questionService,
     userService,
+    organizationService,
   ).getPath();
   try {
     let eventPolifil: APIGatewayProxyEvent;
