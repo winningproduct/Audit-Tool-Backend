@@ -7,6 +7,7 @@ import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { IQuestionService } from '@questions/interfaces/question.service.interface';
 import { Evidence } from '@models/evidence';
 import { IUserService } from 'users/interfaces/user.service.interface';
+import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
 
 @injectable()
 export class Routes {
@@ -23,6 +24,7 @@ export class Routes {
     _evidenceService: IEvidenceService,
     _questionService: IQuestionService,
     _userService: IUserService,
+    _organizationService: IOrganizationService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -115,6 +117,11 @@ export class Routes {
     this.path.post('user', async (req, _res) => {
       const user = req.pathParameters ? req.body.user : {};
       return await this.userService.addUser(user);
+    });
+
+    this.path.post('authTrigger/user', async (req, _res) => {
+      const data = req.pathParameters ? req.body : {};
+      return await this.userService.addUserFromTrigger(data);
     });
   }
 

@@ -14,11 +14,10 @@ export class MySQLUserRepository implements IUserRepository {
     const lastName = user.lastName;
     const email = user.email;
     const phoneNumber = user.phoneNumber;
-
     try {
       connection = await initMysql();
       await connection.query(
-        `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , ${firstName} , ${lastName},${email},${phoneNumber})`,
+        `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , '${firstName}' , '${lastName}','${email}','${phoneNumber}')`,
       );
       return true;
     } catch (err) {
