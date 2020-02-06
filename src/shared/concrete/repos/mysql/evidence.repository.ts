@@ -68,6 +68,27 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
+  async getVersions(
+    userId: number,
+    productId: number,
+    _questionId: number,
+  ): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection.query(
+        `CALL GetEvidence( ${userId}, "${productId}")`,
+      );
+      return mapDbItems(result, evidenceMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Evidence {
     throw new Error('Method not implemented.');
   }

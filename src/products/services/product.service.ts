@@ -33,4 +33,8 @@ export class ProductService implements IProductService {
   async getProductById(productId: number) {
     return await this.productRepository.getProductById(productId);
   }
+
+  async getPhaseByProductPhaseId(productId: number) {
+    return await this.phaseRepository.getPhaseByProductPhaseId(productId);
+  }
 }
