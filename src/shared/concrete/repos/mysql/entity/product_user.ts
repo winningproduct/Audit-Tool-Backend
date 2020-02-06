@@ -9,10 +9,11 @@ import { Product } from './product';
 import { User } from './user';
 
 @Entity('Product_User')
+// tslint:disable-next-line: class-name
 export class Product_User {
   @PrimaryGeneratedColumn()
   Id!: number;
-  
+
   @Column()
   ProductId!: number;
   @ManyToOne(

@@ -58,5 +58,4 @@ export class User {
     evidence => evidence.question,
   )
   evidences: Evidence[] | undefined;
-  
 }

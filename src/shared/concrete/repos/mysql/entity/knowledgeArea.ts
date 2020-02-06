@@ -33,5 +33,4 @@ export class KnowledgeArea {
     question => question.knowledgearea,
   )
   questions: Question[] | undefined;
-  
 }

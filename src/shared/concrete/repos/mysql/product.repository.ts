@@ -30,11 +30,10 @@ export class MySQLProductRepository implements IProductRepository {
     try {
       connection = await initMysql();
       const results = await connection
-        .createQueryBuilder("product_user")
-        .innerJoinAndSelect("product_user.product", "products")
-        .where("product_user.UserId = :userId", { userId: userId })
+        .createQueryBuilder('product_user')
+        .innerJoinAndSelect('product_user.product', 'products')
+        .where('product_user.UserId = :userId', { userId })
         .getOne();
-        console.log(results);
       return mapDbItems(results, productMapper);
     } catch (err) {
       throw err;
