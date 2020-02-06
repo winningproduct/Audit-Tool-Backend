@@ -98,5 +98,12 @@ functions:
       - http:
           method: get
           path: user/email/{id}
+      - http:
+          method: get
+          path: user/product/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
   auth-token-trigger:
     handler: src/functions/auth-token-trigger.authToken

@@ -114,6 +114,13 @@ export class Routes {
       return await this.userService.getOrganizationByUserEmail(email);
     });
 
+    this.path.get('user/product/:id', async (req, _res) => {
+      const productId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.userService.getUsersByProjectId(productId);
+    });
+
     this.path.post('user', async (req, _res) => {
       const user = req.pathParameters ? req.body.user : {};
       return await this.userService.addUser(user);
