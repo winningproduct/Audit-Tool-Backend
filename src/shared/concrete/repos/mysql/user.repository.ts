@@ -14,11 +14,10 @@ export class MySQLUserRepository implements IUserRepository {
     const lastName = user.lastName;
     const email = user.email;
     const phoneNumber = user.phoneNumber;
-
     try {
       connection = await initMysql();
       await connection.query(
-        `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , ${firstName} , ${lastName},${email},${phoneNumber})`,
+        `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , '${firstName}' , '${lastName}','${email}','${phoneNumber}')`,
       );
       return true;
     } catch (err) {
@@ -34,10 +33,13 @@ export class MySQLUserRepository implements IUserRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL getOrganizationByUserEmail('${_email}')`,
-      );
-      return mapDbItems(result, userMapper);
+      const result = await connection
+        .createQueryBuilder()
+        .select('user')
+        .from(User, 'user')
+        .where('user.Email = :email', { email: _email })
+        .getOne();
+      return result;
     } catch (err) {
       throw err;
     } finally {

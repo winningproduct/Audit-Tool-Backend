@@ -12,7 +12,9 @@ export class OrganizationService implements IOrganizationService {
     this.organizationRepository = _organizationRepository;
   }
 
-  async getOrganizationByUserEmail(email: string) {
-    return await this.organizationRepository.getOrganizationByUserEmail(email);
+  async getOrganizationIdByDomain(_domain: string) {
+    return await this.organizationRepository.getOrganizationIdFromDomain(
+      _domain,
+    );
   }
 }

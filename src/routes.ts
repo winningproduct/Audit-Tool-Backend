@@ -1,15 +1,13 @@
 import { IProductService } from './products/interfaces/product.service.interface';
 import API from 'lambda-api';
 import 'source-map-support/register';
-import { resolveIdentity } from '@util/identityHandler';
 import { IKnowledgeAreaService } from 'knowledge-areas/interfaces/knowledge-area.service.interface';
-import { injectable, inject } from 'inversify';
-import { TYPES } from 'shared/constants/Types';
+import { injectable } from 'inversify';
 import { IEvidenceService } from 'evidence/interfaces/evidence.interface';
 import { IQuestionService } from '@questions/interfaces/question.service.interface';
 import { Evidence } from '@models/evidence';
-import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
 import { IUserService } from 'users/interfaces/user.service.interface';
+import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
 
 @injectable()
 export class Routes {
@@ -18,19 +16,15 @@ export class Routes {
   private knowledgeAreaService: IKnowledgeAreaService;
   private evidenceService: IEvidenceService;
   private questionService: IQuestionService;
-  private organizationService: IOrganizationService;
   private userService: IUserService;
 
   constructor(
-    @inject(TYPES.KnowledgeAreaService)
     _knowledgeAreaService: IKnowledgeAreaService,
-    @inject(TYPES.ProductService) _productService: IProductService,
-    @inject(TYPES.EvidenceService) _evidenceService: IEvidenceService,
-    @inject(TYPES.QuestionService)
+    _productService: IProductService,
+    _evidenceService: IEvidenceService,
     _questionService: IQuestionService,
-    @inject(TYPES.OrganizationService)
+    _userService: IUserService,
     _organizationService: IOrganizationService,
-    @inject(TYPES.UserService) _userService: IUserService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -38,14 +32,13 @@ export class Routes {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
     this.questionService = _questionService;
-    this.organizationService = _organizationService;
     this.userService = _userService;
     this.initiateApi();
   }
   initiateApi() {
-    this.path.get('products/', async (req, _res) => {
-      const identity = resolveIdentity(req);
-      return await this.productService.getProductsByUser(identity.userId);
+    this.path.get('products/user/:id', async (req, _res) => {
+      const userId = Number(req.pathParameters ? req.pathParameters.id : null);
+      return await this.productService.getProductsByUser(userId);
     });
 
     this.path.get('products/:id', async (req, _res) => {
@@ -112,7 +105,7 @@ export class Routes {
       const qevidenceId = Number(
         req.pathParameters ? req.pathParameters.eid : null,
       );
-      const status: string = req.body;
+      const status: string = req.body.status;
       return await this.evidenceService.updateStatus(qevidenceId, status);
     });
 
@@ -121,9 +114,21 @@ export class Routes {
       return await this.userService.getOrganizationByUserEmail(email);
     });
 
+    this.path.get('user/product/:id', async (req, _res) => {
+      const productId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.userService.getUsersByProjectId(productId);
+    });
+
     this.path.post('user', async (req, _res) => {
       const user = req.pathParameters ? req.body.user : {};
       return await this.userService.addUser(user);
+    });
+
+    this.path.post('authTrigger/user', async (req, _res) => {
+      const data = req.pathParameters ? req.body : {};
+      return await this.userService.addUserFromTrigger(data);
     });
   }
 

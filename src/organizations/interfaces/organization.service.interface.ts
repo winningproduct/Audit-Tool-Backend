@@ -1,5 +1,5 @@
-import { Orgnization } from '@models/organization';
+import { User } from '@models/user';
 
 export interface IOrganizationService {
-  getOrganizationByUserEmail(email: string): Promise<Orgnization[]>;
+  getOrganizationIdByDomain(domain: string): Promise<User[]>;
 }
