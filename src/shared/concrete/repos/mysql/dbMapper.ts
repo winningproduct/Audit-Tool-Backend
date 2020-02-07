@@ -28,16 +28,16 @@ export function knowledgeAreaMapper(product: any): KnowledgeArea {
   } as KnowledgeArea;
 }
 
-export function questionMapper(product: any): Question {
+export function questionMapper(question: any): Question {
   return {
-    id: product.Id,
-    knowledgeAreaId: product.KnowledgeAreaId,
-    revisionId: product.RevisionId,
-    userId: product.UserId,
-    title: product.Title,
-    description: product.Description,
-    version: product.Version,
-    createdDate: product.CreatedDate,
+    id: question.question_Id,
+    knowledgeAreaId: question.question_KnowledgeAreaId,
+    revisionId: question.question_RevisionId,
+    userId: question.question_UserId,
+    title: question.question_Title,
+    description: question.question_Description,
+    version: question.question_Version,
+    createdDate: question.question_CreatedDate,
   } as Question;
 }
 
@@ -65,10 +65,16 @@ export function evidenceMapper(evidence: any): Evidence {
 export function userMapper(user: any): User {
   return {
     id: user.Id,
-    organizationId: user.OrganizationId,
-    firstName: user.FirstName,
-    lastName: user.LastName,
-    phoneNumber: user.PhoneNumber,
-    createdDate: user.CreatedDate,
+    organizationId: user.users_OrganizationId,
+    firstName: user.users_FirstName,
+    lastName: user.users_LastName,
+    phoneNumber: user.users_PhoneNumber,
+    createdDate: user.users_CreatedDate,
   } as User;
+}
+
+export function domainMapper(org: any) {
+  return {
+    organizationId: org.domain_OrganizationId,
+  };
 }
