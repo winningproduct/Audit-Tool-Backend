@@ -3,6 +3,7 @@ import { APIGatewayProxyHandler, APIGatewayProxyEvent } from 'aws-lambda';
 import { Routes } from './routes';
 import { handleError } from '@util/errorHandler';
 import { Inversify } from '@root/inversify.config';
+import { ok } from '@util/responseHandler';
 
 export const enrtyPoint: APIGatewayProxyHandler = async (
   event: any,

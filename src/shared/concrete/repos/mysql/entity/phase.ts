@@ -14,7 +14,7 @@ export class Phase {
 
   @OneToMany(
     () => Product_Phase,
-    productphase => productphase.product,
+    productphase => productphase.phase,
   )
   productphases: Product_Phase[] | undefined;
 

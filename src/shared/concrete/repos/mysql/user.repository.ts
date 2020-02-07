@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
+import { Product_User } from './entity/product_user';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -15,7 +16,6 @@ export class MySQLUserRepository implements IUserRepository {
     const phoneNumber = user.phoneNumber;
     try {
       connection = await initMysql();
-      console.log(organizationId);
       await connection
         .createQueryBuilder()
         .insert(user)
@@ -50,6 +50,27 @@ export class MySQLUserRepository implements IUserRepository {
         .getOne();
       console.log(result);
       return result;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getUsersByProjectId(id: number): Promise<User[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const results = await connection
+        .getRepository(Product_User)
+        .createQueryBuilder('product_user')
+        .leftJoinAndSelect('product_user.user', 'users')
+        .where('product_user.ProductId = :id', { id })
+        .getMany();
+      console.log(results);
+      return results;
     } catch (err) {
       throw err;
     } finally {
