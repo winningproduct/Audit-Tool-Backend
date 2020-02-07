@@ -31,6 +31,7 @@ functions:
     events:
       - http:
           method: get
+          # get products by user id
           path: products/user/{id}
           integration: lambda
           authorizer:
@@ -52,6 +53,7 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get
+          # return the product by product_phase_id
           path: products/productPhases/{id}
           integration: lambda
           authorizer:

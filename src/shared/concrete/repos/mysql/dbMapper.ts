@@ -5,17 +5,17 @@ import { Phase } from '../../../models/phase';
 import { Evidence } from '@models/evidence';
 import { User } from '@models/user';
 
-export function mapDbItems<T>(result: any, mapper: any): T {
-  return result[0].product.map((product: any) => {
-    return mapper(product);
+export function mapDbItems(result: any, mapper: any): any {
+  return Object.keys(result).map(key => {
+    return mapper(result[key]);
   });
 }
 export function productMapper(product: any): Product {
   return {
-    id: product.Id,
-    name: product.Name,
-    description: product.Description,
-    createdDate: product.CreatedDate,
+    id: product.products_Id,
+    name: product.products_Name,
+    description: product.products_Description,
+    createdDate: product.products_CreatedDate,
   } as Product;
 }
 export function knowledgeAreaMapper(product: any): KnowledgeArea {
