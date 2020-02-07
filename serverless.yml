@@ -86,6 +86,9 @@ functions:
             name: authorizer
             arn: ${env:ARN}
       - http:
+          method: post
+          path: authTrigger/user
+      - http:
           method: put
           path: question/{id}/evidence/{eid}
           integration: lambda
