@@ -6,10 +6,11 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Product } from './product';
-import { Phase } from './phase';
+import { User } from './user';
 
-@Entity('Product_Phase')
-export class Product_Phase {
+@Entity('Product_User')
+// tslint:disable-next-line: class-name
+export class Product_User {
   @PrimaryGeneratedColumn()
   Id!: number;
 
@@ -17,20 +18,17 @@ export class Product_Phase {
   ProductId!: number;
   @ManyToOne(
     () => Product,
-    product => product.productphases,
+    product => product.productusers,
   )
   @JoinColumn({ name: 'ProductId' })
   product: Product | undefined;
 
   @Column()
-  PhaseId!: number;
+  UserId!: number;
   @ManyToOne(
-    () => Phase,
-    phase => phase.productphases,
+    () => User,
+    user => user.productuser,
   )
-  @JoinColumn({ name: 'PhaseId' })
-  phase: Phase | undefined;
-
-  @Column()
-  Score!: number;
+  @JoinColumn({ name: 'UserId' })
+  user: User | undefined;
 }

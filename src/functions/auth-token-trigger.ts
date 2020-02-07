@@ -27,8 +27,6 @@ export const authToken = async (
                   claimsToAddOrOverride: {
                     organization: result[0].organizationId,
                     userId: result[0].id,
-                    firstName: result[0].firstName,
-                    lastName: result[0].lastName,
                   },
                 },
               },
@@ -41,8 +39,61 @@ export const authToken = async (
         reject(e);
       });
   });
+
   if (error) {
-    callback(error);
+    const setUser = await new Promise((resolve, reject) => {
+      const data = JSON.stringify({
+        firstName: event.request.userAttributes.given_name,
+        lastName: event.request.userAttributes.family_name,
+        email: event.request.userAttributes.email,
+      });
+      const options = {
+        hostname: '53ph0bulw2.execute-api.ap-south-1.amazonaws.com',
+        port: 443,
+        path: '/dev/authTrigger/user/',
+        method: 'POST',
+      };
+      const req = https.request(options, res => {
+        res.on('data', d => {
+          process.stdout.write(d);
+        });
+      });
+      req.on('error', e => {
+        reject(e);
+      });
+      req.on('finish', () => {
+        resolve();
+      });
+      req.write(data);
+      req.end();
+    });
+    const updateEvent = await new Promise((resolve, reject) => {
+      https
+        .get(URL, res => {
+          let buffer = '';
+          res.on('data', chunk => (buffer += chunk));
+          res.on('end', () => {
+            const result = JSON.parse(buffer);
+            event = {
+              ...event,
+              response: {
+                claimsOverrideDetails: {
+                  claimsToAddOrOverride: {
+                    organization: result[0].organizationId,
+                    userId: result[0].id,
+                  },
+                },
+              },
+            };
+            resolve(JSON.parse(buffer));
+          });
+        })
+        .on('error', e => {
+          reject(e);
+        });
+    });
+    await Promise.all([setUser, updateEvent]);
+    error = null;
   }
   callback(error, event);
 };
