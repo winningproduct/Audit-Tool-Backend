@@ -8,7 +8,6 @@ import { Product_User } from './entity/product_user';
 export class MySQLUserRepository implements IUserRepository {
   async add(user: User): Promise<boolean> {
     let connection: any;
-    console.log(user);
     const organizationId = user.organizationId;
     const firstName = user.firstName;
     const lastName = user.lastName;
@@ -48,7 +47,6 @@ export class MySQLUserRepository implements IUserRepository {
         .from(User, 'user')
         .where('user.Email = :email', { email: _email })
         .getOne();
-      console.log(result);
       return result;
     } catch (err) {
       throw err;
@@ -69,7 +67,6 @@ export class MySQLUserRepository implements IUserRepository {
         .leftJoinAndSelect('product_user.user', 'users')
         .where('product_user.ProductId = :id', { id })
         .getMany();
-      console.log(results);
       return results;
     } catch (err) {
       throw err;

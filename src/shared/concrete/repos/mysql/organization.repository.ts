@@ -17,7 +17,6 @@ export class MySQLOrganizationRepository implements IOrganizationRepository {
         .from(Domain, 'domain')
         .where('domain.domain = :domain', { domain: _domain })
         .getOne();
-      console.log(result);
       return result;
     } catch (err) {
       throw err;

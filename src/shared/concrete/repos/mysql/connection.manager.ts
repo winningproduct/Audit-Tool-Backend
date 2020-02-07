@@ -41,7 +41,6 @@ export async function initMysql() {
     return con;
   } catch (err) {
     if (err) {
-      console.log(err);
       const existentConn = getConnectionManager().get('default');
       return existentConn;
     }

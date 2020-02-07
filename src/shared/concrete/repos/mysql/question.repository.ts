@@ -17,7 +17,6 @@ export class MySQLQuestionRepository implements IQuestionRepository {
           knowledgeAreaId,
         })
         .getMany();
-      console.log(result);
       return result;
     } catch (err) {
       throw err;

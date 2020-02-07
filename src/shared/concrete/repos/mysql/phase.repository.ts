@@ -19,7 +19,6 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
         .addSelect('phases')
         .where('product_phase.ProductId = :productId', { productId })
         .getRawMany();
-      console.log(result);
       return mapDbItems(result, phasesMapper);
     } catch (err) {
       throw err;
