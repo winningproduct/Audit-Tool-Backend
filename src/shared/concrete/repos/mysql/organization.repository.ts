@@ -2,36 +2,23 @@ import { IOrganizationRepository } from '../../../abstract/repos/organization.re
 import { Orgnization } from '../../../models/organization';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, userMapper } from './dbMapper';
 import { User } from '@models/user';
+import { Domain } from '../mysql/entity/domain';
+import { mapDbItems, domainMapper } from './dbMapper';
 
 @injectable()
 export class MySQLOrganizationRepository implements IOrganizationRepository {
-  /*async getOrganizationByUserEmail(_email: string): Promise<Orgnization[]> {
-    let connection: any;
-    try {
-      connection = await initMysql();
-      const result = await connection.query(
-        `CALL getOrganizationByUserEmail('${_email}')`,
-      );
-      return mapDbItems(result, organizationUserMapper);
-    } catch (err) {
-      throw err;
-    } finally {
-      if (connection != null) {
-        await connection.close();
-      }
-    }
-  }*/
-
   async getOrganizationIdFromDomain(_domain: string): Promise<User[]> {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL getOrganizationId('${_domain}')`,
-      );
-      return mapDbItems(result, userMapper);
+      const result = await connection
+        .createQueryBuilder()
+        .select('domain.OrganizationId')
+        .from(Domain, 'domain')
+        .where('domain.domain = :domain', { domain: _domain })
+        .getRawMany();
+      return mapDbItems(result, domainMapper);
     } catch (err) {
       throw err;
     } finally {

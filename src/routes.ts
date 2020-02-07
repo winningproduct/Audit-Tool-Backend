@@ -114,8 +114,15 @@ export class Routes {
       return await this.userService.getOrganizationByUserEmail(email);
     });
 
+    this.path.get('user/product/:id', async (req, _res) => {
+      const productId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.userService.getUsersByProjectId(productId);
+    });
+
     this.path.post('user', async (req, _res) => {
-      const user = req.pathParameters ? req.body.user : {};
+      const user = req.body.user;
       return await this.userService.addUser(user);
     });
 
@@ -137,7 +144,7 @@ export class Routes {
       );
     });
     this.path.post('authTrigger/user', async (req, _res) => {
-      const data = req.pathParameters ? req.body : {};
+      const data = req.body;
       return await this.userService.addUserFromTrigger(data);
     });
   }

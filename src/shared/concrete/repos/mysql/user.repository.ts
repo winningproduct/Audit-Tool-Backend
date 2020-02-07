@@ -1,14 +1,14 @@
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, userMapper } from './dbMapper';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
+import { Product_User } from './entity/product_user';
+import { mapDbItems, userMapper } from './dbMapper';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
   async add(user: User): Promise<boolean> {
     let connection: any;
-
     const organizationId = user.organizationId;
     const firstName = user.firstName;
     const lastName = user.lastName;
@@ -16,9 +16,18 @@ export class MySQLUserRepository implements IUserRepository {
     const phoneNumber = user.phoneNumber;
     try {
       connection = await initMysql();
-      await connection.query(
-        `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , '${firstName}' , '${lastName}','${email}','${phoneNumber}')`,
-      );
+      await connection
+        .createQueryBuilder()
+        .insert(user)
+        .into(User)
+        .values({
+          OrganizationId: organizationId,
+          FirstName: firstName,
+          LastName: lastName,
+          Email: email,
+          PhoneNumber: phoneNumber,
+        })
+        .execute();
       return true;
     } catch (err) {
       throw err;
@@ -29,13 +38,37 @@ export class MySQLUserRepository implements IUserRepository {
     }
   }
 
-  async getOrganizationByUserEmail(_email: string): Promise<User[]> {
+  async getOrganizationByUserEmail(email: string): Promise<User[]> {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL getOrganizationByUserEmail('${_email}')`,
-      );
+      const result = await connection
+        .createQueryBuilder()
+        .select('users')
+        .from(User, 'users')
+        .where('users.Email = :email', { email })
+        .getRawMany();
+      return mapDbItems(result, userMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getUsersByProjectId(id: number): Promise<User[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .getRepository(Product_User)
+        .createQueryBuilder('product_user')
+        .leftJoinAndSelect('product_user.user', 'users')
+        .select('users')
+        .where('product_user.ProductId = :id', { id })
+        .getRawMany();
       return mapDbItems(result, userMapper);
     } catch (err) {
       throw err;

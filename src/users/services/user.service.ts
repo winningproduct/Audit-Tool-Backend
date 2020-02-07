@@ -41,4 +41,8 @@ export class UserService implements IUserService {
   async getOrganizationByUserEmail(email: string) {
     return await this.userRepository.getOrganizationByUserEmail(email);
   }
+
+  async getUsersByProjectId(id: number) {
+    return await this.userRepository.getUsersByProjectId(id);
+  }
 }

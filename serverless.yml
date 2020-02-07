@@ -31,6 +31,7 @@ functions:
     events:
       - http:
           method: get
+          # get products by user id
           path: products/user/{id}
           integration: lambda
           authorizer:
@@ -52,6 +53,7 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get
+          # return the product by product_phase_id
           path: products/productPhases/{id}
           integration: lambda
           authorizer:
@@ -112,5 +114,12 @@ functions:
       - http:
           method: get
           path: user/email/{id}
+      - http:
+          method: get
+          path: user/product/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
   auth-token-trigger:
     handler: src/functions/auth-token-trigger.authToken
