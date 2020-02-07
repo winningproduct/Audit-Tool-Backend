@@ -9,7 +9,6 @@ import { Product_Phase } from './entity/product_phase';
 export class MYSQLPhaseRepository implements IPhaseRepository {
   async getPhases(productId: number): Promise<Phase[]> {
     let connection: any;
-    const result: Phase[] = [];
     try {
       connection = await initMysql();
       const result = await connection
@@ -18,7 +17,6 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
         .leftJoinAndSelect('product_phase.phase', 'phases')
         .where('product_phase.ProductId = :productId', { productId })
         .getMany();
-      console.log(result);
       return mapDbItems(result, phasesMapper);
     } catch (err) {
       throw err;

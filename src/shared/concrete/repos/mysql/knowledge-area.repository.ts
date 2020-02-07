@@ -21,10 +21,8 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
         .leftJoinAndSelect('phase.knowledgeareas', 'knowledgearea')
         .where('productphase.Id = :Id', { Id: _productPhaseId })
         .getMany();
-      console.log(results[0]);
       return mapDbItems(results, knowledgeAreaMapper);
     } catch (err) {
-      console.log(err);
       throw err;
     } finally {
       if (connection != null) {

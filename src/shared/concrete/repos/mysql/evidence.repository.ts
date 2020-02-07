@@ -22,7 +22,6 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
           questionId: _questionId,
         })
         .getOne();
-      console.log(result);
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;
