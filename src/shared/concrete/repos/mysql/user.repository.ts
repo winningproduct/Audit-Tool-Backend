@@ -1,6 +1,5 @@
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, userMapper } from './dbMapper';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
 
@@ -8,7 +7,7 @@ import { User } from '@models/user';
 export class MySQLUserRepository implements IUserRepository {
   async add(user: User): Promise<boolean> {
     let connection: any;
-
+    console.log(user);
     const organizationId = user.organizationId;
     const firstName = user.firstName;
     const lastName = user.lastName;
@@ -16,9 +15,19 @@ export class MySQLUserRepository implements IUserRepository {
     const phoneNumber = user.phoneNumber;
     try {
       connection = await initMysql();
-      await connection.query(
-        `INSERT INTO User(OrganizationId, FirstName, LastName, Email, PhoneNumber) VALUES (${organizationId} , '${firstName}' , '${lastName}','${email}','${phoneNumber}')`,
-      );
+      console.log(organizationId);
+      await connection
+        .createQueryBuilder()
+        .insert(user)
+        .into(User)
+        .values({
+          OrganizationId: organizationId,
+          FirstName: firstName,
+          LastName: lastName,
+          Email: email,
+          PhoneNumber: phoneNumber,
+        })
+        .execute();
       return true;
     } catch (err) {
       throw err;
@@ -39,6 +48,7 @@ export class MySQLUserRepository implements IUserRepository {
         .from(User, 'user')
         .where('user.Email = :email', { email: _email })
         .getOne();
+      console.log(result);
       return result;
     } catch (err) {
       throw err;

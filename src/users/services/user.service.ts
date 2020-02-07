@@ -30,7 +30,7 @@ export class UserService implements IUserService {
       splitted[1],
     );
     const user = new User();
-    user.organizationId = data[0].organizationId;
+    user.organizationId = data[0].OrganizationId;
     user.email = adUser.email;
     user.firstName = adUser.firstName;
     user.lastName = adUser.lastName;
@@ -42,7 +42,7 @@ export class UserService implements IUserService {
     return await this.userRepository.getOrganizationByUserEmail(email);
   }
 
-  // async getUsersByProjectId(id: number){
-  //   return await this.userRepository.getUsersByProjectId(id);
-  // }
+  async getUsersByProjectId(id: number) {
+    return await this.userRepository.getUsersByProjectId(id);
+  }
 }

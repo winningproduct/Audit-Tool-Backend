@@ -6,7 +6,7 @@ import { Evidence } from '@models/evidence';
 import { User } from '@models/user';
 
 export function mapDbItems<T>(result: any, mapper: any): T {
-  return result[0].map((product: any) => {
+  return result[0].product.map((product: any) => {
     return mapper(product);
   });
 }
@@ -43,6 +43,7 @@ export function questionMapper(product: any): Question {
 
 export function phasesMapper(phase: any): Phase {
   return {
+    id: phase.Id,
     productPhaseId: phase.Id,
     phaseId: phase.PhaseId,
     name: phase.Name,

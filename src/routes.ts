@@ -122,12 +122,12 @@ export class Routes {
     });
 
     this.path.post('user', async (req, _res) => {
-      const user = req.pathParameters ? req.body.user : {};
+      const user = req.body.user;
       return await this.userService.addUser(user);
     });
 
     this.path.post('authTrigger/user', async (req, _res) => {
-      const data = req.pathParameters ? req.body : {};
+      const data = req.body;
       return await this.userService.addUserFromTrigger(data);
     });
   }

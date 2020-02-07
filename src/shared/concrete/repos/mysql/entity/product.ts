@@ -9,7 +9,7 @@ import {
 import { Organization } from './organization';
 import { User } from './user';
 import { Product_User } from './product_user';
-import { ProductPhase } from './product_phase';
+import { Product_Phase } from './product_phase';
 import { Evidence } from './evidence';
 
 @Entity('Product')
@@ -50,10 +50,10 @@ export class Product {
   productusers: Product_User[] | undefined;
 
   @OneToMany(
-    () => ProductPhase,
+    () => Product_Phase,
     productphase => productphase.product,
   )
-  productphases: ProductPhase[] | undefined;
+  productphases: Product_Phase[] | undefined;
 
   @OneToMany(
     () => Evidence,

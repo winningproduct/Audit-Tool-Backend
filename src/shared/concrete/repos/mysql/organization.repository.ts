@@ -31,7 +31,7 @@ export class MySQLOrganizationRepository implements IOrganizationRepository {
       const result = await connection.query(
         `CALL getOrganizationId('${_domain}')`,
       );
-      return mapDbItems(result, userMapper);
+      return result[0];
     } catch (err) {
       throw err;
     } finally {

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { ProductPhase } from './product_phase';
+import { Product_Phase } from './product_phase';
 import { KnowledgeArea } from './knowledgeArea';
 import { Revision } from './revision';
 
@@ -13,10 +13,10 @@ export class Phase {
   Description!: string;
 
   @OneToMany(
-    () => ProductPhase,
+    () => Product_Phase,
     productphase => productphase.product,
   )
-  productphases: ProductPhase[] | undefined;
+  productphases: Product_Phase[] | undefined;
 
   @OneToMany(
     () => KnowledgeArea,
