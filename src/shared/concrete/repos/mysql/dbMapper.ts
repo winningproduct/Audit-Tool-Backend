@@ -64,7 +64,7 @@ export function evidenceMapper(evidence: any): Evidence {
 
 export function userMapper(user: any): User {
   return {
-    id: user.Id,
+    id: user.users_Id,
     organizationId: user.users_OrganizationId,
     firstName: user.users_FirstName,
     lastName: user.users_LastName,

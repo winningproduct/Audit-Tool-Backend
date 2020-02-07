@@ -1,9 +1,10 @@
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
-import { User } from '@models/user';
+import { User as UserEntity } from './entity/user';
 import { Product_User } from './entity/product_user';
 import { mapDbItems, userMapper } from './dbMapper';
+import { User } from '@models/user';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -45,10 +46,11 @@ export class MySQLUserRepository implements IUserRepository {
       const result = await connection
         .createQueryBuilder()
         .select('users')
-        .from(User, 'users')
+        .from(UserEntity, 'users')
         .where('users.Email = :email', { email })
         .getRawMany();
-      return mapDbItems(result, userMapper);
+      console.log(result);
+      return mapDbItems(result, userMapper)[0];
     } catch (err) {
       throw err;
     } finally {
