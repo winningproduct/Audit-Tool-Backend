@@ -21,8 +21,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .andWhere('evidence.questionId = :questionId', {
           questionId: _questionId,
         })
-        .getOne();
-      console.log(result);
+        .getRawMany();
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;

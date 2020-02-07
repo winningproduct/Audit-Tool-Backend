@@ -20,11 +20,11 @@ export function productMapper(product: any): Product {
 }
 export function knowledgeAreaMapper(product: any): KnowledgeArea {
   return {
-    id: product.Id,
-    phaseId: product.PhaseId,
-    name: product.Name,
-    description: product.Description,
-    score: product.Score,
+    id: product.knowledgearea_Id,
+    phaseId: product.knowledgearea_PhaseId,
+    name: product.knowledgearea_Name,
+    description: product.knowledgearea_Description,
+    score: product.knowledgearea_Score,
   } as KnowledgeArea;
 }
 
@@ -43,22 +43,22 @@ export function questionMapper(product: any): Question {
 
 export function phasesMapper(phase: any): Phase {
   return {
-    id: phase.Id,
-    productPhaseId: phase.Id,
-    phaseId: phase.PhaseId,
-    name: phase.Name,
-    description: phase.Description,
-    score: phase.Score,
+    id: phase.product_phase_Id,
+    productPhaseId: phase.product_phase_Id,
+    phaseId: phase.phases_Id,
+    name: phase.phases_Name,
+    description: phase.phases_Description,
+    score: phase.product_phase_Score,
   } as Phase;
 }
 
 export function evidenceMapper(evidence: any): Evidence {
   return {
-    id: evidence.Id,
-    content: evidence.Content,
-    status: evidence.Status,
-    version: evidence.Version,
-    createdDate: evidence.CreatedDate,
+    id: evidence.evidence_Id,
+    content: evidence.evidence_Content,
+    status: evidence.evidence_Status,
+    version: evidence.evidence_Version,
+    createdDate: evidence.evidence_CreatedDate,
   } as Evidence;
 }
 

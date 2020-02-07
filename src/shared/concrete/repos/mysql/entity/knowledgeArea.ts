@@ -22,7 +22,8 @@ export class KnowledgeArea {
   )
   @JoinColumn({ name: 'PhaseId' })
   phase: Phase | undefined;
-
+  @Column()
+  Name!: string;
   @Column()
   Description!: string;
   @Column()

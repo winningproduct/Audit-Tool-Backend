@@ -3,7 +3,6 @@ import { initMysql } from './connection.manager';
 import { mapDbItems, knowledgeAreaMapper } from './dbMapper';
 import { KnowledgeArea } from '../../../models/knowledge-area';
 import { injectable } from 'inversify';
-import { Product_Phase } from './entity/product_phase';
 import { Phase } from '@models/phase';
 
 @injectable()
@@ -20,11 +19,9 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
         .leftJoinAndSelect('phase.productphases', 'productphase')
         .leftJoinAndSelect('phase.knowledgeareas', 'knowledgearea')
         .where('productphase.Id = :Id', { Id: _productPhaseId })
-        .getMany();
-      console.log(results[0]);
+        .getRawMany();
       return mapDbItems(results, knowledgeAreaMapper);
     } catch (err) {
-      console.log(err);
       throw err;
     } finally {
       if (connection != null) {

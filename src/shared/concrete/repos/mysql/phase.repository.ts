@@ -9,15 +9,16 @@ import { Product_Phase } from './entity/product_phase';
 export class MYSQLPhaseRepository implements IPhaseRepository {
   async getPhases(productId: number): Promise<Phase[]> {
     let connection: any;
-    const result: Phase[] = [];
     try {
       connection = await initMysql();
       const result = await connection
         .getRepository(Product_Phase)
         .createQueryBuilder('product_phase')
         .leftJoinAndSelect('product_phase.phase', 'phases')
+        .select('product_phase')
+        .addSelect('phases')
         .where('product_phase.ProductId = :productId', { productId })
-        .getMany();
+        .getRawMany();
       console.log(result);
       return mapDbItems(result, phasesMapper);
     } catch (err) {
