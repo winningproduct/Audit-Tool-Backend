@@ -4,6 +4,7 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { mapDbItems, userMapper } from './dbMapper';
 import { User } from '@models/user';
+import { Domain } from '../mysql/entity/domain';
 
 @injectable()
 export class MySQLOrganizationRepository implements IOrganizationRepository {
@@ -28,9 +29,13 @@ export class MySQLOrganizationRepository implements IOrganizationRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL getOrganizationId('${_domain}')`,
-      );
+      const result = await connection
+        .createQueryBuilder()
+        .select('domain.OrganizationId')
+        .from(Domain, 'domain')
+        .where('domain.domain = :domain', { domain: _domain })
+        .getOne();
+      console.log(result);
       return mapDbItems(result, userMapper);
     } catch (err) {
       throw err;

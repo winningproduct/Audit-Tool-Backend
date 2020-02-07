@@ -3,7 +3,7 @@ import { IProductRepository } from '../../../abstract/repos/product.repository.i
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { mapDbItems, productMapper } from './dbMapper';
-import { ProductPhase } from './entity/product_phase';
+import { Product_Phase } from './entity/product_phase';
 import { Product_User } from './entity/product_user';
 
 @injectable()
@@ -30,10 +30,12 @@ export class MySQLProductRepository implements IProductRepository {
     try {
       connection = await initMysql();
       const results = await connection
+        .getRepository(Product_User)
         .createQueryBuilder('product_user')
-        .innerJoinAndSelect('product_user.product', 'products')
+        .leftJoinAndSelect('product_user.product', 'products')
         .where('product_user.UserId = :userId', { userId })
-        .getOne();
+        .getMany();
+      console.log(results);
       return mapDbItems(results, productMapper);
     } catch (err) {
       throw err;

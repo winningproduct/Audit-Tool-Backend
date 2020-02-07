@@ -41,6 +41,7 @@ export class Evidence {
   @JoinColumn({ name: 'UserId' })
   user: User | undefined;
 
+  @Column()
   Content!: string;
   @Column()
   Status!: string;

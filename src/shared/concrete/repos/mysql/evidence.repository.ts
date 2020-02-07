@@ -13,9 +13,16 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL GetEvidenceByProjectIdAndQuestionId(${_productId} , ${_questionId})`,
-      );
+      const result = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(Evidence, 'evidence')
+        .where('evidence.productId = :productId', { productId: _productId })
+        .andWhere('evidence.questionId = :questionId', {
+          questionId: _questionId,
+        })
+        .getOne();
+      console.log(result);
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;
@@ -31,16 +38,22 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     _evidence: Evidence,
   ): Promise<boolean> {
     let connection: any;
-    const productId = _evidence.productId;
-    const userId = _evidence.userId;
-    const contentT = _evidence.content;
-    const status = _evidence.status;
-    const version = _evidence.version;
     try {
       connection = await initMysql();
-      await connection.query(
-        `CALL AddEvidenceByQuestionId(${productId} , ${_questionId} , ${userId} , "${contentT}" , "${status}" , ${version})`,
-      );
+      const { productId, userId, content, status, version } = _evidence;
+      await connection
+        .createQueryBuilder()
+        .insert(_evidence)
+        .into(Evidence)
+        .values({
+          ProductId: productId,
+          UserId: userId,
+          QuestionId: _questionId,
+          Content: content,
+          Status: status,
+          Version: version,
+        })
+        .execute();
       return true;
     } catch (err) {
       throw err;
@@ -55,9 +68,14 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      await connection.query(
-        `CALL UpdateStatus( ${_evidenceId}, "${_status}")`,
-      );
+      await connection
+        .createQueryBuilder()
+        .update(Evidence)
+        .set({
+          Status: _status,
+        })
+        .where('Id = :id', { id: _evidenceId })
+        .execute();
       return true;
     } catch (err) {
       throw err;

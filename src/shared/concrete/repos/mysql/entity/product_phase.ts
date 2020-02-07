@@ -8,8 +8,8 @@ import {
 import { Product } from './product';
 import { Phase } from './phase';
 
-@Entity('ProductPhase')
-export class ProductPhase {
+@Entity('Product_Phase')
+export class Product_Phase {
   @PrimaryGeneratedColumn()
   Id!: number;
 

@@ -42,7 +42,7 @@ export class UserService implements IUserService {
     return await this.userRepository.getOrganizationByUserEmail(email);
   }
 
-  // async getUsersByProjectId(id: number){
-  //   return await this.userRepository.getUsersByProjectId(id);
-  // }
+  async getUsersByProjectId(id: number){
+    return await this.userRepository.getUsersByProjectId(id);
+  }
 }

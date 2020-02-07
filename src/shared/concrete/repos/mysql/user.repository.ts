@@ -3,6 +3,7 @@ import { initMysql } from './connection.manager';
 import { mapDbItems, userMapper } from './dbMapper';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
+import { Product_User } from './entity/product_user';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -40,6 +41,27 @@ export class MySQLUserRepository implements IUserRepository {
         .where('user.Email = :email', { email: _email })
         .getOne();
       return result;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getUsersByProjectId(id: number): Promise<User[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const results = await connection
+        .getRepository(Product_User)
+        .createQueryBuilder('product_user')
+        .leftJoinAndSelect('product_user.user', 'users')
+        .where('product_user.ProductId = :id', { id })
+        .getMany();
+      console.log(results);
+      return results;
     } catch (err) {
       throw err;
     } finally {
