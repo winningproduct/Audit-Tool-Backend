@@ -3,7 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
   OneToMany,
 } from 'typeorm';
 import { Phase } from './phase';
@@ -14,14 +13,12 @@ export class KnowledgeArea {
   @PrimaryGeneratedColumn()
   Id!: number;
 
-  @Column()
-  PhaseId: number | undefined;
   @ManyToOne(
     () => Phase,
     phase => phase.knowledgeareas,
   )
-  @JoinColumn({ name: 'PhaseId' })
-  phase: Phase | undefined;
+  phase!: Phase;
+
   @Column()
   Name!: string;
   @Column()
@@ -33,5 +30,5 @@ export class KnowledgeArea {
     () => Question,
     question => question.knowledgearea,
   )
-  questions: Question[] | undefined;
+  questions!: Question[];
 }

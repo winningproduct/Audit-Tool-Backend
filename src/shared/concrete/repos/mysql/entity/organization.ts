@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
 import { User } from './user';
 import { Product } from './product';
 import { Domain } from './domain';
@@ -13,24 +13,24 @@ export class Organization {
   Email!: string;
   @Column()
   PhoneNumber!: string;
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   CreatedDate!: Date;
 
   @OneToMany(
     () => User,
     user => user.organization,
   )
-  users: User[] | undefined;
+  users!: User[];
 
   @OneToMany(
     () => Product,
     product => product.organization,
   )
-  products: Product[] | undefined;
+  products!: Product[];
 
   @OneToMany(
     () => Domain,
     domain => domain.organization,
   )
-  domains: Domain[] | undefined;
+  domains!: Domain[];
 }

@@ -3,7 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
 } from 'typeorm';
 import { Organization } from './organization';
 
@@ -12,14 +11,11 @@ export class Domain {
   @PrimaryGeneratedColumn()
   Id!: number;
 
-  @Column()
-  OrganizationId!: number;
   @ManyToOne(
     () => Organization,
     organization => organization.users,
   )
-  @JoinColumn({ name: 'OrganizationId' })
-  organization: Organization | undefined;
+  organization!: Organization;
 
   @Column()
   Domain!: string;

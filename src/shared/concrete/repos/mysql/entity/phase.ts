@@ -16,17 +16,17 @@ export class Phase {
     () => Product_Phase,
     productphase => productphase.phase,
   )
-  productphases: Product_Phase[] | undefined;
+  productphases!: Product_Phase[];
 
   @OneToMany(
     () => KnowledgeArea,
     knowledgearea => knowledgearea.phase,
   )
-  knowledgeareas: KnowledgeArea[] | undefined;
+  knowledgeareas!: KnowledgeArea[];
 
   @OneToMany(
     () => Revision,
     revision => revision.phase,
   )
-  revisions: Revision[] | undefined;
+  revisions!: Revision[];
 }

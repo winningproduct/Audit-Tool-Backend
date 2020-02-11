@@ -2,6 +2,7 @@ import { IEvidenceRepository } from '../../../abstract/repos/evidence.repository
 import { initMysql } from './connection.manager';
 import { mapDbItems, evidenceMapper } from './dbMapper';
 import { Evidence } from '@models/evidence';
+import { Evidence as EvidenceEntity} from './entity/evidence';
 import { injectable } from 'inversify';
 
 @injectable()
@@ -16,7 +17,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       const result = await connection
         .createQueryBuilder()
         .select('evidence')
-        .from(Evidence, 'evidence')
+        .from(EvidenceEntity, 'evidence')
         .where('evidence.productId = :productId', { productId: _productId })
         .andWhere('evidence.questionId = :questionId', {
           questionId: _questionId,

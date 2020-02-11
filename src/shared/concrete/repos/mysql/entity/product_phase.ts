@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Product } from './product';
 import { Phase } from './phase';
 
@@ -14,23 +8,17 @@ export class Product_Phase {
   @PrimaryGeneratedColumn()
   Id!: number;
 
-  @Column()
-  ProductId!: number;
   @ManyToOne(
     () => Product,
     product => product.productphases,
   )
-  @JoinColumn({ name: 'ProductId' })
-  product: Product | undefined;
+  product!: Product;
 
-  @Column()
-  PhaseId!: number;
   @ManyToOne(
     () => Phase,
     phase => phase.productphases,
   )
-  @JoinColumn({ name: 'PhaseId' })
-  phase: Phase | undefined;
+  phase!: Phase;
 
   @Column()
   Score!: number;

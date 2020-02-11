@@ -4,7 +4,7 @@ import {
   Column,
   OneToMany,
   ManyToOne,
-  JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { Question } from './question';
 import { Phase } from './phase';
@@ -14,20 +14,17 @@ export class Revision {
   @PrimaryGeneratedColumn()
   Id!: number;
 
-  @Column()
-  PhaseId: number | undefined;
   @ManyToOne(
     () => Phase,
     phase => phase.revisions,
   )
-  @JoinColumn({ name: 'PhaseId' })
-  phase: Phase | undefined;
+  phase!: Phase;
 
   @Column()
   Name!: number;
   @Column()
   ReleaseNotes!: string;
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   CreatedDate!: Date;
   @Column()
   Email!: string;
@@ -38,5 +35,5 @@ export class Revision {
     () => Question,
     question => question.revision,
   )
-  questions: Question[] | undefined;
+  questions!: Question[];
 }

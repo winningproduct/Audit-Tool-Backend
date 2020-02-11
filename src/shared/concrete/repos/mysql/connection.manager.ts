@@ -9,7 +9,6 @@ import { KnowledgeArea } from './entity/knowledgeArea';
 import { Phase } from './entity/phase';
 import { Product } from './entity/product';
 import { Product_Phase } from './entity/product_phase';
-import { Product_User } from './entity/product_user';
 import { Question } from './entity/question';
 import { Revision } from './entity/revision';
 
@@ -31,7 +30,6 @@ export async function initMysql() {
         Phase,
         Product,
         Product_Phase,
-        Product_User,
         Question,
         Revision,
       ],
@@ -41,6 +39,7 @@ export async function initMysql() {
     return con;
   } catch (err) {
     if (err) {
+      console.log(err);
       const existentConn = getConnectionManager().get('default');
       return existentConn;
     }

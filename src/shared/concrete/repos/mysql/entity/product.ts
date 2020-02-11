@@ -3,12 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
+  CreateDateColumn,
 } from 'typeorm';
 import { Organization } from './organization';
 import { User } from './user';
-import { Product_User } from './product_user';
 import { Product_Phase } from './product_phase';
 import { Evidence } from './evidence';
 
@@ -22,42 +23,34 @@ export class Product {
   Email!: string;
   @Column()
   Description!: string;
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   CreatedDate!: Date;
 
-  @Column()
-  OrganizationId: number | undefined;
   @ManyToOne(
     () => Organization,
     organization => organization.products,
   )
-  @JoinColumn({ name: 'OrganizationId' })
-  organization: Organization | undefined;
+  organization!: Organization;
 
-  @Column()
-  CreatedUserId: number | undefined;
   @ManyToOne(
     () => User,
     user => user.products,
   )
-  @JoinColumn({ name: 'CreatedUserId' })
-  user: User | undefined;
-
-  @OneToMany(
-    () => Product_User,
-    productuser => productuser.user,
-  )
-  productusers: Product_User[] | undefined;
+  user!: User;
 
   @OneToMany(
     () => Product_Phase,
     productphase => productphase.product,
   )
-  productphases: Product_Phase[] | undefined;
+  productphases!: Product_Phase[];
 
   @OneToMany(
     () => Evidence,
-    evidence => evidence.question,
+    evidence => evidence.product,
   )
-  evidences: Evidence[] | undefined;
+  evidences!: Evidence[];
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  users!: User[];
 }

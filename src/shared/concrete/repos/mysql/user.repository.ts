@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
-import { Product_User } from './entity/product_user';
+import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
 
 @injectable()
@@ -42,14 +42,23 @@ export class MySQLUserRepository implements IUserRepository {
     let connection: any;
     try {
       connection = await initMysql();
+      const sql = await connection
+        .createQueryBuilder()
+        .select('users')
+        .from(UserEntity, 'users')
+        .where('users.Email = :userEmail', { userEmail: email })
+        .getSql();
       const result = await connection
         .createQueryBuilder()
         .select('users')
-        .from(User, 'users')
-        .where('users.Email = :email', { email })
+        .from(UserEntity, 'users')
+        .where('users.Email = :userEmail', { userEmail: email })
         .getRawMany();
+        console.log(sql);
+        console.log(result);
       return mapDbItems(result, userMapper);
     } catch (err) {
+      console.log(err);
       throw err;
     } finally {
       if (connection != null) {
@@ -61,16 +70,18 @@ export class MySQLUserRepository implements IUserRepository {
   async getUsersByProjectId(id: number): Promise<User[]> {
     let connection: any;
     try {
+      console.log("1");
       connection = await initMysql();
       const result = await connection
-        .getRepository(Product_User)
+        .getRepository()
         .createQueryBuilder('product_user')
-        .leftJoinAndSelect('product_user.user', 'users')
-        .select('users')
+        .leftJoinAndSelect('product_user.UserId', 'user')
+        .select('user')
         .where('product_user.ProductId = :id', { id })
         .getRawMany();
       return mapDbItems(result, userMapper);
     } catch (err) {
+      console.log(err);
       throw err;
     } finally {
       if (connection != null) {

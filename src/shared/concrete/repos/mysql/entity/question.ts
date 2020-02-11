@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  CreateDateColumn,
 } from 'typeorm';
 import { KnowledgeArea } from './knowledgeArea';
 import { Revision } from './revision';
@@ -16,32 +17,23 @@ export class Question {
   @PrimaryGeneratedColumn()
   Id!: number;
 
-  @Column()
-  KnowledgeAreaId: number | undefined;
   @ManyToOne(
     () => KnowledgeArea,
     knowledgearea => knowledgearea.questions,
   )
-  @JoinColumn({ name: 'KnowledgeAreaId' })
-  knowledgearea: KnowledgeArea | undefined;
+  knowledgearea!: KnowledgeArea;
 
-  @Column()
-  RevisionId: number | undefined;
   @ManyToOne(
     () => Revision,
     revision => revision.questions,
   )
-  @JoinColumn({ name: 'RevisionId' })
-  revision: Revision | undefined;
+  revision!: Revision;
 
-  @Column()
-  UserId: number | undefined;
   @ManyToOne(
     () => User,
     user => user.questions,
   )
-  @JoinColumn({ name: 'UserId' })
-  user: User | undefined;
+  user!: User;
 
   @Column()
   Title!: string;
@@ -49,12 +41,12 @@ export class Question {
   Description!: string;
   @Column()
   Version!: number;
-  @Column()
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   CreatedDate!: Date;
 
   @OneToMany(
     () => Evidence,
     evidence => evidence.question,
   )
-  evidences: Evidence[] | undefined;
+  evidences!: Evidence[];
 }
