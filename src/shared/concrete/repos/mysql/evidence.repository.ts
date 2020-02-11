@@ -2,7 +2,7 @@ import { IEvidenceRepository } from '../../../abstract/repos/evidence.repository
 import { initMysql } from './connection.manager';
 import { mapDbItems, evidenceMapper } from './dbMapper';
 import { Evidence } from '@models/evidence';
-import { Evidence as EvidenceEntity} from './entity/evidence';
+import { Evidence as EvidenceEntity } from './entity/evidence';
 import { injectable } from 'inversify';
 
 @injectable()

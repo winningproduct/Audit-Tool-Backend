@@ -54,8 +54,8 @@ export class MySQLUserRepository implements IUserRepository {
         .from(UserEntity, 'users')
         .where('users.Email = :userEmail', { userEmail: email })
         .getRawMany();
-        console.log(sql);
-        console.log(result);
+      console.log(sql);
+      console.log(result);
       return mapDbItems(result, userMapper);
     } catch (err) {
       console.log(err);
@@ -70,7 +70,7 @@ export class MySQLUserRepository implements IUserRepository {
   async getUsersByProjectId(id: number): Promise<User[]> {
     let connection: any;
     try {
-      console.log("1");
+      console.log('1');
       connection = await initMysql();
       const result = await connection
         .getRepository()
