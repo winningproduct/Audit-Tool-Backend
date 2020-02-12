@@ -2,7 +2,6 @@ import { Product } from '../../../models/product';
 import { KnowledgeArea } from '../../../models/knowledge-area';
 import { Question } from '../../../models/question';
 import { Phase } from '../../../models/phase';
-import { Evidence } from '@models/evidence';
 import { User } from '@models/user';
 
 export function mapDbItems(result: any, mapper: any): any {

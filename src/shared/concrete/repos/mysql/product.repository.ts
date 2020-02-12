@@ -38,7 +38,7 @@ export class MySQLProductRepository implements IProductRepository {
       const result = await connection
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
-        .leftJoinAndSelect('products.user', 'user')
+        .leftJoinAndSelect('products.users', 'user')
         .where('user.id = :userId', { userId })
         .getRawMany();
       return mapDbItems(result, productMapper);
