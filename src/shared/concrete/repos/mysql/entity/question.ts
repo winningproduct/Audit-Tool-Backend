@@ -3,58 +3,53 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { KnowledgeArea } from './knowledgeArea';
+import { KnowledgeArea } from './knowledge_area';
 import { Revision } from './revision';
 import { User } from './user';
 import { Evidence } from './evidence';
 
-@Entity('Question')
+const ENTITY_NAME = 'Question';
+
+@Entity(ENTITY_NAME)
 export class Question {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
 
   @Column()
-  KnowledgeAreaId: number | undefined;
+  title!: string;
+
+  @Column()
+  description!: string;
+
+  @Column()
+  version!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
+
   @ManyToOne(
-    () => KnowledgeArea,
-    knowledgearea => knowledgearea.questions,
+    type => KnowledgeArea,
+    knowledgeArea => knowledgeArea.questions,
   )
-  @JoinColumn({ name: 'KnowledgeAreaId' })
-  knowledgearea: KnowledgeArea | undefined;
+  knowledgeArea!: KnowledgeArea;
 
-  @Column()
-  RevisionId: number | undefined;
   @ManyToOne(
-    () => Revision,
+    type => Revision,
     revision => revision.questions,
   )
-  @JoinColumn({ name: 'RevisionId' })
-  revision: Revision | undefined;
+  revision!: Revision;
 
-  @Column()
-  UserId: number | undefined;
   @ManyToOne(
-    () => User,
+    type => User,
     user => user.questions,
   )
-  @JoinColumn({ name: 'UserId' })
-  user: User | undefined;
-
-  @Column()
-  Title!: string;
-  @Column()
-  Description!: string;
-  @Column()
-  Version!: number;
-  @Column()
-  CreatedDate!: Date;
+  user!: User;
 
   @OneToMany(
-    () => Evidence,
+    type => Evidence,
     evidence => evidence.question,
   )
-  evidences: Evidence[] | undefined;
+  evidences!: Evidence[];
 }

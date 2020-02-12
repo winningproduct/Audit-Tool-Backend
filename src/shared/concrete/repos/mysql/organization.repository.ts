@@ -3,7 +3,7 @@ import { Orgnization } from '../../../models/organization';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { User } from '@models/user';
-import { Domain } from '../mysql/entity/domain';
+import { Domain as DomainEntity } from '../mysql/entity/domain';
 import { mapDbItems, domainMapper } from './dbMapper';
 
 @injectable()
@@ -15,7 +15,7 @@ export class MySQLOrganizationRepository implements IOrganizationRepository {
       const result = await connection
         .createQueryBuilder()
         .select('domain.OrganizationId')
-        .from(Domain, 'domain')
+        .from(DomainEntity, 'domain')
         .where('domain.domain = :domain', { domain: _domain })
         .getRawMany();
       return mapDbItems(result, domainMapper);

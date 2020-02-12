@@ -8,10 +8,10 @@ import {
 import { Phase } from './phase';
 import { Question } from './question';
 
-const ENTITY_NAME = 'Revision';
+const ENTITY_NAME = 'KnowledgeArea';
 
 @Entity(ENTITY_NAME)
-export class Revision {
+export class KnowledgeArea {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -19,23 +19,20 @@ export class Revision {
   name!: string;
 
   @Column()
-  releaseNotes!: string;
+  description!: string;
 
   @Column()
-  version!: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdDate!: Date;
+  score!: number;
 
   @ManyToOne(
     type => Phase,
-    phase => phase.revisions,
+    phase => phase.knowledgeAreas,
   )
   phase!: Phase;
 
   @OneToMany(
     type => Question,
-    question => question.revision,
+    question => question.knowledgeArea,
   )
   questions!: Question[];
 }

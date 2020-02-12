@@ -12,69 +12,72 @@ export function mapDbItems(result: any, mapper: any): any {
 }
 export function productMapper(product: any): Product {
   return {
-    id: product.products_Id,
-    name: product.products_Name,
-    description: product.products_Description,
-    createdDate: product.products_CreatedDate,
+    id: product.products_id,
+    name: product.products_name,
+    description: product.products_description,
+    createdDate: product.products_createdDate,
   } as Product;
 }
-export function knowledgeAreaMapper(product: any): KnowledgeArea {
+export function knowledgeAreaMapper(knowledgeArea: any): KnowledgeArea {
   return {
-    id: product.knowledgearea_Id,
-    phaseId: product.knowledgearea_PhaseId,
-    name: product.knowledgearea_Name,
-    description: product.knowledgearea_Description,
-    score: product.knowledgearea_Score,
+    id: knowledgeArea.knowledgeArea_id,
+    phaseId: knowledgeArea.kknowledgeArea_phaseId,
+    name: knowledgeArea.knowledgeArea_name,
+    description: knowledgeArea.knowledgeArea_description,
+    score: knowledgeArea.knowledgeArea_score,
   } as KnowledgeArea;
 }
 
 export function questionMapper(question: any): Question {
   return {
-    id: question.question_Id,
-    knowledgeAreaId: question.question_KnowledgeAreaId,
-    revisionId: question.question_RevisionId,
-    userId: question.question_UserId,
-    title: question.question_Title,
-    description: question.question_Description,
-    version: question.question_Version,
-    createdDate: question.question_CreatedDate,
+    id: question.question_id,
+    knowledgeAreaId: question.question_knowledgeAreaId,
+    revisionId: question.question_revisionId,
+    userId: question.question_userId,
+    title: question.question_title,
+    description: question.question_description,
+    version: question.question_version,
+    createdDate: question.question_createdDate,
   } as Question;
 }
 
 export function phasesMapper(phase: any): Phase {
   return {
-    id: phase.product_phase_Id,
-    productPhaseId: phase.product_phase_Id,
-    phaseId: phase.phases_Id,
-    name: phase.phases_Name,
-    description: phase.phases_Description,
-    score: phase.product_phase_Score,
+    id: phase.product_phase_id,
+    productPhaseId: phase.product_phase_id,
+    phaseId: phase.phases_id,
+    name: phase.phases_name,
+    description: phase.phases_description,
+    score: phase.product_phase_score,
   } as Phase;
 }
 
-export function evidenceMapper(evidence: any): Evidence {
+export function evidenceMapper(evidence: any) {
   return {
-    id: evidence.evidence_Id,
-    content: evidence.evidence_Content,
-    status: evidence.evidence_Status,
-    version: evidence.evidence_Version,
-    createdDate: evidence.evidence_CreatedDate,
-  } as Evidence;
+    id: evidence.evidence_id,
+    content: evidence.evidence_content,
+    status: evidence.evidence_status,
+    version: evidence.evidence_version,
+    createdDate: evidence.evidence_createdDate,
+    firstName: evidence.users_firstName,
+    email: evidence.users_email,
+    lastName: evidence.users_lastName,
+  };
 }
 
 export function userMapper(user: any): User {
   return {
-    id: user.users_Id,
-    organizationId: user.users_OrganizationId,
-    firstName: user.users_FirstName,
-    lastName: user.users_LastName,
-    phoneNumber: user.users_PhoneNumber,
-    createdDate: user.users_CreatedDate,
+    id: user.users_id,
+    organizationId: user.users_organizationId,
+    firstName: user.users_firstName,
+    lastName: user.users_lastName,
+    phoneNumber: user.users_phoneNumber,
+    createdDate: user.users_createdDate,
   } as User;
 }
 
 export function domainMapper(org: any) {
   return {
-    organizationId: org.domain_OrganizationId,
+    organizationId: org.domain_organizationId,
   };
 }
