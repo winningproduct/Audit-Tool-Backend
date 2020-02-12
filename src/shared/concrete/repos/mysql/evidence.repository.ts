@@ -2,6 +2,7 @@ import { IEvidenceRepository } from '../../../abstract/repos/evidence.repository
 import { initMysql } from './connection.manager';
 import { mapDbItems, evidenceMapper } from './dbMapper';
 import { Evidence } from '@models/evidence';
+import { Evidence as EvidenceEntity } from './entity/evidence';
 import { injectable } from 'inversify';
 
 @injectable()
@@ -16,7 +17,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       const result = await connection
         .createQueryBuilder()
         .select('evidence')
-        .from(Evidence, 'evidence')
+        .from(EvidenceEntity, 'evidence')
         .where('evidence.productId = :productId', { productId: _productId })
         .andWhere('evidence.questionId = :questionId', {
           questionId: _questionId,
@@ -76,6 +77,31 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .where('Id = :id', { id: _evidenceId })
         .execute();
       return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getVersions(
+    userId: number,
+    productId: number,
+    questionId: number,
+  ): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .getRepository(EvidenceEntity)
+        .createQueryBuilder('evidence')
+        .innerJoinAndSelect('evidence.user', 'users')
+        .where('evidence.productId = :productId', { productId })
+        .andWhere('evidence.questionId = :questionId', { questionId })
+        .getRawMany();
+      return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;
     } finally {

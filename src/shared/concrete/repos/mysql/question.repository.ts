@@ -1,7 +1,7 @@
 import { initMysql } from './connection.manager';
 import { IQuestionRepository } from '../../../abstract/repos/question.repository';
 import { injectable } from 'inversify';
-import { Question } from '@models/question';
+import { Question as QuestionEntity } from './entity/question';
 import { mapDbItems, questionMapper } from './dbMapper';
 @injectable()
 export class MySQLQuestionRepository implements IQuestionRepository {
@@ -12,7 +12,7 @@ export class MySQLQuestionRepository implements IQuestionRepository {
     try {
       connection = await initMysql();
       const result = await connection
-        .getRepository(Question)
+        .getRepository(QuestionEntity)
         .createQueryBuilder('question')
         .where('question.knowledgeAreaId = :knowledgeAreaId', {
           knowledgeAreaId,

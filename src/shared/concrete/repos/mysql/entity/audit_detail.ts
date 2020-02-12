@@ -1,12 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Product } from './product';
 import { User } from './user';
-import { Phase } from './phase';
 
-const ENTITY_NAME = 'ProductPhase';
+const ENTITY_NAME = 'AuditDetail';
 
 @Entity(ENTITY_NAME)
-export class ProductPhase {
+export class AuditDetail {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -14,20 +13,20 @@ export class ProductPhase {
   productId!: number;
 
   @Column()
-  phaseId!: number;
+  userId!: number;
 
-  @Column()
-  score!: number;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  date!: Date;
 
   @ManyToOne(
     type => Product,
-    product => product.productPhases,
+    product => product.auditDetails,
   )
   product!: Product;
 
   @ManyToOne(
-    type => Phase,
-    phase => phase.productPhases,
+    type => User,
+    user => user.auditDetails,
   )
-  phase!: Phase;
+  user!: User;
 }

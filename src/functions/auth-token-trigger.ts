@@ -25,8 +25,8 @@ export const authToken = async (
               response: {
                 claimsOverrideDetails: {
                   claimsToAddOrOverride: {
-                    organization: result[0].organizationId,
-                    userId: result[0].id,
+                    organization: result.organizationId,
+                    userId: result.id,
                   },
                 },
               },
@@ -79,8 +79,8 @@ export const authToken = async (
               response: {
                 claimsOverrideDetails: {
                   claimsToAddOrOverride: {
-                    organization: result[0].organizationId,
-                    userId: result[0].id,
+                    organization: result.organizationId,
+                    userId: result.id,
                   },
                 },
               },

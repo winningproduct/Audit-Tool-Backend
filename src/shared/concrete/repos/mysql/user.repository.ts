@@ -2,7 +2,8 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
-import { Product_User } from './entity/product_user';
+import { Product as ProductEntity } from './entity/product';
+import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
 
 @injectable()
@@ -45,8 +46,8 @@ export class MySQLUserRepository implements IUserRepository {
       const result = await connection
         .createQueryBuilder()
         .select('users')
-        .from(User, 'users')
-        .where('users.Email = :email', { email })
+        .from(UserEntity, 'users')
+        .where('users.Email= :email', { email })
         .getRawMany();
       return mapDbItems(result, userMapper);
     } catch (err) {
@@ -63,11 +64,11 @@ export class MySQLUserRepository implements IUserRepository {
     try {
       connection = await initMysql();
       const result = await connection
-        .getRepository(Product_User)
-        .createQueryBuilder('product_user')
-        .leftJoinAndSelect('product_user.user', 'users')
-        .select('users')
-        .where('product_user.ProductId = :id', { id })
+        .getRepository(ProductEntity)
+        .createQueryBuilder('products')
+        .innerJoinAndSelect('products.users', 'users', 'products.id = :id', {
+          id,
+        })
         .getRawMany();
       return mapDbItems(result, userMapper);
     } catch (err) {
