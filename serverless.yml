@@ -99,7 +99,7 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get
-          path: product/{id}/productPhase
+          path: products/{id}/productPhase
           integration: lambda
           authorizer:
             name: authorizer
