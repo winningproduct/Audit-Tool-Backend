@@ -5,6 +5,7 @@ import { User } from '@models/user';
 import { Product as ProductEntity } from './entity/product';
 import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
+import { User } from '@models/user';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -49,7 +50,7 @@ export class MySQLUserRepository implements IUserRepository {
         .from(UserEntity, 'users')
         .where('users.Email= :email', { email })
         .getRawMany();
-      return mapDbItems(result, userMapper);
+      return mapDbItems(result, userMapper)[0];
     } catch (err) {
       throw err;
     } finally {
