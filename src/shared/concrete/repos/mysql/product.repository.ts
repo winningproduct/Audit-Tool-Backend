@@ -39,8 +39,8 @@ export class MySQLProductRepository implements IProductRepository {
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
         .leftJoinAndSelect('products.user', 'user')
+        .where('user.Id = :userId', { userId })
         .getRawMany();
-      console.log(result);
       return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
@@ -55,18 +55,11 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const sql = await connection
-        .getRepository(ProductEntity)
-        .createQueryBuilder('product')
-        .where('product.Id = :productId', { productId })
-        .getSql();
       const result = await connection
         .getRepository(ProductEntity)
-        .createQueryBuilder('product')
-        .where('product.Id = :productId', { productId })
+        .createQueryBuilder('products')
+        .where('products.Id = :productId', { productId })
         .getRawMany();
-      console.log(sql);
-      console.log(result);
       return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;

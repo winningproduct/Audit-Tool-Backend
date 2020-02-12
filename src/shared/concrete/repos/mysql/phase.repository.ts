@@ -27,6 +27,45 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
     }
   }
 
+  async getPhaseByProductPhaseId(productPhaseId: number): Promise<Phase[]> {
+    let connection: any;
+    let result: Phase;
+    try {
+      connection = await initMysql();
+      result = await connection
+        .getRepository(ProductPhase)
+        .createQueryBuilder('product_phase')
+        .leftJoinAndSelect('product_phase.phase', 'phases')
+        .where('product_phase.id = :productPhaseId', { productPhaseId })
+        .getRawMany();
+      return mapDbItems(result, phasesMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getPhaseByProductPhaseId(productId: number): Promise<Phase> {
+    let connection: any;
+    let result: Phase;
+    try {
+      connection = await initMysql();
+      result = await connection.query(`CALL 
+      GetPhaseByProductPhaseId(${productId})
+      `);
+      return mapDbItems(result, phasesMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Phase {
     throw new Error('Method not implemented.');
   }

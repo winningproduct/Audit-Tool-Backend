@@ -126,6 +126,23 @@ export class Routes {
       return await this.userService.addUser(user);
     });
 
+    this.path.get('product/:id/productPhase', async (req, _res) => {
+      const productPhaseId = req.pathParameters ? req.pathParameters.id : 0;
+      return await this.productService.getPhaseByProductPhaseId(
+        Number(productPhaseId),
+      );
+    });
+
+    this.path.get('product/:id/user/:uid/question/:qid', async (req, _res) => {
+      const productId = req.pathParameters ? req.pathParameters.id : 0;
+      const userId = req.pathParameters ? req.pathParameters.uid : 0;
+      const questionId = req.pathParameters ? req.pathParameters.qid : 0;
+      return await this.evidenceService.getVersions(
+        Number(userId),
+        Number(productId),
+        Number(questionId),
+      );
+    });
     this.path.post('authTrigger/user', async (req, _res) => {
       const data = req.body;
       return await this.userService.addUserFromTrigger(data);

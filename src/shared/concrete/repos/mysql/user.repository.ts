@@ -1,9 +1,10 @@
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
-import { User } from '@models/user';
+import { Product as ProductEntity } from './entity/product';
 import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
+import { User } from '@models/user';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -42,18 +43,13 @@ export class MySQLUserRepository implements IUserRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const sql = connection
-        .createQueryBuilder()
-        .select('user')
-        .from(UserEntity, 'user')
-        .getSql();
       const result = await connection
         .createQueryBuilder()
-        .select('user')
-        .from(UserEntity, 'user')
+        .select('users')
+        .from(UserEntity, 'users')
+        .where('users.Email= :email', { email })
         .getRawMany();
-
-      return mapDbItems(result, userMapper);
+      return mapDbItems(result, userMapper)[0];
     } catch (err) {
       throw err;
     } finally {
@@ -66,17 +62,16 @@ export class MySQLUserRepository implements IUserRepository {
   async getUsersByProjectId(id: number): Promise<User[]> {
     let connection: any;
     try {
-      console.log('1');
       connection = await initMysql();
       const result = await connection
-        .getRepository(UserEntity)
-        .createQueryBuilder('users')
-        .leftJoinAndSelect('product_user.UserId', 'user')
-        .where('product_user.ProductId = :id', { id })
+        .getRepository(ProductEntity)
+        .createQueryBuilder('products')
+        .innerJoinAndSelect('products.users', 'users', 'products.id = :id', {
+          id,
+        })
         .getRawMany();
       return mapDbItems(result, userMapper);
     } catch (err) {
-      console.log(err);
       throw err;
     } finally {
       if (connection != null) {
