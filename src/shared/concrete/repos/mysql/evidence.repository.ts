@@ -101,7 +101,6 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .where('evidence.productId = :productId', { productId })
         .andWhere('evidence.questionId = :questionId', { questionId })
         .getRawMany();
-      console.log(result);
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;
