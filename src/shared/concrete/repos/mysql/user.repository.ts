@@ -49,7 +49,7 @@ export class MySQLUserRepository implements IUserRepository {
         .from(UserEntity, 'users')
         .where('users.email= :email', { email })
         .getRawMany();
-      return mapDbItems(result, userMapper)[0];
+      return mapDbItems(result, userMapper);
     } catch (err) {
       throw err;
     } finally {
