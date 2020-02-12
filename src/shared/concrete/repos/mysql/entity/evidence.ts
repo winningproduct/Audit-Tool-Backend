@@ -1,51 +1,42 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { User } from './user';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Question } from './question';
+import { User } from './user';
 import { Product } from './product';
 
-@Entity('Evidence')
+const ENTITY_NAME = 'Evidence';
+
+@Entity(ENTITY_NAME)
 export class Evidence {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
 
   @Column()
-  ProductId: number | undefined;
-  @ManyToOne(
-    () => Product,
-    product => product.evidences,
-  )
-  @JoinColumn({ name: 'ProductId' })
-  evidence: Product | undefined;
+  content!: string;
 
   @Column()
-  QuestionId: number | undefined;
-  @ManyToOne(
-    () => Question,
-    question => question.evidences,
-  )
-  @JoinColumn({ name: 'QuestionId' })
-  question: Question | undefined;
+  status!: string;
 
   @Column()
-  UserId: number | undefined;
+  version!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
+
   @ManyToOne(
-    () => User,
+    type => User,
     user => user.evidences,
   )
-  @JoinColumn({ name: 'UserId' })
-  user: User | undefined;
+  user!: User;
 
-  Content!: string;
-  @Column()
-  Status!: string;
-  @Column()
-  Version!: number;
-  @Column()
-  CreatedDate!: Date;
+  @ManyToOne(
+    type => Question,
+    question => question.evidences,
+  )
+  question!: Question;
+
+  @ManyToOne(
+    type => Product,
+    product => product.evidences,
+  )
+  product!: Product;
 }

@@ -3,7 +3,7 @@ import { IPhaseRepository } from '../../../abstract/repos/phase.repository.inter
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { mapDbItems, phasesMapper } from './dbMapper';
-import { Product_Phase } from './entity/product_phase';
+import { ProductPhase } from './entity/product_phase';
 
 @injectable()
 export class MYSQLPhaseRepository implements IPhaseRepository {
@@ -12,31 +12,11 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
     try {
       connection = await initMysql();
       const result = await connection
-        .getRepository(Product_Phase)
+        .getRepository(ProductPhase)
         .createQueryBuilder('product_phase')
         .leftJoinAndSelect('product_phase.phase', 'phases')
-        .select('product_phase')
-        .addSelect('phases')
-        .where('product_phase.ProductId = :productId', { productId })
+        .where('product_phase.productId = :productId', { productId })
         .getRawMany();
-      return mapDbItems(result, phasesMapper);
-    } catch (err) {
-      throw err;
-    } finally {
-      if (connection != null) {
-        await connection.close();
-      }
-    }
-  }
-
-  async getPhaseByProductPhaseId(productId: number): Promise<Phase> {
-    let connection: any;
-    let result: Phase;
-    try {
-      connection = await initMysql();
-      result = await connection.query(`CALL 
-      GetPhaseByProductPhaseId(${productId})
-      `);
       return mapDbItems(result, phasesMapper);
     } catch (err) {
       throw err;

@@ -1,36 +1,42 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Domain } from './domain';
 import { User } from './user';
 import { Product } from './product';
-import { Domain } from './domain';
 
-@Entity('Organization')
+const ENTITY_NAME = 'Organization';
+
+@Entity(ENTITY_NAME)
 export class Organization {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
   @Column()
-  Name!: string;
+  name!: string;
+
   @Column()
-  Email!: string;
+  email!: string;
+
   @Column()
-  PhoneNumber!: string;
-  @Column()
-  CreatedDate!: Date;
+  phoneNumber!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
 
   @OneToMany(
-    () => User,
-    user => user.organization,
-  )
-  users: User[] | undefined;
-
-  @OneToMany(
-    () => Product,
-    product => product.organization,
-  )
-  products: Product[] | undefined;
-
-  @OneToMany(
-    () => Domain,
+    type => Domain,
     domain => domain.organization,
   )
-  domains: Domain[] | undefined;
+  domains!: Domain[];
+
+  @OneToMany(
+    type => User,
+    user => user.organization,
+  )
+  users!: User[];
+
+  @OneToMany(
+    type => Product,
+    product => product.organization,
+  )
+  products!: Product[];
 }
