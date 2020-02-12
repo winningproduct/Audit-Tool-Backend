@@ -2,51 +2,61 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   OneToMany,
-  ManyToMany,
-  JoinTable,
-  CreateDateColumn,
+  ManyToOne
 } from 'typeorm';
+import { AuditDetail } from './audit_detail';
 import { Organization } from './organization';
 import { Product } from './product';
 import { Question } from './question';
 import { Evidence } from './evidence';
+
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
   @Column()
-  FirstName!: string;
+  email!: string;
+
   @Column()
-  LastName!: string;
+  firstName!: string;
+
   @Column()
-  Email!: string;
+  lastName!: string;
+
   @Column()
-  PhoneNumber!: string;
+  phoneNumber!: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  CreatedDate!: Date;
+  createdDate!: Date;
+
+  @OneToMany(
+    type => AuditDetail,
+    auditDetail => auditDetail.user,
+  )
+  auditDetails!: AuditDetail[];
 
   @ManyToOne(
-    () => Organization,
+    type => Organization,
     organization => organization.users,
   )
   organization!: Organization;
 
   @OneToMany(
-    () => Product,
+    type => Product,
     product => product.user,
   )
   products!: Product[];
 
   @OneToMany(
-    () => Question,
+    type => Question,
     question => question.user,
   )
   questions!: Question[];
 
   @OneToMany(
-    () => Evidence,
+    type => Evidence,
     evidence => evidence.user,
   )
   evidences!: Evidence[];

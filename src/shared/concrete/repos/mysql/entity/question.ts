@@ -1,51 +1,48 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  OneToMany,
-  CreateDateColumn,
-} from 'typeorm';
-import { KnowledgeArea } from './knowledgeArea';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { KnowledgeArea } from './knowledge_area';
 import { Revision } from './revision';
 import { User } from './user';
 import { Evidence } from './evidence';
 
-@Entity('Question')
+const ENTITY_NAME = 'Question';
+
+@Entity(ENTITY_NAME)
 export class Question {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
+  @Column()
+  title!: string;
+
+  @Column()
+  description!: string;
+
+  @Column()
+  version!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
 
   @ManyToOne(
-    () => KnowledgeArea,
-    knowledgearea => knowledgearea.questions,
+    type => KnowledgeArea,
+    knowledgeArea => knowledgeArea.questions,
   )
-  knowledgearea!: KnowledgeArea;
+  knowledgeArea!: KnowledgeArea;
 
   @ManyToOne(
-    () => Revision,
+    type => Revision,
     revision => revision.questions,
   )
   revision!: Revision;
 
   @ManyToOne(
-    () => User,
+    type => User,
     user => user.questions,
   )
   user!: User;
 
-  @Column()
-  Title!: string;
-  @Column()
-  Description!: string;
-  @Column()
-  Version!: number;
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  CreatedDate!: Date;
-
   @OneToMany(
-    () => Evidence,
+    type => Evidence,
     evidence => evidence.question,
   )
   evidences!: Evidence[];

@@ -5,12 +5,13 @@ import { User } from './entity/user';
 import { Organization } from './entity/organization';
 import { Domain } from './entity/domain';
 import { Evidence } from './entity/evidence';
-import { KnowledgeArea } from './entity/knowledgeArea';
+import { KnowledgeArea } from './entity/knowledge_area';
 import { Phase } from './entity/phase';
 import { Product } from './entity/product';
-import { Product_Phase } from './entity/product_phase';
 import { Question } from './entity/question';
 import { Revision } from './entity/revision';
+import { ProductPhase } from './entity/product_phase';
+import { AuditDetail } from './entity/audit_detail';
 
 export async function initMysql() {
   try {
@@ -25,22 +26,26 @@ export async function initMysql() {
         User,
         Organization,
         Domain,
-        Evidence,
         KnowledgeArea,
         Phase,
         Product,
-        Product_Phase,
         Question,
         Revision,
+        Evidence,
+        ProductPhase,
+        AuditDetail,
       ],
-      synchronize: false,
+      synchronize: true,
       logging: false,
     });
+    console.log('con : ', con);
+    
     return con;
   } catch (err) {
     if (err) {
-      console.log(err);
+      console.error(err);
       const existentConn = getConnectionManager().get('default');
+      console.log('existentConn', existentConn)
       return existentConn;
     }
   }

@@ -5,7 +5,7 @@ import { initMysql } from './connection.manager';
 import { Product_Phase } from './entity/product_phase';
 import { Product as ProductEntity } from './entity/product';
 import { mapDbItems, productMapper } from './dbMapper';
-
+//Need to TEst ALL
 @injectable()
 export class MySQLProductRepository implements IProductRepository {
   // return the product of a product_phase_id
@@ -39,7 +39,6 @@ export class MySQLProductRepository implements IProductRepository {
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
         .leftJoinAndSelect('products.user', 'user')
-        .where('user.Id = :userId', { userId })
         .getRawMany();
       console.log(result);
       return mapDbItems(result, productMapper);
@@ -56,11 +55,18 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     try {
       connection = await initMysql();
+      const sql = await connection
+        .getRepository(ProductEntity)
+        .createQueryBuilder('product')
+        .where('product.Id = :productId', { productId })
+        .getSql();
       const result = await connection
         .getRepository(ProductEntity)
         .createQueryBuilder('product')
         .where('product.Id = :productId', { productId })
         .getRawMany();
+      console.log(sql);
+      console.log(result);
       return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;

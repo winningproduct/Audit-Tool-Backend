@@ -1,43 +1,43 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-} from 'typeorm';
-import { User } from './user';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Question } from './question';
+import { User } from './user';
 import { Product } from './product';
 
-@Entity('Evidence')
+const ENTITY_NAME = 'Evidence';
+
+@Entity(ENTITY_NAME)
 export class Evidence {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
+  @Column()
+  content!: string;
+
+  @Column()
+  status!: string;
+
+  @Column()
+  version!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
 
   @ManyToOne(
-    () => Product,
-    product => product.evidences,
+    type => User,
+    user => user.evidences,
   )
-  product!: Product;
+  user!: User;
 
   @ManyToOne(
-    () => Question,
+    type => Question,
     question => question.evidences,
   )
   question!: Question;
 
   @ManyToOne(
-    () => User,
-    user => user.evidences,
+    type => Product,
+    product => product.evidences,
   )
-  user!: User;
+  product!: Product;
 
-  @Column()
-  Content!: string;
-  @Column()
-  Status!: string;
-  @Column()
-  Version!: number;
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  CreatedDate!: Date;
 }

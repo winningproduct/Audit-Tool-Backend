@@ -8,27 +8,31 @@ import {
 import { Phase } from './phase';
 import { Question } from './question';
 
-@Entity('KnowledgeArea')
+const ENTITY_NAME = 'KnowledgeArea';
+
+@Entity(ENTITY_NAME)
 export class KnowledgeArea {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
+  @Column()
+  name!: string;
+
+  @Column()
+  description!: string;
+
+  @Column()
+  score!: number;
 
   @ManyToOne(
-    () => Phase,
-    phase => phase.knowledgeareas,
+    type => Phase,
+    phase => phase.knowledgeAreas,
   )
   phase!: Phase;
 
-  @Column()
-  Name!: string;
-  @Column()
-  Description!: string;
-  @Column()
-  Score!: number;
-
   @OneToMany(
-    () => Question,
-    question => question.knowledgearea,
+    type => Question,
+    question => question.knowledgeArea,
   )
   questions!: Question[];
 }

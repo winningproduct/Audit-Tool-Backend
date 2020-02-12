@@ -1,39 +1,36 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  ManyToOne,
-  CreateDateColumn,
-} from 'typeorm';
-import { Question } from './question';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Phase } from './phase';
+import { Question } from './question';
 
-@Entity('Revision')
+const ENTITY_NAME = 'Revision';
+
+@Entity(ENTITY_NAME)
 export class Revision {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
+  @Column()
+  name!: string;
+
+  @Column()
+  releaseNotes!: string;
+
+  @Column()
+  version!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
 
   @ManyToOne(
-    () => Phase,
+    type => Phase,
     phase => phase.revisions,
   )
   phase!: Phase;
 
-  @Column()
-  Name!: number;
-  @Column()
-  ReleaseNotes!: string;
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  CreatedDate!: Date;
-  @Column()
-  Email!: string;
-  @Column()
-  Version!: number;
-
   @OneToMany(
-    () => Question,
+    type => Question,
     question => question.revision,
   )
   questions!: Question[];
+  
 }

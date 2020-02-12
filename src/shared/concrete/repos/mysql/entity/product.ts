@@ -2,55 +2,65 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
   OneToMany,
+  ManyToOne,
   ManyToMany,
   JoinTable,
-  CreateDateColumn,
 } from 'typeorm';
+import { AuditDetail } from './audit_detail';
+import { ProductPhase } from './product_phase';
 import { Organization } from './organization';
 import { User } from './user';
-import { Product_Phase } from './product_phase';
 import { Evidence } from './evidence';
 
-@Entity('Product')
+
+const ENTITY_NAME = 'Product';
+
+@Entity(ENTITY_NAME)
 export class Product {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
   @Column()
-  Name!: string;
+  name!: string;
+
   @Column()
-  Email!: string;
-  @Column()
-  Description!: string;
+  description!: string;
+
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  CreatedDate!: Date;
+  createdDate!: Date;
 
-  @ManyToOne(
-    () => Organization,
-    organization => organization.products,
+  @OneToMany(
+    type => AuditDetail,
+    auditDetail => auditDetail.product,
   )
-  organization!: Organization;
+  auditDetails!: AuditDetail[];
+
+  @OneToMany(
+    type => ProductPhase,
+    productPhase => productPhase.product,
+  )
+  productPhases!: ProductPhase[];
 
   @ManyToOne(
-    () => User,
+    type => User,
     user => user.products,
   )
   user!: User;
 
-  @OneToMany(
-    () => Product_Phase,
-    productphase => productphase.product,
+  @ManyToOne(
+    type => Organization,
+    organization => organization.products,
   )
-  productphases!: Product_Phase[];
+  organization!: Organization;
 
   @OneToMany(
-    () => Evidence,
+    type => Evidence,
     evidence => evidence.product,
   )
   evidences!: Evidence[];
 
-  @ManyToMany(() => User)
+  @ManyToMany(type => User)
   @JoinTable()
   users!: User[];
 }

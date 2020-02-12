@@ -1,32 +1,36 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Product_Phase } from './product_phase';
-import { KnowledgeArea } from './knowledgeArea';
+import { ProductPhase } from './product_phase';
 import { Revision } from './revision';
+import { KnowledgeArea } from './knowledge_area';
 
-@Entity('Phase')
+const ENTITY_NAME = 'Phase';
+
+@Entity(ENTITY_NAME)
 export class Phase {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
+
   @Column()
-  Name!: string;
+  name!: string;
+
   @Column()
-  Description!: string;
+  description!: string;
 
   @OneToMany(
-    () => Product_Phase,
-    productphase => productphase.phase,
+    type => ProductPhase,
+    productPhase => productPhase.phase,
   )
-  productphases!: Product_Phase[];
+  productPhases!: ProductPhase[];
 
   @OneToMany(
-    () => KnowledgeArea,
-    knowledgearea => knowledgearea.phase,
-  )
-  knowledgeareas!: KnowledgeArea[];
-
-  @OneToMany(
-    () => Revision,
+    type => Revision,
     revision => revision.phase,
   )
   revisions!: Revision[];
+
+  @OneToMany(
+    type => KnowledgeArea,
+    knowledgeArea => knowledgeArea.phase,
+  )
+  knowledgeAreas!: KnowledgeArea[];
 }
