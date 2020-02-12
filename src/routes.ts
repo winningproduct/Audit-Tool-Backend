@@ -133,12 +133,10 @@ export class Routes {
       );
     });
 
-    this.path.get('product/:id/user/:uid/question/:qid', async (req, _res) => {
+    this.path.get('product/:id/question/:qid', async (req, _res) => {
       const productId = req.pathParameters ? req.pathParameters.id : 0;
-      const userId = req.pathParameters ? req.pathParameters.uid : 0;
       const questionId = req.pathParameters ? req.pathParameters.qid : 0;
       return await this.evidenceService.getVersions(
-        Number(userId),
         Number(productId),
         Number(questionId),
       );

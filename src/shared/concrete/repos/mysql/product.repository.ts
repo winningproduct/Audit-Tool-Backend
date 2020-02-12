@@ -39,7 +39,7 @@ export class MySQLProductRepository implements IProductRepository {
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
         .leftJoinAndSelect('products.user', 'user')
-        .where('user.Id = :userId', { userId })
+        .where('user.id = :userId', { userId })
         .getRawMany();
       return mapDbItems(result, productMapper);
     } catch (err) {
@@ -58,7 +58,7 @@ export class MySQLProductRepository implements IProductRepository {
       const result = await connection
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
-        .where('products.Id = :productId', { productId })
+        .where('products.id = :productId', { productId })
         .getRawMany();
       return mapDbItems(result, productMapper);
     } catch (err) {

@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
-import { User } from '@models/user';
 import { Product as ProductEntity } from './entity/product';
 import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
@@ -48,7 +47,7 @@ export class MySQLUserRepository implements IUserRepository {
         .createQueryBuilder()
         .select('users')
         .from(UserEntity, 'users')
-        .where('users.Email= :email', { email })
+        .where('users.email= :email', { email })
         .getRawMany();
       return mapDbItems(result, userMapper)[0];
     } catch (err) {

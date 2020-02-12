@@ -48,24 +48,6 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
     }
   }
 
-  async getPhaseByProductPhaseId(productId: number): Promise<Phase> {
-    let connection: any;
-    let result: Phase;
-    try {
-      connection = await initMysql();
-      result = await connection.query(`CALL 
-      GetPhaseByProductPhaseId(${productId})
-      `);
-      return mapDbItems(result, phasesMapper);
-    } catch (err) {
-      throw err;
-    } finally {
-      if (connection != null) {
-        await connection.close();
-      }
-    }
-  }
-
   get(_itemId: number): Phase {
     throw new Error('Method not implemented.');
   }
