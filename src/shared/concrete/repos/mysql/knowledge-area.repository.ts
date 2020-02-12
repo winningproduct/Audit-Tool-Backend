@@ -13,14 +13,14 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const results = await connection
+      const result = await connection
         .getRepository(PhaseEntity)
         .createQueryBuilder('phase')
-        .leftJoinAndSelect('phase.productphases', 'productphase')
-        .leftJoinAndSelect('phase.knowledgeareas', 'knowledgearea')
-        .where('productphase.Id = :Id', { Id: _productPhaseId })
+        .leftJoinAndSelect('phase.productPhases', 'productPhase')
+        .leftJoinAndSelect('phase.knowledgeAreas', 'knowledgeArea')
+        .where('productPhase.id = :Id', { Id: _productPhaseId })
         .getRawMany();
-      return mapDbItems(results, knowledgeAreaMapper);
+      return mapDbItems(result, knowledgeAreaMapper);
     } catch (err) {
       throw err;
     } finally {

@@ -89,14 +89,19 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
   async getVersions(
     userId: number,
     productId: number,
-    _questionId: number,
+    questionId: number,
   ): Promise<Evidence[]> {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection.query(
-        `CALL GetEvidence( ${userId}, "${productId}")`,
-      );
+      const result = await connection
+        .getRepository(EvidenceEntity)
+        .createQueryBuilder('evidence')
+        .innerJoinAndSelect('evidence.user', 'users')
+        .where('evidence.productId = :productId', { productId })
+        .andWhere('evidence.questionId = :questionId', { questionId })
+        .getRawMany();
+      console.log(result);
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;

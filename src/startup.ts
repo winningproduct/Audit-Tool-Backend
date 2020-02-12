@@ -35,6 +35,7 @@ export const enrtyPoint: APIGatewayProxyHandler = async (
       eventPolifil = event;
     }
     const result = await pathController.run(eventPolifil, _context);
+    console.log(result);
     return result;
   } catch (err) {
     return handleError(err, logger);
