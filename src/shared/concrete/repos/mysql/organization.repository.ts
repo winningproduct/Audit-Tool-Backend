@@ -14,7 +14,7 @@ export class MySQLOrganizationRepository implements IOrganizationRepository {
       connection = await initMysql();
       const result = await connection
         .createQueryBuilder()
-        .select('domain.OrganizationId')
+        .select('domain')
         .from(DomainEntity, 'domain')
         .where('domain.domain = :domain', { domain: _domain })
         .getRawMany();
