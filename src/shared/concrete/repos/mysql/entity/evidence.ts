@@ -39,5 +39,4 @@ export class Evidence {
     product => product.evidences,
   )
   product!: Product;
-
 }

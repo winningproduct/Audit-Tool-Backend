@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { Phase } from './phase';
 import { Question } from './question';
 
@@ -32,5 +38,4 @@ export class Revision {
     question => question.revision,
   )
   questions!: Question[];
-  
 }

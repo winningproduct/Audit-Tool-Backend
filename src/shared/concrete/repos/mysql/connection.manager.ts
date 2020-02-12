@@ -38,14 +38,10 @@ export async function initMysql() {
       synchronize: true,
       logging: false,
     });
-    console.log('con : ', con);
-    
     return con;
   } catch (err) {
     if (err) {
-      console.error(err);
       const existentConn = getConnectionManager().get('default');
-      console.log('existentConn', existentConn)
       return existentConn;
     }
   }

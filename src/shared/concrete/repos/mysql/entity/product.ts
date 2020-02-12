@@ -13,7 +13,6 @@ import { Organization } from './organization';
 import { User } from './user';
 import { Evidence } from './evidence';
 
-
 const ENTITY_NAME = 'Product';
 
 @Entity(ENTITY_NAME)

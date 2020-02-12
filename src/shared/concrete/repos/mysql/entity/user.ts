@@ -3,7 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  ManyToOne
+  ManyToOne,
 } from 'typeorm';
 import { AuditDetail } from './audit_detail';
 import { Organization } from './organization';

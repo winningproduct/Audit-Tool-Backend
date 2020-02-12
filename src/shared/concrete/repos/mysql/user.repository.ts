@@ -4,8 +4,6 @@ import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
 import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
-import {getConnection} from "typeorm";
-import { Domain } from './entity/domain';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -44,24 +42,19 @@ export class MySQLUserRepository implements IUserRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      console.log('connection=============================', connection)
       const sql = connection
         .createQueryBuilder()
         .select('user')
         .from(UserEntity, 'user')
         .getSql();
-      
-        const result = await connection
+      const result = await connection
         .createQueryBuilder()
         .select('user')
         .from(UserEntity, 'user')
         .getRawMany();
-      console.log(sql);
-      console.log(result);
 
       return mapDbItems(result, userMapper);
     } catch (err) {
-      console.log("htdhhfhfhfh====================" ,err);
       throw err;
     } finally {
       if (connection != null) {
