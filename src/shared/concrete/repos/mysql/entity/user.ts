@@ -38,6 +38,8 @@ export class User {
   )
   auditDetails!: AuditDetail[];
 
+  @Column()
+  organizationId!: number;
   @ManyToOne(
     type => Organization,
     organization => organization.users,
