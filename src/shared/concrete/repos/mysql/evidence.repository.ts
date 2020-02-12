@@ -22,6 +22,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .andWhere('evidence.questionId = :questionId', {
           questionId: _questionId,
         })
+        .orderBy('evidence.id', 'DESC')
         .getRawMany();
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
@@ -40,20 +41,14 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const { productId, userId, content, status, version } = _evidence;
-      await connection
-        .createQueryBuilder()
-        .insert(_evidence)
-        .into(Evidence)
-        .values({
-          ProductId: productId,
-          UserId: userId,
-          QuestionId: _questionId,
-          Content: content,
-          Status: status,
-          Version: version,
-        })
-        .execute();
+      const evidence = new EvidenceEntity();
+      evidence.content = _evidence.content;
+      evidence.status = _evidence.status;
+      evidence.version = _evidence.version;
+      evidence.productId = Number(_evidence.productId);
+      evidence.questionId = Number(_questionId);
+      evidence.userId = Number(_evidence.userId);
+      await connection.manager.save(evidence);
       return true;
     } catch (err) {
       throw err;

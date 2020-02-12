@@ -126,7 +126,7 @@ export class Routes {
       return await this.userService.addUser(user);
     });
 
-    this.path.get('product/:id/productPhase', async (req, _res) => {
+    this.path.get('products/:id/productPhase', async (req, _res) => {
       const productPhaseId = req.pathParameters ? req.pathParameters.id : 0;
       return await this.productService.getPhaseByProductPhaseId(
         Number(productPhaseId),
