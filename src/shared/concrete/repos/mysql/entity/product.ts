@@ -2,62 +2,64 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   OneToMany,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { AuditDetail } from './audit_detail';
+import { ProductPhase } from './product_phase';
 import { Organization } from './organization';
 import { User } from './user';
-import { Product_User } from './product_user';
-import { Product_Phase } from './product_phase';
 import { Evidence } from './evidence';
 
-@Entity('Product')
+const ENTITY_NAME = 'Product';
+
+@Entity(ENTITY_NAME)
 export class Product {
   @PrimaryGeneratedColumn()
-  Id!: number;
-  @Column()
-  Name!: string;
-  @Column()
-  Email!: string;
-  @Column()
-  Description!: string;
-  @Column()
-  CreatedDate!: Date;
+  id!: number;
 
   @Column()
-  OrganizationId: number | undefined;
-  @ManyToOne(
-    () => Organization,
-    organization => organization.products,
+  name!: string;
+
+  @Column()
+  description!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
+
+  @OneToMany(
+    type => AuditDetail,
+    auditDetail => auditDetail.product,
   )
-  @JoinColumn({ name: 'OrganizationId' })
-  organization: Organization | undefined;
+  auditDetails!: AuditDetail[];
 
-  @Column()
-  CreatedUserId: number | undefined;
+  @OneToMany(
+    type => ProductPhase,
+    productPhase => productPhase.product,
+  )
+  productPhases!: ProductPhase[];
+
   @ManyToOne(
-    () => User,
+    type => User,
     user => user.products,
   )
-  @JoinColumn({ name: 'CreatedUserId' })
-  user: User | undefined;
+  user!: User;
+
+  @ManyToOne(
+    type => Organization,
+    organization => organization.products,
+  )
+  organization!: Organization;
 
   @OneToMany(
-    () => Product_User,
-    productuser => productuser.user,
+    type => Evidence,
+    evidence => evidence.product,
   )
-  productusers: Product_User[] | undefined;
+  evidences!: Evidence[];
 
-  @OneToMany(
-    () => Product_Phase,
-    productphase => productphase.product,
-  )
-  productphases: Product_Phase[] | undefined;
-
-  @OneToMany(
-    () => Evidence,
-    evidence => evidence.question,
-  )
-  evidences: Evidence[] | undefined;
+  @ManyToMany(type => User)
+  @JoinTable()
+  users!: User[];
 }

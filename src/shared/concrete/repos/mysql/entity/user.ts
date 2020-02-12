@@ -2,60 +2,62 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
+import { AuditDetail } from './audit_detail';
 import { Organization } from './organization';
 import { Product } from './product';
-import { Product_User } from './product_user';
 import { Question } from './question';
 import { Evidence } from './evidence';
+
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn()
-  Id!: number;
-  @Column()
-  FirstName!: number;
-  @Column()
-  LastName!: string;
-  @Column()
-  Email!: string;
-  @Column()
-  PhoneNumber!: string;
-  @Column()
-  CreatedDate!: Date;
+  id!: number;
 
   @Column()
-  OrganizationId: number | undefined;
+  email!: string;
+
+  @Column()
+  firstName!: string;
+
+  @Column()
+  lastName!: string;
+
+  @Column()
+  phoneNumber!: string;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdDate!: Date;
+
+  @OneToMany(
+    type => AuditDetail,
+    auditDetail => auditDetail.user,
+  )
+  auditDetails!: AuditDetail[];
+
   @ManyToOne(
-    () => Organization,
+    type => Organization,
     organization => organization.users,
   )
-  @JoinColumn({ name: 'OrganizationId' })
-  organization: Organization | undefined;
+  organization!: Organization;
 
   @OneToMany(
-    () => Product,
+    type => Product,
     product => product.user,
   )
-  products: Product[] | undefined;
+  products!: Product[];
 
   @OneToMany(
-    () => Product_User,
-    productuser => productuser.user,
-  )
-  productuser: Product_User[] | undefined;
-
-  @OneToMany(
-    () => Question,
+    type => Question,
     question => question.user,
   )
-  questions: Question[] | undefined;
+  questions!: Question[];
 
   @OneToMany(
-    () => Evidence,
-    evidence => evidence.question,
+    type => Evidence,
+    evidence => evidence.user,
   )
-  evidences: Evidence[] | undefined;
+  evidences!: Evidence[];
 }

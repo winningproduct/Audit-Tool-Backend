@@ -30,7 +30,7 @@ export class UserService implements IUserService {
       splitted[1],
     );
     const user = new User();
-    user.organizationId = data[0].OrganizationId;
+    user.organizationId = data[0].organizationId;
     user.email = adUser.email;
     user.firstName = adUser.firstName;
     user.lastName = adUser.lastName;

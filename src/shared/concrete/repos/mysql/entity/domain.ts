@@ -1,26 +1,19 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Organization } from './organization';
 
-@Entity('Domain')
+const ENTITY_NAME = 'Domain';
+
+@Entity(ENTITY_NAME)
 export class Domain {
   @PrimaryGeneratedColumn()
-  Id!: number;
+  id!: number;
 
   @Column()
-  OrganizationId!: number;
+  domain!: string;
+
   @ManyToOne(
-    () => Organization,
-    organization => organization.users,
+    type => Organization,
+    organization => organization.domains,
   )
-  @JoinColumn({ name: 'OrganizationId' })
-  organization: Organization | undefined;
-
-  @Column()
-  Domain!: string;
+  organization!: Organization;
 }

@@ -2,13 +2,13 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { IUserRepository } from '@repos/user.repository.interface';
 import { User } from '@models/user';
-import { Product_User } from './entity/product_user';
+import { User as UserEntity } from './entity/user';
+import { mapDbItems, userMapper } from './dbMapper';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
   async add(user: User): Promise<boolean> {
     let connection: any;
-    console.log(user);
     const organizationId = user.organizationId;
     const firstName = user.firstName;
     const lastName = user.lastName;
@@ -38,18 +38,22 @@ export class MySQLUserRepository implements IUserRepository {
     }
   }
 
-  async getOrganizationByUserEmail(_email: string): Promise<User[]> {
+  async getOrganizationByUserEmail(email: string): Promise<User[]> {
     let connection: any;
     try {
       connection = await initMysql();
+      const sql = connection
+        .createQueryBuilder()
+        .select('user')
+        .from(UserEntity, 'user')
+        .getSql();
       const result = await connection
         .createQueryBuilder()
         .select('user')
-        .from(User, 'user')
-        .where('user.Email = :email', { email: _email })
-        .getOne();
-      console.log(result);
-      return result;
+        .from(UserEntity, 'user')
+        .getRawMany();
+
+      return mapDbItems(result, userMapper);
     } catch (err) {
       throw err;
     } finally {
@@ -62,16 +66,17 @@ export class MySQLUserRepository implements IUserRepository {
   async getUsersByProjectId(id: number): Promise<User[]> {
     let connection: any;
     try {
+      console.log('1');
       connection = await initMysql();
-      const results = await connection
-        .getRepository(Product_User)
-        .createQueryBuilder('product_user')
-        .leftJoinAndSelect('product_user.user', 'users')
+      const result = await connection
+        .getRepository(UserEntity)
+        .createQueryBuilder('users')
+        .leftJoinAndSelect('product_user.UserId', 'user')
         .where('product_user.ProductId = :id', { id })
-        .getMany();
-      console.log(results);
-      return results;
+        .getRawMany();
+      return mapDbItems(result, userMapper);
     } catch (err) {
+      console.log(err);
       throw err;
     } finally {
       if (connection != null) {

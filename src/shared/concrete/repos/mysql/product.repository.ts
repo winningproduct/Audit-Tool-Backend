@@ -2,22 +2,25 @@ import { Product } from './../../../models/product';
 import { IProductRepository } from '../../../abstract/repos/product.repository.interface';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { Product_User } from './entity/product_user';
-import { Product_Phase } from './entity/product_phase';
-
+import { ProductPhase } from './entity/product_phase';
+import { Product as ProductEntity } from './entity/product';
+import { mapDbItems, productMapper } from './dbMapper';
+// Need to TEst ALL
 @injectable()
 export class MySQLProductRepository implements IProductRepository {
-  async getProductByProductPhaseId(productPhaseId: number): Promise<Product> {
+  // return the product of a product_phase_id
+  async getProductByProductPhaseId(productPhaseId: number): Promise<Product[]> {
     let connection: any;
     try {
       connection = await initMysql();
       const result = await connection
-        .getRepository(Product_Phase)
+        .getRepository(ProductPhase)
         .createQueryBuilder('product_phase')
         .innerJoinAndSelect('product_phase.product', 'products')
+        .select('products')
         .where('product_phase.Id = :productPhaseId', { productPhaseId })
-        .getOne();
-      return result;
+        .getRawMany();
+      return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
     } finally {
@@ -27,18 +30,18 @@ export class MySQLProductRepository implements IProductRepository {
     }
   }
 
+  // get product by user id
   async getProductsByUser(userId: number): Promise<Product[]> {
     let connection: any;
     try {
       connection = await initMysql();
       const result = await connection
-        .getRepository(Product_User)
-        .createQueryBuilder('product_user')
-        .leftJoinAndSelect('product_user.product', 'products')
-        .where('product_user.UserId = :userId', { userId })
-        .getMany();
+        .getRepository(ProductEntity)
+        .createQueryBuilder('products')
+        .leftJoinAndSelect('products.user', 'user')
+        .getRawMany();
       console.log(result);
-      return result;
+      return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
     } finally {
@@ -52,13 +55,19 @@ export class MySQLProductRepository implements IProductRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result = await connection
-        .getRepository(Product)
+      const sql = await connection
+        .getRepository(ProductEntity)
         .createQueryBuilder('product')
         .where('product.Id = :productId', { productId })
-        .getMany();
+        .getSql();
+      const result = await connection
+        .getRepository(ProductEntity)
+        .createQueryBuilder('product')
+        .where('product.Id = :productId', { productId })
+        .getRawMany();
+      console.log(sql);
       console.log(result);
-      return result;
+      return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
     } finally {
