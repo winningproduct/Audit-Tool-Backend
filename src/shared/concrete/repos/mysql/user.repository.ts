@@ -47,7 +47,7 @@ export class MySQLUserRepository implements IUserRepository {
         .createQueryBuilder()
         .select('users')
         .from(UserEntity, 'users')
-        .where('users.Email= :email', { email })
+        .where('users.email= :email', { email })
         .getRawMany();
       return mapDbItems(result, userMapper)[0];
     } catch (err) {

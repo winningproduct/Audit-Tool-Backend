@@ -87,7 +87,6 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
   }
 
   async getVersions(
-    userId: number,
     productId: number,
     questionId: number,
   ): Promise<Evidence[]> {

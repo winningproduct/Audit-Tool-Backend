@@ -13,9 +13,5 @@ export interface IEvidenceService {
 
   updateStatus(_evidenceId: number, _status: string): Promise<boolean>;
 
-  getVersions(
-    _userId: number,
-    _productId: number,
-    _questionId: number,
-  ): Promise<Evidence[]>;
+  getVersions(_productId: number, _questionId: number): Promise<Evidence[]>;
 }
