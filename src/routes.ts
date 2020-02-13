@@ -157,7 +157,6 @@ export class Routes {
     this.path.post('product', async (req, _res) => {
       return await this.productService.addProduct(req.body);
     });
-
   }
 
   getPath() {
