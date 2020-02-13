@@ -79,7 +79,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .createQueryBuilder()
         .update(Evidence)
         .set({
-          Status: _status,
+          status: _status,
         })
         .where('Id = :id', { id: _evidenceId })
         .execute();
