@@ -22,24 +22,18 @@ export class Evidence {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdDate!: Date;
 
-  @Column()
-  userId!: number;
   @ManyToOne(
     type => User,
     user => user.evidences,
   )
   user!: User;
 
-  @Column()
-  questionId!: number;
   @ManyToOne(
     type => Question,
     question => question.evidences,
   )
   question!: Question;
 
-  @Column()
-  productId!: number;
   @ManyToOne(
     type => Product,
     product => product.evidences,

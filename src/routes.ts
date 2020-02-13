@@ -141,10 +141,23 @@ export class Routes {
         Number(questionId),
       );
     });
+
     this.path.post('authTrigger/user', async (req, _res) => {
       const data = req.body;
       return await this.userService.addUserFromTrigger(data);
     });
+
+    this.path.post('userProducts', async (req, _res) => {
+      return await this.userService.addUserProduct(
+        req.body.productId,
+        req.body.userId,
+      );
+    });
+
+    this.path.post('product', async (req, _res) => {
+      return await this.productService.addProduct(req.body);
+    });
+
   }
 
   getPath() {

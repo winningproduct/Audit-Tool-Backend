@@ -5,6 +5,7 @@ import { Product as ProductEntity } from './entity/product';
 import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
 import { User } from '@models/user';
+import { getRepository } from 'typeorm';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -61,6 +62,31 @@ export class MySQLUserRepository implements IUserRepository {
         })
         .getRawMany();
       return mapDbItems(result, userMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async assignProjectToUser(
+    productId: number,
+    userId: number,
+  ): Promise<boolean> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const userRepository = getRepository(UserEntity);
+      const user = await userRepository.findOneOrFail(userId);
+      const userArray = await userRepository.find();
+      const productRepository = getRepository(ProductEntity);
+      const product = await productRepository.findOneOrFail(productId);
+      product.users = userArray;
+      product.users.push(user);
+      await productRepository.save(product);
+      return true;
     } catch (err) {
       throw err;
     } finally {
