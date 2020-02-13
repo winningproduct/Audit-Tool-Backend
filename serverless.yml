@@ -121,5 +121,19 @@ functions:
           authorizer:
             name: authorizer
             arn: ${env:ARN}
+      - http:
+          method: post
+          path: userProducts
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: post
+          path: product
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
   auth-token-trigger:
     handler: src/functions/auth-token-trigger.authToken
