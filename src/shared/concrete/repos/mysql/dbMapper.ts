@@ -97,7 +97,7 @@ export function evidenceDateMapper(evidence: any) {
           });
         }
       });
-    }else {
+    } else {
       reference.push(x);
       const obj = {
         name: x,
@@ -111,6 +111,6 @@ export function evidenceDateMapper(evidence: any) {
       };
       mapDates.push(obj);
     }
-  }); 
+  });
   return mapDates;
 }

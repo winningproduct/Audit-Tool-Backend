@@ -41,7 +41,7 @@ export class EvidenceService implements IEvidenceService {
     );
   }
 
-  async getEvidenceById(evidenceId: number){
+  async getEvidenceById(evidenceId: number) {
     return this.evidenceRepository.getEvidenceById(evidenceId);
   }
 }

@@ -110,8 +110,8 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .andWhere('evidence.questionId = :questionId', { questionId })
         .groupBy('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d")')
         .getRawMany();
-        return mapDbItems(result, evidenceMapper);
-      } catch (err) {
+      return mapDbItems(result, evidenceMapper);
+    } catch (err) {
       throw err;
     } finally {
       if (connection != null) {
@@ -130,7 +130,6 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .from(EvidenceEntity, 'evidence')
         .where('evidence.id = :id', { id: _evidenceId })
         .getRawMany();
-        console.log(result);
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;
