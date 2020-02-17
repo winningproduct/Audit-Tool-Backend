@@ -24,6 +24,7 @@ export function knowledgeAreaMapper(knowledgeArea: any): KnowledgeArea {
     name: knowledgeArea.knowledgeArea_name,
     description: knowledgeArea.knowledgeArea_description,
     score: knowledgeArea.knowledgeArea_score,
+    url: knowledgeArea.knowledgeArea_url,
   } as KnowledgeArea;
 }
 

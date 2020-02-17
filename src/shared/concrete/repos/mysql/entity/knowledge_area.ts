@@ -24,6 +24,9 @@ export class KnowledgeArea {
   @Column()
   score!: number;
 
+  @Column()
+  url!: string;
+
   @ManyToOne(
     type => Phase,
     phase => phase.knowledgeAreas,
