@@ -93,20 +93,44 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
-  async getVersions(
+  async getVersionsGroupByDate(
     productId: number,
     questionId: number,
   ): Promise<Evidence[]> {
     let connection: any;
     try {
       connection = await initMysql();
+
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
-        .innerJoinAndSelect('evidence.user', 'users')
+        .innerJoin('evidence.user', 'users')
+        .select('evidence.createdDate')
         .where('evidence.productId = :productId', { productId })
         .andWhere('evidence.questionId = :questionId', { questionId })
+        .groupBy('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d")')
         .getRawMany();
+        return mapDbItems(result, evidenceMapper);
+      } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getEvidenceById(_evidenceId: number): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(EvidenceEntity, 'evidence')
+        .where('evidence.id = :id', { id: _evidenceId })
+        .getRawMany();
+        console.log(result);
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
       throw err;

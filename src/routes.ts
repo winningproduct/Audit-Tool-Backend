@@ -136,10 +136,15 @@ export class Routes {
     this.path.get('product/:id/question/:qid', async (req, _res) => {
       const productId = req.pathParameters ? req.pathParameters.id : 0;
       const questionId = req.pathParameters ? req.pathParameters.qid : 0;
-      return await this.evidenceService.getVersions(
+      return await this.evidenceService.getVersionsGroupByDate(
         Number(productId),
         Number(questionId),
       );
+    });
+
+    this.path.get('evidence/:id', async (req, _res) => {
+      const evidenceId = req.pathParameters ? req.pathParameters.id : 0;
+      return await this.evidenceService.getEvidenceById(Number(evidenceId));
     });
 
     this.path.post('authTrigger/user', async (req, _res) => {

@@ -80,3 +80,37 @@ export function domainMapper(org: any) {
     organizationId: org.domain_organizationId,
   };
 }
+
+export function evidenceDateMapper(evidence: any) {
+  const mapDates: any = [];
+  const reference: any = [];
+  Object.keys(evidence).map(key => {
+    const x = new Date(evidence[key].evidence_createdDate).toLocaleDateString();
+
+    if (reference.includes(x)) {
+      mapDates.find((date: any) => {
+        if (date['name'] === x) {
+          date['value'].push({
+            id: evidence[key].evidence_id,
+            firstName: evidence[key].users_firstName,
+            lastName: evidence[key].users_lastName,
+          });
+        }
+      });
+    }else {
+      reference.push(x);
+      const obj = {
+        name: x,
+        value: [
+          {
+            id: evidence[key].evidence_id,
+            firstName: evidence[key].users_firstName,
+            lastName: evidence[key].users_lastName,
+          },
+        ],
+      };
+      mapDates.push(obj);
+    }
+  }); 
+  return mapDates;
+}

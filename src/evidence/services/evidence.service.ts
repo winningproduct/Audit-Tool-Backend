@@ -34,7 +34,14 @@ export class EvidenceService implements IEvidenceService {
     return await this.evidenceRepository.updateStatus(evidenceId, status);
   }
 
-  async getVersions(productId: number, questionId: number) {
-    return await this.evidenceRepository.getVersions(productId, questionId);
+  async getVersionsGroupByDate(productId: number, questionId: number) {
+    return await this.evidenceRepository.getVersionsGroupByDate(
+      productId,
+      questionId,
+    );
+  }
+
+  async getEvidenceById(evidenceId: number){
+    return this.evidenceRepository.getEvidenceById(evidenceId);
   }
 }
