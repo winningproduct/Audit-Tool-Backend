@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Product } from './product';
+import { User } from './user';
 import { Phase } from './phase';
 
 const ENTITY_NAME = 'ProductPhase';
