@@ -3,6 +3,7 @@ import { IProductRepository } from '@repos/product.repository.interface';
 import { IPhaseRepository } from '@repos/phase.repository.interface';
 import { IProductService } from 'products/interfaces/product.service.interface';
 import { injectable, inject } from 'inversify';
+import { Product } from '@models/product';
 
 @injectable()
 export class ProductService implements IProductService {
@@ -36,5 +37,9 @@ export class ProductService implements IProductService {
 
   async getPhaseByProductPhaseId(productId: number) {
     return await this.phaseRepository.getPhaseByProductPhaseId(productId);
+  }
+
+  async addProduct(product: Product) {
+    return await this.productRepository.add(product);
   }
 }

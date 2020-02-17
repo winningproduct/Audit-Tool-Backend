@@ -6,6 +6,6 @@ export class Question extends BaseEntity {
   userId!: number;
   title!: string;
   description!: string;
-  version!: number;
+  version!: string;
   createdDate!: string;
 }

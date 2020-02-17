@@ -45,4 +45,8 @@ export class UserService implements IUserService {
   async getUsersByProjectId(id: number) {
     return await this.userRepository.getUsersByProjectId(id);
   }
+
+  async addUserProduct(productId: number, userId: number) {
+    return await this.userRepository.assignProjectToUser(productId, userId);
+  }
 }

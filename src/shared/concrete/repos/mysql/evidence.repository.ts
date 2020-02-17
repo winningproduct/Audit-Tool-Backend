@@ -4,6 +4,10 @@ import { mapDbItems, evidenceMapper } from './dbMapper';
 import { Evidence } from '@models/evidence';
 import { Evidence as EvidenceEntity } from './entity/evidence';
 import { injectable } from 'inversify';
+import { getRepository } from 'typeorm';
+import { User } from './entity/user';
+import { Product } from './entity/product';
+import { Question } from './entity/question';
 
 @injectable()
 export class MySQLEvidenceRepository implements IEvidenceRepository {
@@ -45,9 +49,17 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       evidence.content = _evidence.content;
       evidence.status = _evidence.status;
       evidence.version = _evidence.version;
-      evidence.productId = Number(_evidence.productId);
-      evidence.questionId = Number(_questionId);
-      evidence.userId = Number(_evidence.userId);
+      const productRepository = getRepository(Product);
+      const product = await productRepository.findOneOrFail(
+        _evidence.productId,
+      );
+      evidence.product = product;
+      const questionRepository = getRepository(Question);
+      const question = await questionRepository.findOneOrFail(_questionId);
+      evidence.question = question;
+      const userRepository = getRepository(User);
+      const user = await userRepository.findOneOrFail(_evidence.userId);
+      evidence.user = user;
       await connection.manager.save(evidence);
       return true;
     } catch (err) {
@@ -67,7 +79,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .createQueryBuilder()
         .update(Evidence)
         .set({
-          Status: _status,
+          status: _status,
         })
         .where('Id = :id', { id: _evidenceId })
         .execute();
