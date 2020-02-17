@@ -5,4 +5,5 @@ export class KnowledgeArea extends BaseEntity {
   name!: string;
   description!: string;
   score!: number;
+  url!: string;
 }

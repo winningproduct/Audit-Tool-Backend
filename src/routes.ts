@@ -126,26 +126,41 @@ export class Routes {
       return await this.userService.addUser(user);
     });
 
-    this.path.get('product/:id/productPhase', async (req, _res) => {
+    this.path.get('products/:id/productPhase', async (req, _res) => {
       const productPhaseId = req.pathParameters ? req.pathParameters.id : 0;
       return await this.productService.getPhaseByProductPhaseId(
         Number(productPhaseId),
       );
     });
 
-    this.path.get('product/:id/user/:uid/question/:qid', async (req, _res) => {
+    this.path.get('product/:id/question/:qid', async (req, _res) => {
       const productId = req.pathParameters ? req.pathParameters.id : 0;
-      const userId = req.pathParameters ? req.pathParameters.uid : 0;
       const questionId = req.pathParameters ? req.pathParameters.qid : 0;
-      return await this.evidenceService.getVersions(
-        Number(userId),
+      return await this.evidenceService.getVersionsGroupByDate(
         Number(productId),
         Number(questionId),
       );
     });
+
+    this.path.get('evidence/:id', async (req, _res) => {
+      const evidenceId = req.pathParameters ? req.pathParameters.id : 0;
+      return await this.evidenceService.getEvidenceById(Number(evidenceId));
+    });
+
     this.path.post('authTrigger/user', async (req, _res) => {
       const data = req.body;
       return await this.userService.addUserFromTrigger(data);
+    });
+
+    this.path.post('userProducts', async (req, _res) => {
+      return await this.userService.addUserProduct(
+        req.body.productId,
+        req.body.userId,
+      );
+    });
+
+    this.path.post('product', async (req, _res) => {
+      return await this.productService.addProduct(req.body);
     });
   }
 

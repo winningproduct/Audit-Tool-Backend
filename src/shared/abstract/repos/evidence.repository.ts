@@ -14,9 +14,10 @@ export interface IEvidenceRepository extends IRepository<Evidence> {
 
   updateStatus(_evidenceId: number, _status: string): Promise<boolean>;
 
-  getVersions(
-    _userId: number,
+  getVersionsGroupByDate(
     _productId: number,
     _questionId: number,
   ): Promise<Evidence[]>;
+
+  getEvidenceById(_evidenceId: number): Promise<Evidence[]>;
 }

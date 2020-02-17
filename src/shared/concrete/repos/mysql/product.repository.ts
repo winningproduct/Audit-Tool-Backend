@@ -4,7 +4,12 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { ProductPhase } from './entity/product_phase';
 import { Product as ProductEntity } from './entity/product';
+import { Phase as PhaseEntity } from './entity/phase';
+import { User as UserEntity } from './entity/user';
 import { mapDbItems, productMapper } from './dbMapper';
+import { getRepository } from 'typeorm';
+import { Question as QuestionEntity } from './entity/question';
+import { Evidence as EvidenceEntity } from './entity/evidence';
 // Need to TEst ALL
 @injectable()
 export class MySQLProductRepository implements IProductRepository {
@@ -38,8 +43,8 @@ export class MySQLProductRepository implements IProductRepository {
       const result = await connection
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
-        .leftJoinAndSelect('products.user', 'user')
-        .where('user.Id = :userId', { userId })
+        .leftJoinAndSelect('products.users', 'user')
+        .where('user.id = :userId', { userId })
         .getRawMany();
       return mapDbItems(result, productMapper);
     } catch (err) {
@@ -58,9 +63,57 @@ export class MySQLProductRepository implements IProductRepository {
       const result = await connection
         .getRepository(ProductEntity)
         .createQueryBuilder('products')
-        .where('products.Id = :productId', { productId })
+        .where('products.id = :productId', { productId })
         .getRawMany();
       return mapDbItems(result, productMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async add(_product: Product): Promise<boolean> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+
+      const phaseRepository = getRepository(PhaseEntity);
+      const phases = await phaseRepository.find();
+      const questionRepository = getRepository(QuestionEntity);
+      const questions = await questionRepository.find();
+      const userRepository = getRepository(UserEntity);
+      const user = await userRepository.findOneOrFail(9);
+      const product = new ProductEntity();
+      product.name = _product.name;
+      product.description = _product.description;
+      const result = await connection.manager.save(product);
+
+      // Creates Product Phases
+      // tslint:disable-next-line: prefer-for-of
+      for (let index = 0; index < phases.length; index++) {
+        const productPhase = new ProductPhase();
+        productPhase.phaseId = phases[index].id;
+        productPhase.score = 0;
+        productPhase.productId = result.id;
+        await connection.manager.save(productPhase);
+      }
+      // Creates New Evidence set
+      // tslint:disable-next-line: prefer-for-of
+      for (let index = 0; index < questions.length; index++) {
+        const evidence = new EvidenceEntity();
+        evidence.content = '';
+        evidence.status = 'null';
+        evidence.question = questions[index];
+        evidence.product = product;
+        evidence.user = user;
+        evidence.version = '1'; // Need to be changed when Question Versoning is Finalized
+        await connection.manager.save(evidence);
+      }
+
+      return true;
     } catch (err) {
       throw err;
     } finally {
@@ -73,9 +126,7 @@ export class MySQLProductRepository implements IProductRepository {
   get(_itemId: number): Product {
     throw new Error('Method not implemented.');
   }
-  add(_item: import('../../../models/product').Product) {
-    throw new Error('Method not implemented.');
-  }
+
   update(_itemId: number, _item: import('../../../models/product').Product) {
     throw new Error('Method not implemented.');
   }

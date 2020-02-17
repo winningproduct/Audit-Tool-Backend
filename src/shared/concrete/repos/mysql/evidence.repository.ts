@@ -4,6 +4,10 @@ import { mapDbItems, evidenceMapper } from './dbMapper';
 import { Evidence } from '@models/evidence';
 import { Evidence as EvidenceEntity } from './entity/evidence';
 import { injectable } from 'inversify';
+import { getRepository } from 'typeorm';
+import { User } from './entity/user';
+import { Product } from './entity/product';
+import { Question } from './entity/question';
 
 @injectable()
 export class MySQLEvidenceRepository implements IEvidenceRepository {
@@ -22,6 +26,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .andWhere('evidence.questionId = :questionId', {
           questionId: _questionId,
         })
+        .orderBy('evidence.id', 'DESC')
         .getRawMany();
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
@@ -40,20 +45,22 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const { productId, userId, content, status, version } = _evidence;
-      await connection
-        .createQueryBuilder()
-        .insert(_evidence)
-        .into(Evidence)
-        .values({
-          ProductId: productId,
-          UserId: userId,
-          QuestionId: _questionId,
-          Content: content,
-          Status: status,
-          Version: version,
-        })
-        .execute();
+      const evidence = new EvidenceEntity();
+      evidence.content = _evidence.content;
+      evidence.status = _evidence.status;
+      evidence.version = _evidence.version;
+      const productRepository = getRepository(Product);
+      const product = await productRepository.findOneOrFail(
+        _evidence.productId,
+      );
+      evidence.product = product;
+      const questionRepository = getRepository(Question);
+      const question = await questionRepository.findOneOrFail(_questionId);
+      evidence.question = question;
+      const userRepository = getRepository(User);
+      const user = await userRepository.findOneOrFail(_evidence.userId);
+      evidence.user = user;
+      await connection.manager.save(evidence);
       return true;
     } catch (err) {
       throw err;
@@ -72,7 +79,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .createQueryBuilder()
         .update(Evidence)
         .set({
-          Status: _status,
+          status: _status,
         })
         .where('Id = :id', { id: _evidenceId })
         .execute();
@@ -86,8 +93,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
-  async getVersions(
-    userId: number,
+  async getVersionsGroupByDate(
     productId: number,
     questionId: number,
   ): Promise<Evidence[]> {
@@ -97,9 +103,31 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
-        .innerJoinAndSelect('evidence.user', 'users')
+        .innerJoin('evidence.user', 'users')
+        .select('evidence.createdDate')
         .where('evidence.productId = :productId', { productId })
         .andWhere('evidence.questionId = :questionId', { questionId })
+        .groupBy('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d")')
+        .getRawMany();
+      return mapDbItems(result, evidenceMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getEvidenceById(_evidenceId: number): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(EvidenceEntity, 'evidence')
+        .where('evidence.id = :id', { id: _evidenceId })
         .getRawMany();
       return mapDbItems(result, evidenceMapper);
     } catch (err) {

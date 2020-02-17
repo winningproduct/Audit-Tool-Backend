@@ -6,4 +6,5 @@ export interface IUserService {
   addUserFromTrigger(adUser: AzureUser): Promise<number>;
   getOrganizationByUserEmail(email: string): Promise<User[]>;
   getUsersByProjectId(id: number): Promise<User[]>;
+  addUserProduct(productId: number, userId: number): Promise<boolean>;
 }

@@ -1,8 +1,7 @@
-import { Product } from '../../../models/product';
-import { KnowledgeArea } from '../../../models/knowledge-area';
-import { Question } from '../../../models/question';
-import { Phase } from '../../../models/phase';
-import { Evidence } from '@models/evidence';
+import { Product } from '@models/product';
+import { KnowledgeArea } from '@models/knowledge-area';
+import { Question } from '@models/question';
+import { Phase } from '@models/phase';
 import { User } from '@models/user';
 
 export function mapDbItems(result: any, mapper: any): any {
@@ -25,6 +24,7 @@ export function knowledgeAreaMapper(knowledgeArea: any): KnowledgeArea {
     name: knowledgeArea.knowledgeArea_name,
     description: knowledgeArea.knowledgeArea_description,
     score: knowledgeArea.knowledgeArea_score,
+    url: knowledgeArea.knowledgeArea_url,
   } as KnowledgeArea;
 }
 
@@ -80,4 +80,38 @@ export function domainMapper(org: any) {
   return {
     organizationId: org.domain_organizationId,
   };
+}
+
+export function evidenceDateMapper(evidence: any) {
+  const mapDates: any = [];
+  const reference: any = [];
+  Object.keys(evidence).map(key => {
+    const x = new Date(evidence[key].evidence_createdDate).toLocaleDateString();
+
+    if (reference.includes(x)) {
+      mapDates.find((date: any) => {
+        if (date['name'] === x) {
+          date['value'].push({
+            id: evidence[key].evidence_id,
+            firstName: evidence[key].users_firstName,
+            lastName: evidence[key].users_lastName,
+          });
+        }
+      });
+    } else {
+      reference.push(x);
+      const obj = {
+        name: x,
+        value: [
+          {
+            id: evidence[key].evidence_id,
+            firstName: evidence[key].users_firstName,
+            lastName: evidence[key].users_lastName,
+          },
+        ],
+      };
+      mapDates.push(obj);
+    }
+  });
+  return mapDates;
 }

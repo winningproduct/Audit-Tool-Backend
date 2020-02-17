@@ -11,7 +11,8 @@ import { Product } from './product';
 import { Question } from './question';
 import { Evidence } from './evidence';
 
-@Entity('User')
+const ENTITY_NAME = 'User';
+@Entity({ name: ENTITY_NAME })
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -37,6 +38,8 @@ export class User {
   )
   auditDetails!: AuditDetail[];
 
+  @Column()
+  organizationId!: number;
   @ManyToOne(
     type => Organization,
     organization => organization.users,
