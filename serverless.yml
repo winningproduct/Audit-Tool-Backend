@@ -106,7 +106,7 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get
-          path: product/{id}/question/{qid}
+          path: product/{id}/question/{qid}/page/{pid}
           integration: lambda
           authorizer:
             name: authorizer

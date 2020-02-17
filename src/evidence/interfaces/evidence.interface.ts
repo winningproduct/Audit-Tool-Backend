@@ -16,6 +16,7 @@ export interface IEvidenceService {
   getVersionsGroupByDate(
     _productId: number,
     _questionId: number,
+    _pageId: number,
   ): Promise<Evidence[]>;
 
   getEvidenceById(_evidenceId: number): Promise<Evidence[]>;
