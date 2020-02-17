@@ -147,6 +147,20 @@ export class Routes {
       return await this.evidenceService.getEvidenceById(Number(evidenceId));
     });
 
+    this.path.get(
+      'product/:id/question/:qid/evidence/date/:did',
+      async (req, _res) => {
+        const productId = req.pathParameters ? req.pathParameters.id : 0;
+        const questionId = req.pathParameters ? req.pathParameters.qid : 0;
+        const date = req.pathParameters ? req.pathParameters.did : '';
+        return await this.evidenceService.getVersionsByDate(
+          Number(productId),
+          Number(questionId),
+          date,
+        );
+      },
+    );
+
     this.path.post('authTrigger/user', async (req, _res) => {
       const data = req.body;
       return await this.userService.addUserFromTrigger(data);

@@ -100,7 +100,6 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     let connection: any;
     try {
       connection = await initMysql();
-
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
@@ -129,6 +128,34 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .select('evidence')
         .from(EvidenceEntity, 'evidence')
         .where('evidence.id = :id', { id: _evidenceId })
+        .getRawMany();
+      return mapDbItems(result, evidenceMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getVersionsByDate(
+    productId: number,
+    questionId: number,
+    date: string,
+  ): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .getRepository(EvidenceEntity)
+        .createQueryBuilder('evidence')
+        .innerJoinAndSelect('evidence.user', 'users')
+        .where('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d") = :date', {
+          date,
+        })
+        .andWhere('evidence.productId = :productId', { productId })
+        .andWhere('evidence.questionId = :questionId', { questionId })
         .getRawMany();
       return mapDbItems(result, evidenceMapper);
     } catch (err) {

@@ -19,4 +19,9 @@ export interface IEvidenceService {
   ): Promise<Evidence[]>;
 
   getEvidenceById(_evidenceId: number): Promise<Evidence[]>;
+  getVersionsByDate(
+    _productId: number,
+    _questionId: number,
+    date: string,
+  ): Promise<Evidence[]>;
 }

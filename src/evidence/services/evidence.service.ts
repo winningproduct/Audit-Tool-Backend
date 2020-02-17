@@ -44,4 +44,12 @@ export class EvidenceService implements IEvidenceService {
   async getEvidenceById(evidenceId: number) {
     return this.evidenceRepository.getEvidenceById(evidenceId);
   }
+
+  async getVersionsByDate(productId: number, questionId: number, date: string) {
+    return this.evidenceRepository.getVersionsByDate(
+      productId,
+      questionId,
+      date,
+    );
+  }
 }

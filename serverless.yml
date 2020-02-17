@@ -129,6 +129,13 @@ functions:
             name: authorizer
             arn: ${env:ARN}
       - http:
+          method: get
+          path: product/{id}/question/{qid}/evidence/date/{did}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
           method: post
           path: userProducts
           integration: lambda
