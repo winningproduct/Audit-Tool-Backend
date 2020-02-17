@@ -100,7 +100,6 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     let connection: any;
     try {
       connection = await initMysql();
-
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
