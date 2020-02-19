@@ -81,7 +81,7 @@ export class Routes {
         questionId,
       );
     });
-    this.path.get('knowledgeAreas/:id/questions', async (req, _res) => {
+    this.path.get('knowledgeArea/:id/questions', async (req, _res) => {
       const knowledgeAreaId = Number(
         req.pathParameters ? req.pathParameters.id : null,
       );
@@ -133,12 +133,14 @@ export class Routes {
       );
     });
 
-    this.path.get('product/:id/question/:qid', async (req, _res) => {
+    this.path.get('product/:id/question/:qid/page/:pid', async (req, _res) => {
       const productId = req.pathParameters ? req.pathParameters.id : 0;
       const questionId = req.pathParameters ? req.pathParameters.qid : 0;
+      const pageId = req.pathParameters ? req.pathParameters.pid : 0;
       return await this.evidenceService.getVersionsGroupByDate(
         Number(productId),
         Number(questionId),
+        Number(pageId),
       );
     });
 
