@@ -150,7 +150,11 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
-        .innerJoinAndSelect('evidence.user', 'users')
+        .innerJoin('evidence.user', 'users')
+        .select('users.firstName')
+        .addSelect('users.lastName')
+        .addSelect('evidence.createdDate')
+        .addSelect('evidence.id')
         .where('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d") = :date', {
           date,
         })
