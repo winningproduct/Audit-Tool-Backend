@@ -32,21 +32,21 @@ functions:
       - http:
           method: get
           # get products by user id
-          path: products/user/{id}
+          path: product/user/{id}
           integration: lambda
           authorizer:
             name: authorizer
             arn: ${env:ARN}
       - http:
           method: get
-          path: products/{id}
+          path: product/{id}
           integration: lambda
           authorizer:
             name: authorizer
             arn: ${env:ARN}
       - http:
           method: get
-          path: products/{id}/phases
+          path: product/{id}/phases
           integration: lambda
           authorizer:
             name: authorizer
@@ -54,7 +54,7 @@ functions:
       - http:
           method: get
           # return the product by product_phase_id
-          path: products/productPhases/{id}
+          path: product/productPhases/{id}
           integration: lambda
           authorizer:
             name: authorizer
@@ -68,7 +68,7 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get
-          path: knowledgeAreas/{id}/questions
+          path: knowledgeArea/{id}/questions
           integration: lambda
           authorizer:
             name: authorizer
@@ -99,7 +99,7 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get
-          path: products/{id}/productPhase
+          path: product/{id}/productPhase
           integration: lambda
           authorizer:
             name: authorizer
@@ -117,6 +117,20 @@ functions:
       - http:
           method: get
           path: user/product/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get
+          path: evidence/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get
+          path: product/{id}/question/{qid}/evidence/date/{did}
           integration: lambda
           authorizer:
             name: authorizer

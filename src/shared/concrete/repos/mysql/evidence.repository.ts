@@ -93,7 +93,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
-  async getVersions(
+  async getVersionsGroupByDate(
     productId: number,
     questionId: number,
   ): Promise<Evidence[]> {
@@ -103,8 +103,62 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
-        .innerJoinAndSelect('evidence.user', 'users')
+        .innerJoin('evidence.user', 'users')
+        .select('evidence.createdDate')
         .where('evidence.productId = :productId', { productId })
+        .andWhere('evidence.questionId = :questionId', { questionId })
+        .groupBy('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d")')
+        .getRawMany();
+      return mapDbItems(result, evidenceMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getEvidenceById(_evidenceId: number): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(EvidenceEntity, 'evidence')
+        .where('evidence.id = :id', { id: _evidenceId })
+        .getRawMany();
+      return mapDbItems(result, evidenceMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getVersionsByDate(
+    productId: number,
+    questionId: number,
+    date: string,
+  ): Promise<Evidence[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .getRepository(EvidenceEntity)
+        .createQueryBuilder('evidence')
+        .innerJoin('evidence.user', 'users')
+        .select('users.firstName')
+        .addSelect('users.lastName')
+        .addSelect('evidence.createdDate')
+        .addSelect('evidence.id')
+        .where('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d") = :date', {
+          date,
+        })
+        .andWhere('evidence.productId = :productId', { productId })
         .andWhere('evidence.questionId = :questionId', { questionId })
         .getRawMany();
       return mapDbItems(result, evidenceMapper);
