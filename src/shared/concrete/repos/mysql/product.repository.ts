@@ -10,7 +10,8 @@ import { mapDbItems, productMapper } from './dbMapper';
 import { getRepository } from 'typeorm';
 import { Question as QuestionEntity } from './entity/question';
 import { Evidence as EvidenceEntity } from './entity/evidence';
-// Need to TEst ALL
+import { Organization as OrganizationEntity } from './entity/organization';
+
 @injectable()
 export class MySQLProductRepository implements IProductRepository {
   // return the product of a product_phase_id
@@ -85,10 +86,17 @@ export class MySQLProductRepository implements IProductRepository {
       const questionRepository = getRepository(QuestionEntity);
       const questions = await questionRepository.find();
       const userRepository = getRepository(UserEntity);
-      const user = await userRepository.findOneOrFail(9);
+      const user = await userRepository.findOneOrFail(Number(_product.userId));
+      const organizationRepository = getRepository(OrganizationEntity);
+      const organization = await organizationRepository.findOneOrFail(
+        Number(_product.organizationId),
+      );
+
       const product = new ProductEntity();
       product.name = _product.name;
       product.description = _product.description;
+      product.user = user;
+      product.organization = organization;
       const result = await connection.manager.save(product);
 
       // Creates Product Phases
