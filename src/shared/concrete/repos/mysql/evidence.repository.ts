@@ -104,13 +104,14 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
       const result = await connection
         .getRepository(EvidenceEntity)
         .createQueryBuilder('evidence')
-        .innerJoin('evidence.user', 'users')
-        .select('evidence.createdDate')
+        .select(
+          'DISTINCT DATE_FORMAT(evidence.createdDate, "%Y-%m-%d") as evidence_createdDate',
+        )
         .where('evidence.productId = :productId', { productId })
         .andWhere('evidence.questionId = :questionId', { questionId })
-        .groupBy('DATE_FORMAT(evidence.createdDate, "%Y-%m-%d")')
         .skip(pageId)
         .take(20)
+        .orderBy()
         .getRawMany();
       return mapDbItems(result, evidenceMapper);
     } catch (err) {
