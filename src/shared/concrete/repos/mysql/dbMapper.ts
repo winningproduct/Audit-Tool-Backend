@@ -64,7 +64,6 @@ export function evidenceMapper(evidence: any) {
     email: evidence.users_email,
     lastName: evidence.users_lastName,
     count: evidence.evidence_count,
-
   };
 }
 

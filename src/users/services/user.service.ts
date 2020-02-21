@@ -45,5 +45,4 @@ export class UserService implements IUserService {
   async getUsersByProjectId(id: number) {
     return await this.userRepository.getUsersByProjectId(id);
   }
-
 }

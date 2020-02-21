@@ -28,7 +28,6 @@ export class Routes {
     _userService: IUserService,
     _organizationService: IOrganizationService,
     _adminService: IAdminService,
-
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
