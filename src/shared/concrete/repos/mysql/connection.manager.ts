@@ -46,3 +46,22 @@ export async function initMysql() {
     }
   }
 }
+
+export async function initMysql2() {
+  try {
+    const con = await createConnection({
+      type: 'mysql',
+      host: dbConfig.host,
+      port: Number(dbConfig.port),
+      username: dbConfig.username,
+      password: dbConfig.password,
+      database: dbConfig.database,
+    });
+    return con;
+  } catch (err) {
+    if (err) {
+      const existentConn = getConnectionManager().get('default');
+      return existentConn;
+    }
+  }
+}

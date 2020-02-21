@@ -3,6 +3,7 @@ import { KnowledgeArea } from '@models/knowledge-area';
 import { Question } from '@models/question';
 import { Phase } from '@models/phase';
 import { User } from '@models/user';
+import { Organization } from '@models/organization';
 
 export function mapDbItems(result: any, mapper: any): any {
   return Object.keys(result).map(key => {
@@ -62,6 +63,8 @@ export function evidenceMapper(evidence: any) {
     firstName: evidence.users_firstName,
     email: evidence.users_email,
     lastName: evidence.users_lastName,
+    count: evidence.evidence_count,
+
   };
 }
 
@@ -71,9 +74,19 @@ export function userMapper(user: any): User {
     organizationId: user.users_organizationId,
     firstName: user.users_firstName,
     lastName: user.users_lastName,
+    email: user.users_email,
     phoneNumber: user.users_phoneNumber,
     createdDate: user.users_createdDate,
   } as User;
+}
+
+export function organizationMapper(org: any): Organization {
+  return {
+    id: org.organizations_id,
+    name: org.organizations_name,
+    email: org.organizations_email,
+    createdDate: org.organizations_createdDate,
+  } as Organization;
 }
 
 export function domainMapper(org: any) {

@@ -76,25 +76,25 @@ export class MySQLProductRepository implements IProductRepository {
     }
   }
 
-  async add(_product: Product): Promise<boolean> {
+  async add(_req: any): Promise<boolean> {
     let connection: any;
     try {
       connection = await initMysql();
-
       const phaseRepository = getRepository(PhaseEntity);
       const phases = await phaseRepository.find();
       const questionRepository = getRepository(QuestionEntity);
       const questions = await questionRepository.find();
       const userRepository = getRepository(UserEntity);
-      const user = await userRepository.findOneOrFail(Number(_product.userId));
+      const user = await userRepository.findOneOrFail(_req.product.userId);
+
       const organizationRepository = getRepository(OrganizationEntity);
       const organization = await organizationRepository.findOneOrFail(
-        Number(_product.organizationId),
+        _req.product.organizationId,
       );
 
       const product = new ProductEntity();
-      product.name = _product.name;
-      product.description = _product.description;
+      product.name = _req.product.name;
+      product.description = _req.product.description;
       product.user = user;
       product.organization = organization;
       const result = await connection.manager.save(product);
@@ -122,6 +122,24 @@ export class MySQLProductRepository implements IProductRepository {
       }
 
       return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getAllProducts(): Promise<Product[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .getRepository(ProductEntity)
+        .createQueryBuilder('products')
+        .getRawMany();
+      return mapDbItems(result, productMapper);
     } catch (err) {
       throw err;
     } finally {

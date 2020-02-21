@@ -137,14 +137,35 @@ functions:
             arn: ${env:ARN}
       - http:
           method: post
-          path: userProducts
+          path: admin/userProducts
           integration: lambda
           authorizer:
             name: authorizer
             arn: ${env:ARN}
       - http:
           method: post
-          path: product
+          path: admin/product
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get
+          path: admin/products
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get
+          path: admin/users
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get
+          path: admin/organizations
           integration: lambda
           authorizer:
             name: authorizer

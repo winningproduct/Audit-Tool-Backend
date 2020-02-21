@@ -5,7 +5,6 @@ import { Product as ProductEntity } from './entity/product';
 import { User as UserEntity } from './entity/user';
 import { mapDbItems, userMapper } from './dbMapper';
 import { User } from '@models/user';
-import { getRepository } from 'typeorm';
 
 @injectable()
 export class MySQLUserRepository implements IUserRepository {
@@ -78,15 +77,29 @@ export class MySQLUserRepository implements IUserRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const userRepository = getRepository(UserEntity);
-      const user = await userRepository.findOneOrFail(userId);
-      const userArray = await userRepository.find();
-      const productRepository = getRepository(ProductEntity);
-      const product = await productRepository.findOneOrFail(productId);
-      product.users = userArray;
-      product.users.push(user);
-      await productRepository.save(product);
+      await connection.query(
+        `INSERT INTO product_users__user(productId,userId) VALUES (${productId},${userId})`,
+      );
       return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .createQueryBuilder()
+        .select('users')
+        .from(UserEntity, 'users')
+        .getRawMany();
+      return mapDbItems(result, userMapper);
     } catch (err) {
       throw err;
     } finally {
