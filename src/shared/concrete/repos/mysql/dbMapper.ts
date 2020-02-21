@@ -76,6 +76,7 @@ export function userMapper(user: any): User {
     email: user.users_email,
     phoneNumber: user.users_phoneNumber,
     createdDate: user.users_createdDate,
+    isAdmin: user.users_isAdmin,
   } as User;
 }
 

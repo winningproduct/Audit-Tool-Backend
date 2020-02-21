@@ -32,6 +32,9 @@ export class User {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdDate!: Date;
 
+  @Column()
+  isAdmin!: boolean;
+
   @OneToMany(
     type => AuditDetail,
     auditDetail => auditDetail.user,
