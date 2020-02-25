@@ -17,4 +17,8 @@ export class KnowledgeAreaService implements IKnowledgeAreaService {
       phaseId,
     );
   }
+
+  async getKnowledgeAreaById(id: number) {
+    return await this.knowledgeAreaRepository.getKnowledgeAreasById(id);
+  }
 }

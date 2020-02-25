@@ -94,6 +94,15 @@ export class Routes {
       );
     });
 
+    this.path.get('knowledgeArea/:id', async (req, _res) => {
+      const knowledgeAreaId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.knowledgeAreaService.getKnowledgeAreaById(
+        knowledgeAreaId,
+      );
+    });
+
     this.path.post('question/:id/evidence', async (req, _res) => {
       const questionId = Number(
         req.pathParameters ? req.pathParameters.id : null,
