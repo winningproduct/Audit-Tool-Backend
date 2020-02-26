@@ -41,8 +41,29 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
         .from(KnowledgeAreaEntity, 'knowledgeArea')
         .where('knowledgeArea.id= :_id', { _id })
         .getRawMany();
-
       return mapDbItems(result, knowledgeAreaMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  // Knowledge Area Score
+  async getKnowledgeAreaScore(_id: number): Promise<any> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result = await connection
+        .getRepository(KnowledgeAreaEntity)
+        .createQueryBuilder('knowledgeArea')
+        .innerJoin('knowledgeArea.questions', 'question')
+        .select('question')
+        .where('knowledgeArea.id = :Id', { Id: _id })
+        .getRawMany();
+      return result.length;
     } catch (err) {
       throw err;
     } finally {
