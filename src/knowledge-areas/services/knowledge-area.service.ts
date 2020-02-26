@@ -21,4 +21,8 @@ export class KnowledgeAreaService implements IKnowledgeAreaService {
   async getKnowledgeAreaById(id: number) {
     return await this.knowledgeAreaRepository.getKnowledgeAreasById(id);
   }
+
+  async getKnowledgeAreaScore(id: number) {
+    return await this.knowledgeAreaRepository.getKnowledgeAreaScore(id);
+  }
 }
