@@ -8,6 +8,7 @@ import { IQuestionService } from '@questions/interfaces/question.service.interfa
 import { Evidence } from '@models/evidence';
 import { IUserService } from 'users/interfaces/user.service.interface';
 import { IOrganizationService } from 'organizations/interfaces/organization.service.interface';
+import { IAdminService } from 'admin/interfaces/admin.service.interface';
 
 @injectable()
 export class Routes {
@@ -17,6 +18,7 @@ export class Routes {
   private evidenceService: IEvidenceService;
   private questionService: IQuestionService;
   private userService: IUserService;
+  private adminService: IAdminService;
 
   constructor(
     _knowledgeAreaService: IKnowledgeAreaService,
@@ -25,6 +27,7 @@ export class Routes {
     _questionService: IQuestionService,
     _userService: IUserService,
     _organizationService: IOrganizationService,
+    _adminService: IAdminService,
   ) {
     this.productService = _productService;
     this.knowledgeAreaService = _knowledgeAreaService;
@@ -33,6 +36,7 @@ export class Routes {
     this.knowledgeAreaService = _knowledgeAreaService;
     this.questionService = _questionService;
     this.userService = _userService;
+    this.adminService = _adminService;
     this.initiateApi();
   }
   initiateApi() {
@@ -86,6 +90,15 @@ export class Routes {
         req.pathParameters ? req.pathParameters.id : null,
       );
       return await this.questionService.getQuestionsByKnowledgeArea(
+        knowledgeAreaId,
+      );
+    });
+
+    this.path.get('knowledgeArea/:id', async (req, _res) => {
+      const knowledgeAreaId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      return await this.knowledgeAreaService.getKnowledgeAreaById(
         knowledgeAreaId,
       );
     });
@@ -168,15 +181,29 @@ export class Routes {
       return await this.userService.addUserFromTrigger(data);
     });
 
-    this.path.post('userProducts', async (req, _res) => {
-      return await this.userService.addUserProduct(
+    // ADMIN API ROUTES
+
+    this.path.get('admin/products', async (_req, _res) => {
+      return await this.adminService.getAllProducts();
+    });
+
+    this.path.get('admin/users', async (_req, _res) => {
+      return await this.adminService.getAllUsers();
+    });
+
+    this.path.get('admin/organizations', async (_req, _res) => {
+      return await this.adminService.getAllOrganizations();
+    });
+
+    this.path.post('admin/userProducts', async (req, _res) => {
+      return await this.adminService.addUserProduct(
         req.body.productId,
         req.body.userId,
       );
     });
 
-    this.path.post('product', async (req, _res) => {
-      return await this.productService.addProduct(req.body);
+    this.path.post('admin/product', async (req, _res) => {
+      return await this.adminService.addProduct(req.body);
     });
   }
 

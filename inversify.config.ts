@@ -28,6 +28,8 @@ import { IUserRepository } from '@repos/user.repository.interface';
 import { MySQLUserRepository } from 'shared/concrete/repos/mysql/user.repository';
 import { IUserService } from 'users/interfaces/user.service.interface';
 import { UserService } from 'users/services/user.service';
+import { IAdminService } from 'admin/interfaces/admin.service.interface';
+import { AdminService } from 'admin/services/admin.service';
 
 export class Inversify extends Container {
   constructor() {
@@ -83,6 +85,10 @@ export class Inversify extends Container {
 
   getUserService() {
     return this.resolve<IUserService>(UserService);
+  }
+
+  getAdminService() {
+    return this.resolve<IAdminService>(AdminService);
   }
 
   getLogger() {

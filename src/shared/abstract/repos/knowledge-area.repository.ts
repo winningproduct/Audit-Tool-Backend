@@ -5,4 +5,5 @@ export interface IKnowledgeAreaRepository extends IRepository<KnowledgeArea> {
   getKnowledgeAreasByProductPhaseId(
     productPhaseId: number,
   ): Promise<KnowledgeArea[]>;
+  getKnowledgeAreasById(_id: number): Promise<KnowledgeArea[]>;
 }
