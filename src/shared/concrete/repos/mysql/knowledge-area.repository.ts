@@ -41,7 +41,6 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
         .from(KnowledgeAreaEntity, 'knowledgeArea')
         .where('knowledgeArea.id= :_id', { _id })
         .getRawMany();
-
       return mapDbItems(result, knowledgeAreaMapper);
     } catch (err) {
       throw err;
@@ -57,16 +56,14 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const questionCount = await connection
+      const result = await connection
         .getRepository(KnowledgeAreaEntity)
         .createQueryBuilder('knowledgeArea')
-        .leftJoin('knowledgeArea.questions', 'question')
-        .select('knowledgeArea.id')
-        .addSelect('COUNT("knowledgeArea.id") AS questionCount')
+        .innerJoin('knowledgeArea.questions', 'question')
+        .select('question')
         .where('knowledgeArea.id = :Id', { Id: _id })
-        .groupBy('knowledgeArea.id')
         .getRawMany();
-      return questionCount;
+      return result.length;
     } catch (err) {
       throw err;
     } finally {
