@@ -27,4 +27,8 @@ export interface IEvidenceRepository extends IRepository<Evidence> {
     questionId: number,
     date: string,
   ): Promise<Evidence[]>;
+
+  getEvidenceByProjectId(
+    productId: number,
+  ): Promise<Evidence[]>;
 }

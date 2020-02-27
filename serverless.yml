@@ -82,7 +82,21 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get   
-          path: knowledgeAreaScore/{id}
+          path: questionCount/knowledgeArea/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get   
+          path: questionCount/phase/{pid}/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get   
+          path: productEvidence/{id}
           integration: lambda
           authorizer:
             name: authorizer

@@ -23,6 +23,6 @@ export class KnowledgeAreaService implements IKnowledgeAreaService {
   }
 
   async getKnowledgeAreaScore(id: number) {
-    return await this.knowledgeAreaRepository.getKnowledgeAreaScore(id);
+    return await this.knowledgeAreaRepository.getQuestionCount(id);
   }
 }

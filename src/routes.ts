@@ -103,13 +103,6 @@ export class Routes {
       );
     });
 
-    this.path.get('knowledgeAreaScore/:id', async (req, _res) => {
-      const knowledgeAreaId = req.pathParameters ? req.pathParameters.id : 0;
-      return await this.knowledgeAreaService.getKnowledgeAreaScore(
-        Number(knowledgeAreaId),
-      );
-    });
-
     this.path.post('question/:id/evidence', async (req, _res) => {
       const questionId = Number(
         req.pathParameters ? req.pathParameters.id : null,
@@ -212,7 +205,24 @@ export class Routes {
     this.path.post('admin/product', async (req, _res) => {
       return await this.adminService.addProduct(req.body);
     });
-  }
+
+    // For Progress Bar
+    this.path.get('questionCount/knowledgeArea/:id', async (req, _res) => {
+      const knowledgeAreaId = req.pathParameters ? req.pathParameters.id : 0;
+      return await this.knowledgeAreaService.getKnowledgeAreaScore(
+        Number(knowledgeAreaId),
+      );
+    });
+
+    this.path.get('questionCount/phase/:pid/:id:', async (req, _res) => {
+      const productId = req.pathParameters ? req.pathParameters.pid : 0;
+      const phaseId = req.pathParameters ? req.pathParameters.id : 0;
+      return await this.productService.getPhaseScore(
+        Number(productId),
+        Number(phaseId),
+      );
+    });
+}
 
   getPath() {
     return this.path;

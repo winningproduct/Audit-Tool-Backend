@@ -2,7 +2,7 @@ import { Phase } from './../../../models/phase';
 import { IPhaseRepository } from '../../../abstract/repos/phase.repository.interface';
 import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
-import { mapDbItems, phasesMapper } from './dbMapper';
+import { mapDbItems, phasesMapper, phaseScoreMapper } from './dbMapper';
 import { ProductPhase } from './entity/product_phase';
 
 @injectable()
@@ -39,6 +39,52 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
         .where('product_phase.id = :productPhaseId', { productPhaseId })
         .getRawMany();
       return mapDbItems(result, phasesMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getQuestionCount(productId: number, phaseId: number): Promise<any> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const result1 = await connection.query(
+        `SELECT 
+          K.id as KnowledgeId, 
+          Count(*) AS AnswerCount
+        FROM 
+          auditDb.Evidence E,
+          auditDb.Question Q, 
+          auditDb.KnowledgeArea K 
+        WHERE 
+          Q.id =  E.questionId AND 
+          K.id =  Q.knowledgeAreaId AND 
+          E.id IN (
+            SELECT MAX(E.id) FROM auditDb.Evidence AS E WHERE E.productId = ${productId} group by E.questionId)
+          AND E.status != 'null'
+        group by (K.id)`,
+      );
+
+      const result2 = await connection.query(
+        `SELECT 
+          K.id as KnowledgeId, 
+          Count(*) AS QuestionCount
+        FROM 
+          auditDb.Phase P, 
+          auditDb.KnowledgeArea K, 
+          auditDb.Question Q
+        WHERE 
+          P.id = K.phaseId AND 
+          K.id = Q.knowledgeAreaId AND 
+          P.id = ${phaseId} 
+        group by K.id;`,
+      );
+
+      return phaseScoreMapper(result1, result2);
     } catch (err) {
       throw err;
     } finally {

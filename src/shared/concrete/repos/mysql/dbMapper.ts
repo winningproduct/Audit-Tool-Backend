@@ -128,3 +128,20 @@ export function evidenceDateMapper(evidence: any) {
   });
   return mapDates;
 }
+
+export function phaseScoreMapper(result1: any, result2: any){
+  const score: any = [];
+  for (const answer of result1) {
+    for (const question of result2) {
+      if (answer.KnowledgeId === question.KnowledgeId) {
+        const obj = {
+          knowledgeId: answer.KnowledgeId,
+          answerCount: answer.AnswerCount,
+          questionCount: question.QuestionCount,
+        };
+        score.push(obj);
+      }
+    }
+  }
+  return score;
+}

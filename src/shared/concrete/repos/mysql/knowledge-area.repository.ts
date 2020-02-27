@@ -52,7 +52,7 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
   }
 
   // Knowledge Area Score
-  async getKnowledgeAreaScore(_id: number): Promise<any> {
+  async getQuestionCount(_id: number): Promise<any> {
     let connection: any;
     try {
       connection = await initMysql();
@@ -63,7 +63,7 @@ export class MySQLKnowledgeAreaRepository implements IKnowledgeAreaRepository {
         .select('question')
         .where('knowledgeArea.id = :Id', { Id: _id })
         .getRawMany();
-      return result.length;
+      return result;
     } catch (err) {
       throw err;
     } finally {

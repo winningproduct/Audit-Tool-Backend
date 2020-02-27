@@ -38,4 +38,9 @@ export class ProductService implements IProductService {
   async getPhaseByProductPhaseId(productId: number) {
     return await this.phaseRepository.getPhaseByProductPhaseId(productId);
   }
+
+  async getPhaseScore(productId: number, phaseId: number) {
+    return await this.phaseRepository.getQuestionCount(productId, phaseId);
+  }
+
 }
