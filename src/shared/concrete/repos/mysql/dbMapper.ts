@@ -143,6 +143,5 @@ export function phaseScoreMapper(result1: any, result2: any) {
       }
     }
   }
-  console.log(score);
   return score;
 }
