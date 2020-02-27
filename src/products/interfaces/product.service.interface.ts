@@ -15,5 +15,4 @@ export interface IProductService {
   getPhaseScore(productId: number, phase: number): Promise<any>;
 
   getProductScore(productId: number): Promise<any>;
-
 }

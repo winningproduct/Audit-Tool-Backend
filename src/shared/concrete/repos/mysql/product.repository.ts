@@ -150,7 +150,6 @@ export class MySQLProductRepository implements IProductRepository {
   }
 
   async getQuestionCount(productId: number): Promise<any> {
-
     let connection: any;
     try {
       connection = await initMysql();
@@ -172,7 +171,7 @@ export class MySQLProductRepository implements IProductRepository {
         .select('COUNT(*) AS QuestionCount')
         .getRawMany();
 
-      return productScoreMapper(AnswerCount,QuestionCount);
+      return productScoreMapper(AnswerCount, QuestionCount);
     } catch (err) {
       throw err;
     } finally {
