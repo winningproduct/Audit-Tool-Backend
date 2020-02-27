@@ -6,4 +6,5 @@ export interface IProductRepository extends IRepository<Product> {
   getProductsByUser(userId: number): Promise<Product[]>;
   getProductById(productId: number): Promise<Product>;
   getAllProducts(): Promise<Product[]>;
+  getQuestionCount(productId: number): Promise<any>;
 }

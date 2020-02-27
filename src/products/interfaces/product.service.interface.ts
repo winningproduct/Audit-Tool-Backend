@@ -13,4 +13,7 @@ export interface IProductService {
   getPhaseByProductPhaseId(productId: number): Promise<Phase[]>;
 
   getPhaseScore(productId: number, phase: number): Promise<any>;
+
+  getProductScore(productId: number): Promise<any>;
+
 }

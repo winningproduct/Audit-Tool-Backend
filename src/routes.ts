@@ -222,6 +222,11 @@ export class Routes {
         Number(phaseId),
       );
     });
+
+    this.path.get('questionCount/product/:id', async (req, _res) => {
+      const productId = req.pathParameters ? req.pathParameters.id : 0;
+      return await this.productService.getProductScore(Number(productId));
+    });
   }
 
   getPath() {

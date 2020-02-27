@@ -145,3 +145,13 @@ export function phaseScoreMapper(result1: any, result2: any) {
   }
   return score;
 }
+
+export function productScoreMapper(result1: any, result2: any) {
+  const score: any = [];
+  const obj = {
+    answerCount: result1[0].AnswerCount,
+    questionCount: result2[0].QuestionCount,
+  };
+  score.push(obj);
+  return score;
+}

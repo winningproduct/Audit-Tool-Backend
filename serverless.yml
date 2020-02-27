@@ -96,6 +96,13 @@ functions:
             arn: ${env:ARN}
       - http:
           method: get   
+          path: questionCount/product/{id}
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: get   
           path: productEvidence/{id}
           integration: lambda
           authorizer:
