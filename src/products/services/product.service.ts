@@ -42,5 +42,4 @@ export class ProductService implements IProductService {
   async getPhaseScore(productId: number, phaseId: number) {
     return await this.phaseRepository.getQuestionCount(productId, phaseId);
   }
-
 }

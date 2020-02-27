@@ -61,5 +61,4 @@ export class EvidenceService implements IEvidenceService {
   async getEvidenceByProjectId(productId: number) {
     return await this.evidenceRepository.getEvidenceByProjectId(productId);
   }
-
 }

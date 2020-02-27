@@ -4,6 +4,8 @@ import { injectable } from 'inversify';
 import { initMysql } from './connection.manager';
 import { mapDbItems, phasesMapper, phaseScoreMapper } from './dbMapper';
 import { ProductPhase } from './entity/product_phase';
+import { KnowledgeArea as KnowledgeAreaEntity } from './entity/knowledge_area';
+import { Evidence as EvidenceEntity } from './entity/evidence';
 
 @injectable()
 export class MYSQLPhaseRepository implements IPhaseRepository {
@@ -52,39 +54,34 @@ export class MYSQLPhaseRepository implements IPhaseRepository {
     let connection: any;
     try {
       connection = await initMysql();
-      const result1 = await connection.query(
-        `SELECT 
-          K.id as KnowledgeId, 
-          Count(*) AS AnswerCount
-        FROM 
-          auditDb.Evidence E,
-          auditDb.Question Q, 
-          auditDb.KnowledgeArea K 
-        WHERE 
-          Q.id =  E.questionId AND 
-          K.id =  Q.knowledgeAreaId AND 
-          E.id IN (
-            SELECT MAX(E.id) FROM auditDb.Evidence AS E WHERE E.productId = ${productId} group by E.questionId)
-          AND E.status != 'null'
-        group by (K.id)`,
-      );
 
-      const result2 = await connection.query(
-        `SELECT 
-          K.id as KnowledgeId, 
-          Count(*) AS QuestionCount
-        FROM 
-          auditDb.Phase P, 
-          auditDb.KnowledgeArea K, 
-          auditDb.Question Q
-        WHERE 
-          P.id = K.phaseId AND 
-          K.id = Q.knowledgeAreaId AND 
-          P.id = ${phaseId} 
-        group by K.id;`,
-      );
+      const AnswerCount = await connection
+        .getRepository(EvidenceEntity)
+        .createQueryBuilder('evidence')
+        .innerJoin('evidence.question', 'questions')
+        .innerJoin('questions.knowledgeArea', 'knowledgeAreas')
+        .select('questions.knowledgeArea')
+        .addSelect('COUNT(*) AS AnswerCount')
+        .where(
+          'evidence.id IN (SELECT MAX(Evidence.id) FROM Evidence WHERE Evidence.productId = :productId group by Evidence.questionId)',
+          { productId },
+        )
+        .andWhere('evidence.status != "null"')
+        .groupBy('questions.knowledgeArea')
+        .getRawMany();
 
-      return phaseScoreMapper(result1, result2);
+      const QuestionCount = await connection
+        .getRepository(KnowledgeAreaEntity)
+        .createQueryBuilder('knowledgeArea')
+        .innerJoin('knowledgeArea.phase', 'phases')
+        .innerJoin('knowledgeArea.questions', 'questions')
+        .select('knowledgeArea.id')
+        .addSelect('COUNT(*) AS QuestionCount')
+        .where('phases.id = :phaseId', { phaseId })
+        .groupBy('knowledgeArea.id')
+        .getRawMany();
+
+      return phaseScoreMapper(AnswerCount, QuestionCount);
     } catch (err) {
       throw err;
     } finally {

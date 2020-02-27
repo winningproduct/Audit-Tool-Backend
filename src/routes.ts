@@ -222,7 +222,7 @@ export class Routes {
         Number(phaseId),
       );
     });
-}
+  }
 
   getPath() {
     return this.path;
