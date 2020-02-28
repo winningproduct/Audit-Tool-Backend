@@ -6,7 +6,7 @@ import { ProductPhase } from './entity/product_phase';
 import { Product as ProductEntity } from './entity/product';
 import { Phase as PhaseEntity } from './entity/phase';
 import { User as UserEntity } from './entity/user';
-import { mapDbItems, productMapper } from './dbMapper';
+import { mapDbItems, productMapper, productScoreMapper } from './dbMapper';
 import { getRepository } from 'typeorm';
 import { Question as QuestionEntity } from './entity/question';
 import { Evidence as EvidenceEntity } from './entity/evidence';
@@ -140,6 +140,38 @@ export class MySQLProductRepository implements IProductRepository {
         .createQueryBuilder('products')
         .getRawMany();
       return mapDbItems(result, productMapper);
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
+  async getQuestionCount(productId: number): Promise<any> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+
+      const AnswerCount = await connection
+        .getRepository(EvidenceEntity)
+        .createQueryBuilder('evidence')
+        .select('COUNT(*) AS AnswerCount')
+        .where(
+          'evidence.id IN (SELECT MAX(Evidence.id) FROM Evidence WHERE Evidence.productId = :productId group by Evidence.questionId)',
+          { productId },
+        )
+        .andWhere('evidence.status != "null"')
+        .getRawMany();
+
+      const QuestionCount = await connection
+        .getRepository(QuestionEntity)
+        .createQueryBuilder('questions')
+        .select('COUNT(*) AS QuestionCount')
+        .getRawMany();
+
+      return productScoreMapper(AnswerCount, QuestionCount);
     } catch (err) {
       throw err;
     } finally {

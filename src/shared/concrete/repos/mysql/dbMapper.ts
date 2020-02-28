@@ -128,3 +128,30 @@ export function evidenceDateMapper(evidence: any) {
   });
   return mapDates;
 }
+
+export function phaseScoreMapper(result1: any, result2: any) {
+  const score: any = [];
+  for (const answer of result1) {
+    for (const question of result2) {
+      if (answer.knowledgeAreaId === question.knowledgeArea_id) {
+        const obj = {
+          knowledgeId: answer.knowledgeAreaId,
+          answerCount: answer.AnswerCount,
+          questionCount: question.QuestionCount,
+        };
+        score.push(obj);
+      }
+    }
+  }
+  return score;
+}
+
+export function productScoreMapper(result1: any, result2: any) {
+  const score: any = [];
+  const obj = {
+    answerCount: result1[0].AnswerCount,
+    questionCount: result2[0].QuestionCount,
+  };
+  score.push(obj);
+  return score;
+}

@@ -11,4 +11,8 @@ export interface IProductService {
   getProductById(productId: number): Promise<Product>;
 
   getPhaseByProductPhaseId(productId: number): Promise<Phase[]>;
+
+  getPhaseScore(productId: number, phase: number): Promise<any>;
+
+  getProductScore(productId: number): Promise<any>;
 }
