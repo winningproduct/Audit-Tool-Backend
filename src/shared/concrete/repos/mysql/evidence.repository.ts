@@ -175,6 +175,48 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
+  async revertEvidence(evidenceId: number): Promise<boolean> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const evidence = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(EvidenceEntity, 'evidence')
+        .where('evidence.id = :id', { id: evidenceId })
+        .getRawMany();
+      const revertedEvidence = new EvidenceEntity();
+      revertedEvidence.content = evidence[0].evidence_content;
+      revertedEvidence.status = evidence[0].evidence_status;
+      revertedEvidence.version = evidence[0].evidence_version;
+
+      const productRepository = getRepository(Product);
+      const product = await productRepository.findOneOrFail(
+        evidence[0].evidence_productId,
+      );
+      revertedEvidence.product = product;
+      const questionRepository = getRepository(Question);
+      const question = await questionRepository.findOneOrFail(
+        evidence[0].evidence_questionId,
+      );
+      revertedEvidence.question = question;
+      const userRepository = getRepository(User);
+      const user = await userRepository.findOneOrFail(
+        evidence[0].evidence_userId,
+      );
+      revertedEvidence.user = user;
+
+      await connection.manager.save(revertedEvidence);
+      return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Evidence {
     throw new Error('Method not implemented.');
   }
