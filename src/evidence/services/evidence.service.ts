@@ -58,8 +58,7 @@ export class EvidenceService implements IEvidenceService {
     );
   }
 
-  async revertEvidence(evidenceId: number){
+  async revertEvidence(evidenceId: number) {
     return this.evidenceRepository.revertEvidence(evidenceId);
   }
-
 }

@@ -186,10 +186,26 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .where('evidence.id = :id', { id: evidenceId })
         .getRawMany();
       const revertedEvidence = new EvidenceEntity();
-      const result = mapDbItems(evidence, evidenceMapper);
-      revertedEvidence.content = result[0].content;
-      revertedEvidence.status = result[0].status;
-      revertedEvidence.version = result[0].version;
+      revertedEvidence.content = evidence[0].evidence_content;
+      revertedEvidence.status = evidence[0].evidence_status;
+      revertedEvidence.version = evidence[0].evidence_version;
+
+      const productRepository = getRepository(Product);
+      const product = await productRepository.findOneOrFail(
+        evidence[0].evidence_productId,
+      );
+      revertedEvidence.product = product;
+      const questionRepository = getRepository(Question);
+      const question = await questionRepository.findOneOrFail(
+        evidence[0].evidence_questionId,
+      );
+      revertedEvidence.question = question;
+      const userRepository = getRepository(User);
+      const user = await userRepository.findOneOrFail(
+        evidence[0].evidence_userId,
+      );
+      revertedEvidence.user = user;
+
       await connection.manager.save(revertedEvidence);
       return true;
     } catch (err) {
