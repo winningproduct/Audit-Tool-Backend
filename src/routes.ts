@@ -115,8 +115,16 @@ export class Routes {
     });
 
     this.path.post('question/:id/revertEvidence', async (req, _res) => {
-      const evidenceId: number = req.body;
-      return await this.evidenceService.revertEvidence(evidenceId);
+      const questionId = Number(
+        req.pathParameters ? req.pathParameters.id : null,
+      );
+      const evidenceId: number = req.body.evidenceId;
+      const productId: number = req.body.productId;
+      return await this.evidenceService.revertEvidence(
+        productId,
+        questionId,
+        evidenceId,
+      );
     });
 
     this.path.put('question/:id/evidence/:eid', async (req, _res) => {

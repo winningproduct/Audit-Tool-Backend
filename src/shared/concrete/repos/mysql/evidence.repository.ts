@@ -175,10 +175,25 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
-  async revertEvidence(evidenceId: number): Promise<boolean> {
+  async revertEvidence(
+    _productId: number,
+    _questionId: number,
+    evidenceId: number,
+  ): Promise<boolean> {
     let connection: any;
     try {
       connection = await initMysql();
+      const result = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(EvidenceEntity, 'evidence')
+        .where('evidence.productId = :productId', { productId: _productId })
+        .andWhere('evidence.questionId = :questionId', {
+          questionId: _questionId,
+        })
+        .orderBy('evidence.id', 'DESC')
+        .getRawOne();
+
       const evidence = await connection
         .createQueryBuilder()
         .select('evidence')
@@ -187,7 +202,7 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
         .getRawMany();
       const revertedEvidence = new EvidenceEntity();
       revertedEvidence.content = evidence[0].evidence_content;
-      revertedEvidence.status = evidence[0].evidence_status;
+      revertedEvidence.status = result.evidence_status;
       revertedEvidence.version = evidence[0].evidence_version;
 
       const productRepository = getRepository(Product);

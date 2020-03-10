@@ -28,5 +28,9 @@ export interface IEvidenceRepository extends IRepository<Evidence> {
     date: string,
   ): Promise<Evidence[]>;
 
-  revertEvidence(evidenceId: number): Promise<boolean>;
+  revertEvidence(
+    productId: number,
+    questionId: number,
+    evidenceId: number,
+  ): Promise<boolean>;
 }
