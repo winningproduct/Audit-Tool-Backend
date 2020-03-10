@@ -124,6 +124,13 @@ functions:
             arn: ${env:ARN}
       - http:
           method: post
+          path: question/{id}/revertEvidence
+          integration: lambda
+          authorizer:
+            name: authorizer
+            arn: ${env:ARN}
+      - http:
+          method: post
           path: authTrigger/user
       - http:
           method: put

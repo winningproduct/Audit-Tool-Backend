@@ -175,6 +175,32 @@ export class MySQLEvidenceRepository implements IEvidenceRepository {
     }
   }
 
+  async revertEvidence(evidenceId: number): Promise<boolean> {
+    let connection: any;
+    try {
+      connection = await initMysql();
+      const evidence = await connection
+        .createQueryBuilder()
+        .select('evidence')
+        .from(EvidenceEntity, 'evidence')
+        .where('evidence.id = :id', { id: evidenceId })
+        .getRawMany();
+      const revertedEvidence = new EvidenceEntity();
+      const result = mapDbItems(evidence, evidenceMapper);
+      revertedEvidence.content = result[0].content;
+      revertedEvidence.status = result[0].status;
+      revertedEvidence.version = result[0].version;
+      await connection.manager.save(revertedEvidence);
+      return true;
+    } catch (err) {
+      throw err;
+    } finally {
+      if (connection != null) {
+        await connection.close();
+      }
+    }
+  }
+
   get(_itemId: number): Evidence {
     throw new Error('Method not implemented.');
   }

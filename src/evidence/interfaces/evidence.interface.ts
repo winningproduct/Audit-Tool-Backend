@@ -25,4 +25,6 @@ export interface IEvidenceService {
     _questionId: number,
     date: string,
   ): Promise<Evidence[]>;
+
+  revertEvidence(_evidenceId: number): Promise<boolean>;
 }
